@@ -97,5 +97,8 @@ module.exports = {
   },
 
   PHONE_EXISTED : 'Số điện thoại đã tồn tại',
-  CREATE_USER_SUCCESS : 'Tạo tài khoản thành công'
+  CREATE_USER_SUCCESS : 'Tạo tài khoản thành công',
+  USER_NOT_FOUND: 'Không tìm thấy User',
+  DELETE_USER_SUCCESS: 'Xóa người dùng thành công',
+  UPDATE_USER_SUCCESS: 'Cập nhật thông tin thành công',
 }
