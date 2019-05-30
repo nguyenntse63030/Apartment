@@ -41,8 +41,8 @@ async function deleteUserByCode(code) {
 }
 
 async function getUserByRole(role) {
-    let listManager = await User.find({role: role})   //Tìm hết User theo role trong database
-    return responseStatus.Code200({ listManager: listManager })
+    let listUser = await User.find({role: role})   //Tìm hết User theo role trong database
+    return responseStatus.Code200({ listUser: listUser })
 }
 
 async function createUser(data) {
@@ -65,9 +65,9 @@ async function createUser(data) {
     user.name = data.name || ''
     user.address = data.address || ''
 
-    await user.save()       //Lưu user xuống database
+    user = await user.save()       //Lưu user xuống database
 
-    return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS })
+    return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
 }
 
 module.exports = {
