@@ -1,0 +1,144 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:1998/api/v1
+info:
+  description: Test APIs document Swagger
+  version: "1.0.0"
+  title: APIs document Swagger
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /users/role/{role}:
+    get:
+      parameters:
+        - in: path
+          name: role   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            enum:
+              - "Supervisor"
+              - "Manager"
+              - "Customer"
+            default: "Manager"
+          description: The user role
+      tags:
+        - user
+      summary: get user by role
+      description: This can only be done by the logged in user.
+      operationId: getUserByRole
+      responses:
+        default:
+          description: successful operation
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Created user object
+        required: true
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: loginUser
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        '400':
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      responses:
+        default:
+          description: successful operation
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        dateOfBirth:
+          type: string
+        gender:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+      xml:
+        name: User
+  requestBodies:
+    UserArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+      description: List of user object
+      required: true
