@@ -96,9 +96,15 @@ module.exports = {
     }, object)
   },
 
-  PHONE_EXISTED : 'Số điện thoại đã tồn tại',
-  CREATE_USER_SUCCESS : 'Tạo tài khoản thành công',
+  PHONE_EXISTED: 'Số điện thoại đã tồn tại',
+  CREATE_USER_SUCCESS: 'Tạo tài khoản thành công',
   USER_NOT_FOUND: 'Không tìm thấy User',
   DELETE_USER_SUCCESS: 'Xóa người dùng thành công',
   UPDATE_USER_SUCCESS: 'Cập nhật thông tin thành công',
+  UPDATE_USER_SUCCESS: 'Cập nhật thông tin thành công',
+  ROOM_NOT_FOUND: 'Không tìm thấy Room',
+  ROOM_HAD_EXISTED_USER: 'Room đã có người sở hữu',
+  INSERT_ROOM_FOR_USER_SUCCESS: 'Thêm room cho user thành công',
+
+
 }

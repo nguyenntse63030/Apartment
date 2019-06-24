@@ -6,9 +6,12 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/user', function(req, res, next) {
+  res.render('user');
+});
+
 router.get('/swagger', function(req, res, next) {
   res.render('swagger');
-  // res.sendFile('/dist/index.html');
 });
 
 module.exports = router;
