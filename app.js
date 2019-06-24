@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var engine = require('ejs-locals')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('./configs/loadModelsMongoose')
@@ -13,7 +14,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-// app.engine('html', require('ejs').renderFile);
+app.engine('ejs', engine)
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -21,10 +22,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//-----URL dẫn trang-----
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/v1/user', require('./api/route/user'));  //Dẫn đường dẫn API tới file route tướng ứng
 
+//-----API-----
+app.use('/api/v1/user', require('./api/route/user'));  //Dẫn đường dẫn API tới file route tướng ứng
+app.use('/api/v1/room', require('./api/route/room'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
