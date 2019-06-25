@@ -25,7 +25,13 @@ async function insertRoomForUser(roomCode, userCode) {
     return responseStatus.Code200({ message: responseStatus.INSERT_ROOM_FOR_USER_SUCCESS })
 }
 
+async function selectRoomsByUser(userCode) {
+    let listRoom = await Room.find({ user: userCode })
+    return responseStatus.Code200({ listRoom: listRoom })
+}
+
 
 module.exports = {
     insertRoomForUser,
+    selectRoomsByUser
 }
