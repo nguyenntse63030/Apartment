@@ -26,7 +26,11 @@ async function insertRoomForUser(roomCode, userCode) {
 }
 
 async function selectRoomsByUser(userCode) {
-    let listRoom = await Room.find({ user: userCode })
+    let user = await User.findById(userCode)
+    if(!user){
+        return responseStatus.Code400({ errorMessage:responseStatus.USER_NOT_FOUND })
+    }
+    let listRoom = await Room.find({ user: userCode}).populate('user').populate('apartment')
     return responseStatus.Code200({ listRoom: listRoom })
 }
 
