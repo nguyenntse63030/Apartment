@@ -29,6 +29,7 @@ app.use('/users', usersRouter);
 //-----API-----
 app.use('/api/v1/user', require('./api/v1/route/user'));  //Dẫn đường dẫn API tới file route tướng ứng
 app.use('/api/v1/room', require('./api/v1/route/room'));
+app.use('/api/v1/news', require('./api/v1/route/news'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

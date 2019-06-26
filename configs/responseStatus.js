@@ -105,6 +105,6 @@ module.exports = {
   ROOM_NOT_FOUND: 'Không tìm thấy Room',
   ROOM_HAD_EXISTED_USER: 'Room đã có người sở hữu',
   INSERT_ROOM_FOR_USER_SUCCESS: 'Thêm room cho user thành công',
-
-
+  NEWS_EXISTED: "News đã tồn tại",
+  CREATE_NEWS_SUCCESS: 'Tạo News thành công',
 }
