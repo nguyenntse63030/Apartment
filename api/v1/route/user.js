@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const multipart = require('connect-multiparty')
+const multipartMiddleware = multipart()
+const responseStatus = require('../../../configs/responseStatus')
 const userController = require('../controllers/userController')
 
 router.get('/role/:role', async (req, res, next) => {    //:role được nhận như một params ở trong request (Admin, Manager, Customer)
@@ -15,7 +18,7 @@ router.get('/role/:role', async (req, res, next) => {    //:role được nhận
     }
 })
 
-router.get('/:code', async (req, res, next) => {   
+router.get('/:code', async (req, res, next) => {
     try {
 
         // const token = req.session.token || req.headers['x-access-token']
@@ -40,7 +43,19 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-router.delete('/:code', async (req, res, next) => {    
+router.put('/changeAvatar/:userCode', multipartMiddleware, async (req, res, next) => {
+    try {
+        // const token = req.session.token || req.headers['x-access-token']
+        // await authService.isLogined(token)
+        const response = await userController.changeAvatar(req.params.userCode, req.body.photoURL)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+router.delete('/:code', async (req, res, next) => {
     try {
 
         // const token = req.session.token || req.headers['x-access-token']
@@ -53,7 +68,7 @@ router.delete('/:code', async (req, res, next) => {
     }
 })
 
-router.put('/:code', async (req, res, next) => {    
+router.put('/:code', async (req, res, next) => {
     try {
 
         // const token = req.session.token || req.headers['x-access-token']

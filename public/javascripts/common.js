@@ -25,5 +25,26 @@ const COMMON = {
         CUSTOMER: 'Customer',
         MANAGER: 'Manager',
         SUPERVISOR: 'Supervisor'
-    }
+    },
+
+    uploadKey: 'c940089d6e1e3588e2db9c277d519696'
+}
+
+function showNotification(message, type) { // type: ['success', 'danger']
+    $.notify({
+        icon: type === 'success' ? 'check' : 'close',
+        message: message
+    }, {
+            type: type,
+            z_index: 2000,
+            timer: 4000,
+            placement: {
+                from: 'top',
+                align: 'right'
+            }
+        })
+}
+
+function showModalChangeAvatar() {
+    $('#modal-change-avatar').modal('show')
 }

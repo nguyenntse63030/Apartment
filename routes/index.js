@@ -11,7 +11,7 @@ router.get('/admin/customer', function (req, res, next) {
 });
 
 router.get('/admin/customer/:code', function (req, res, next) {
-  res.render('admin/customer/list', { code: req.params.code });
+  res.render('admin/customer/detail', { code: req.params.code });
 });
 
 router.get('/swagger', function (req, res, next) {

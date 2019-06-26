@@ -37,7 +37,15 @@ var UserSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    createdTime:{
+    note: {
+        type: String,
+        default: ''
+    },
+    photoURL: {
+        type: String,
+        default: ''
+    },
+    createdTime: {
         type: Number,
         default: Date.now
     }

@@ -96,15 +96,17 @@ module.exports = {
     }, object)
   },
 
-  PHONE_EXISTED: 'Số điện thoại đã tồn tại',
-  CREATE_USER_SUCCESS: 'Tạo tài khoản thành công',
-  USER_NOT_FOUND: 'Không tìm thấy User',
-  DELETE_USER_SUCCESS: 'Xóa người dùng thành công',
-  UPDATE_USER_SUCCESS: 'Cập nhật thông tin thành công',
-  UPDATE_USER_SUCCESS: 'Cập nhật thông tin thành công',
-  ROOM_NOT_FOUND: 'Không tìm thấy Room',
-  ROOM_HAD_EXISTED_USER: 'Room đã có người sở hữu',
-  INSERT_ROOM_FOR_USER_SUCCESS: 'Thêm room cho user thành công',
+  PHONE_EXISTED: 'Phone is existed',
+  CREATE_USER_SUCCESS: 'Create account successfully',
+  USER_NOT_FOUND: 'Can not found user',
+  DELETE_USER_SUCCESS: 'Delete user successfully',
+  UPDATE_USER_SUCCESS: 'Update information successfully',
+  ROOM_NOT_FOUND: 'Can not found Room',
+  ROOM_HAD_EXISTED_USER: 'Room already have owner',
+  INSERT_ROOM_FOR_USER_SUCCESS: 'Add room for user successfully',
+  IMAGE_REQUIRED: 'Please choose your image',
+  IMAGE_SIZE_LOWER_5MB: 'Your file size must lower 5MB',
+  CHANGE_AVATAR_SUCCESSFULLY: 'Change avatar successfully',
 
 
 }

@@ -45,6 +45,16 @@ async function getUserByRole(role) {
     return responseStatus.Code200({ listUser: listUser })
 }
 
+async function changeAvatar(userCode, photoURL) {
+    let user = await User.findOne({ code: userCode })
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+    user.photoURL = photoURL
+    await user.save()
+    return responseStatus.Code200({ message: responseStatus.CHANGE_AVATAR_SUCCESSFULLY })
+}
+
 async function createUser(data) {
     let user = await User.findOne({ phone: data.phone })   //Tìm trong database theo sdt
 
@@ -63,7 +73,7 @@ async function createUser(data) {
     user.role = data.role || ''
     user.name = data.name || ''
     user.address = data.address || ''
-    
+
     // User Code 
     user.name.split(' ').forEach(function (element) {
         if (element.match(/[a-z]/i)) {
@@ -85,4 +95,5 @@ module.exports = {
     deleteUserByCode,
     updateUserByCode,
     getUserByCode,
+    changeAvatar
 }

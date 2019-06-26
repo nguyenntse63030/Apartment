@@ -5585,6 +5585,10 @@ button.close {
 .modal-title {
   margin-bottom: 0;
   line-height: 1.5;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  color: #9124a3;
 }
 
 .modal-body {
@@ -17347,7 +17351,8 @@ label {
 
 .card-profile .card-avatar img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card-profile .card-body+.card-footer {
@@ -17369,8 +17374,8 @@ label {
 }
 
 .card-profile .card-avatar {
-  max-width: 130px;
-  max-height: 130px;
+  width: 250px;
+  height: 250px;
 }
 
 .card-plain {
@@ -18824,6 +18829,9 @@ Copyright (c) 2015 Daniel Eden
 }
 .card .table tr:hover td a{
   color: white;
+}
+.model-center{
+  margin-top: 10%;
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
