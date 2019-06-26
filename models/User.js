@@ -37,6 +37,10 @@ var UserSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    createdTime:{
+        type: Number,
+        default: Date.now
+    }
 });
 
 UserSchema.methods.authenticate = function (password) {

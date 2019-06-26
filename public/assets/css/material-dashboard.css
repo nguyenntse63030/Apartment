@@ -18819,4 +18819,11 @@ Copyright (c) 2015 Daniel Eden
   }
 }
 
+.card .table tr:hover td {
+  background-color: #ab47bc;
+}
+.card .table tr:hover td a{
+  color: white;
+}
+
 /*# sourceMappingURL=dashboard-free.css.map */

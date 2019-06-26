@@ -1,22 +1,22 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const responseStatus = require('../../configs/responseStatus')
+const responseStatus = require('../../../configs/responseStatus')
 
 async function getUserByCode(code) {
-    let user = await User.findOne({code: code})   //Tìm User theo code trong database
-    if (!user){
-        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
-    }     
+    let user = await User.findOne({ code: code })   //Tìm User theo code trong database
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
 
     return responseStatus.Code200({ user: user })
 }
 
 async function updateUserByCode(data, code) {
-    let user = await User.findOne({code: code})   //Tìm hết User theo code trong database
-    if (!user){
-        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
+    let user = await User.findOne({ code: code })   //Tìm hết User theo code trong database
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
-    
+
     user.phone = data.phone || user.phone
     user.email = data.email || user.email
     user.dateOfBirth = data.dateOfBirth || user.dateOfBirth
@@ -31,17 +31,17 @@ async function updateUserByCode(data, code) {
 }
 
 async function deleteUserByCode(code) {
-    let user = await User.findOne({code: code})   //Tìm hết User theo code trong database
-    if (!user){
-        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
+    let user = await User.findOne({ code: code })   //Tìm hết User theo code trong database
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
 
-    await User.remove({code: user.code})    //Delete user theo code truyền vào
+    await User.remove({ code: user.code })    //Delete user theo code truyền vào
     return responseStatus.Code200({ message: responseStatus.DELETE_USER_SUCCESS })
 }
 
 async function getUserByRole(role) {
-    let listUser = await User.find({role: role})   //Tìm hết User theo role trong database
+    let listUser = await User.find({ role: role })   //Tìm hết User theo role trong database
     return responseStatus.Code200({ listUser: listUser })
 }
 
@@ -56,7 +56,6 @@ async function createUser(data) {
 
     //Đổ data vào User
     user = new User()
-    user.code = Date.now()
     user.phone = data.phone || ''
     user.email = data.email || ''
     user.dateOfBirth = data.dateOfBirth || ''
@@ -64,6 +63,16 @@ async function createUser(data) {
     user.role = data.role || ''
     user.name = data.name || ''
     user.address = data.address || ''
+    
+    // User Code 
+    user.name.split(' ').forEach(function (element) {
+        if (element.match(/[a-z]/i)) {
+            let str = common.changeAlias(element).toUpperCase()
+            userCode += str[0]
+        }
+    })
+    userCode += '-' + Date.now().toString().slice(9)
+    user.code = userCode
 
     user = await user.save()       //Lưu user xuống database
 

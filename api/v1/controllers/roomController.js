@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const responseStatus = require('../../configs/responseStatus')
+const responseStatus = require('../../../configs/responseStatus')
 
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')

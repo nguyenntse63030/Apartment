@@ -20,4 +20,10 @@ const COMMON = {
         }
         return ''
     },
+
+    userRole: {
+        CUSTOMER: 'Customer',
+        MANAGER: 'Manager',
+        SUPERVISOR: 'Supervisor'
+    }
 }
