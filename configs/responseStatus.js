@@ -107,6 +107,7 @@ module.exports = {
   IMAGE_REQUIRED: 'Please choose your image',
   IMAGE_SIZE_LOWER_5MB: 'Your file size must lower 5MB',
   CHANGE_AVATAR_SUCCESSFULLY: 'Change avatar successfully',
-
+  NEWS_EXISTED: "News is existed",
+  CREATE_NEWS_SUCCESS: 'Create news successfully',
 
 }
