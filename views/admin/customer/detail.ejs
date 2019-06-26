@@ -133,7 +133,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <select style="width: 100%" class="form-control" name="selected-apartment"
-                                    id="selected-apartment" ng-model="selectedApartment">
+                                    id="selected-apartment" ng-model="selectedApartment" ng-change="getRoom()">
                                     <option ng-repeat="apartment in apartments" value="{{apartment._id}}">
                                         {{apartment.name}}</option>
                                 </select>
@@ -143,8 +143,9 @@
                     <div class="row" style="display: flex">
                         <div class="col-md-6" style="margin: 0 auto;">
                             <div class="form-group">
-                                <select style="width: 100%" class="form-control" name="selected-room"
-                                    id="selected-room">
+                                <select style="width: 100%" class="form-control" name="selected-room" id="selected-room"
+                                    ng-model="selectedRoom">
+                                    <option ng-repeat="room in rooms" value="{{room._id}}">{{room.roomNumber}}</option>
                                 </select>
                             </div>
                         </div>
@@ -152,7 +153,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary pull-right">Add</button>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="addRoomForUser()">Add</button>
                 </div>
             </div>
         </div>

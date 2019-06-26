@@ -10,7 +10,7 @@ createRoomForApartment = async () => {
     try {
         let minNumber = 101
         for (let i = 0; i < numberOfFloor; i++) {
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < 5; j++) {
                 let room = new Room()
                 room.roomNumber = minNumber + j
                 room.apartment = apartmentId

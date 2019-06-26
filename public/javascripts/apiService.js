@@ -12,6 +12,12 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         },
         changeAvatar: function (userCode, data) {
             return $http.put(apiVersion + '/user/changeAvatar/' + userCode, data)
+        },
+        getRoom: function (apartmentId) {
+            return $http.get(apiVersion + '/room/roomCount/' + apartmentId)
+        },
+        addRoomForUser: function (roomId, userId) {
+            return $http.put(apiVersion + '/room/' + roomId + '/user/' + userId)
         }
     }
 }])
