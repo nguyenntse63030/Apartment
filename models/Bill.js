@@ -5,7 +5,15 @@ var BillSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    total: {
+        type: Number,
+        default: 0
+    },
     type: {
+        type: String,
+        default: ''
+    },
+    description: {
         type: String,
         default: ''
     },
@@ -28,13 +36,25 @@ var BillSchema = new mongoose.Schema({
         type: String,
         default: 'Unpaid'
     },
-    createdTime:{
+    createdTime: {
         type: Number,
         default: Date.now
     },
-    expiredTime:{
+    expiredTime: {
         type: Number,
         default: Date.now
+    },
+    oldNumber: {
+        type: Number,
+        default: 0
+    },
+    newNumber: {
+        type: Number,
+        default: 0
+    },
+    usedNumber: {
+        type: Number,
+        default: 0
     }
 
 });

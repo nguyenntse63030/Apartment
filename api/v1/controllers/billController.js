@@ -36,46 +36,23 @@ async function createBill(data) {
     bill = new Bill()
     bill.expiredTime = expiredDate.getTime()
     bill.type = data.type || ''
+    bill.description = data.description || ''
     bill.manager = data.manager || ''
     bill.apartment = data.apartment || ''
     bill.room = data.room || ''
     bill.status = data.status || ''
     bill.code = billCode
+    bill.oldNumber = data.oldNumber || ''
+    bill.newNumber = data.newNumber || ''
+    let usedNumber = Number(data.newNumber) - Number(data.oldNumber)
+    bill.usedNumber = usedNumber
 
     bil = await bill.save()       //Lưu user xuống database
 
     return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
 }
 
-async function insertBillForRoom(billCode, roomCode) {
-    let room = await Room.find({ code: roomCode })
-    if (!room) {
-        throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_NOT_FOUND })
-    }
 
-    let user = await User.find({ code: userCode })
-    if (!user) {
-        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
-    }
-
-    if (!room.user) {
-        throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_HAD_EXISTED_USER })
-    }
-
-    room.user = user._id
-
-    await room.save()
-    return responseStatus.Code200({ message: responseStatus.INSERT_ROOM_FOR_USER_SUCCESS })
-}
-async function selectBillByRoom(roomCode) {
-    let user = await User.findById(userCode)
-
-    if(!user){
-        return responseStatus.Code400({ errorMessage:responseStatus.USER_NOT_FOUND })
-    }
-    let listRoom = await Room.find({ user: userCode}).populate('user').populate('apartment')
-    return responseStatus.Code200({ listRoom: listRoom })
-}
 
 
 module.exports = {
