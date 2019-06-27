@@ -33,6 +33,10 @@ async function selectRoomsByUser(userCode) {
     let listRoom = await Room.find({ user: userCode }).populate('user').populate('apartment')
     return responseStatus.Code200({ listRoom: listRoom })
 }
+async function selectRoomByCode(roomCode) {
+    let room = await Room.findOne({code:roomCode}).populate('user').populate('apartment')
+    return responseStatus.Code200({ room: room })
+}
 
 async function getRoomForApartment(apartmentId) {
     let rooms = await Room.find({ apartment: apartmentId }).sort({ roomNumber: 1 })
@@ -42,5 +46,6 @@ async function getRoomForApartment(apartmentId) {
 module.exports = {
     addRoomForUser,
     selectRoomsByUser,
-    getRoomForApartment
+    getRoomForApartment,
+    selectRoomByCode
 }

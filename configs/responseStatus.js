@@ -96,7 +96,7 @@ module.exports = {
     }, object)
   },
 
-  PHONE_EXISTED: 'Phone is existed',
+  PHONE_EXISTED: 'Phone already existed',
   CREATE_USER_SUCCESS: 'Create account successfully',
   USER_NOT_FOUND: 'Can not found user',
   DELETE_USER_SUCCESS: 'Delete user successfully',
@@ -107,7 +107,9 @@ module.exports = {
   IMAGE_REQUIRED: 'Please choose your image',
   IMAGE_SIZE_LOWER_5MB: 'Your file size must lower 5MB',
   CHANGE_AVATAR_SUCCESSFULLY: 'Change avatar successfully',
-  NEWS_EXISTED: "News is existed",
+  NEWS_EXISTED: "News already existed",
   CREATE_NEWS_SUCCESS: 'Create news successfully',
+  BILL_EXISTED: 'Bill already existed',
+  
 
 }
