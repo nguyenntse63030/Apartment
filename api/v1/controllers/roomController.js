@@ -39,7 +39,7 @@ async function selectRoomByCode(roomCode) {
 }
 
 async function getRoomForApartment(apartmentId) {
-    let rooms = await Room.find({ apartment: apartmentId }).sort({ roomNumber: 1 })
+    let rooms = await Room.find({ apartment: apartmentId }).populate('user','name').sort({ roomNumber: 1 })
     return responseStatus.Code200({ rooms: rooms })
 }
 

@@ -2,6 +2,6 @@ module.exports = {
     userRole: {
         CUSTOMER: 'Customer',
         MANAGER: 'Manager',
-        SUPERVISOT: 'Supervisor'
+        SUPERVISOR: 'Supervisor'
     }
 }

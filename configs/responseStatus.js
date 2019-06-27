@@ -96,6 +96,8 @@ module.exports = {
     }, object)
   },
 
+  IVALID_PHONE_OR_PASSWORD: 'Invalid email/password combination',
+  INVALID_REQUEST: 'Invalid Request',
   PHONE_EXISTED: 'Phone already existed',
   CREATE_USER_SUCCESS: 'Create account successfully',
   USER_NOT_FOUND: 'Can not found user',
@@ -110,6 +112,5 @@ module.exports = {
   NEWS_EXISTED: "News already existed",
   CREATE_NEWS_SUCCESS: 'Create news successfully',
   BILL_EXISTED: 'Bill already existed',
-  
 
 }

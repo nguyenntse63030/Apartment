@@ -145,7 +145,7 @@
                             <div class="form-group">
                                 <select style="width: 100%" class="form-control" name="selected-room" id="selected-room"
                                     ng-model="selectedRoom">
-                                    <option ng-repeat="room in rooms" value="{{room._id}}">{{room.roomNumber}}</option>
+                                    <option ng-repeat="room in rooms" value="{{room._id}}">{{room.user ? room.roomNumber  + ' - ' + room.user.name : room.roomNumber}}</option>
                                 </select>
                             </div>
                         </div>

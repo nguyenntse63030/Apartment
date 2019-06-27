@@ -9,22 +9,22 @@ var NewsSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    content: {
+        type: String,
+        default: ''
+    },
     description: {
         type: String,
         default: ''
     },
-    contentDetail: {
+    photoURL: {
         type: String,
         default: ''
     },
-    createdTime:{
+    createdTime: {
         type: Number,
         default: Date.now
     },
-    image: {
-        type: Number,
-        default: 0
-    }
 });
 
 mongoose.model('News', NewsSchema);

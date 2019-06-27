@@ -49,18 +49,30 @@ function openRegisterModal() {
 }
 
 function loginAjax() {
-    /*   Remove this comments when moving to server
-    $.post( "/login", function( data ) {
-            if(data == 1){
-                window.location.replace("/home");            
+    var $form = $('form')
+    var data = getFormData($form)
+    $.ajax({
+        url: '/api/v1/auth/sign_in',
+        type: 'POST',
+        data: data,
+        complete: function (res) {
+            if (res.status !== 200) {
+                return shakeModal(res.responseJSON.errorMessage)
             } else {
-                 shakeModal(); 
+                COMMON.setCookie('user', JSON.stringify(res.responseJSON.user))
+                if (res.responseJSON.user.role === 'Supervisor') {
+                    window.location.href = '/admin/dashboard'
+                } else if (res.responseJSON.user.role === 'Manager') {
+                    return shakeModal('Manager is not support')
+                } else {
+                    return shakeModal(res.responseJSON.errorMessage)
+                }
             }
-        });
-    */
+        }
+    })
 
     /*   Simulate error message from the server   */
-    shakeModal();
+    // shakeModal();
 }
 
 function shakeModal() {
@@ -70,5 +82,14 @@ function shakeModal() {
     setTimeout(function () {
         $('#loginModal .modal-dialog').removeClass('shake');
     }, 1000);
+}
+
+function getFormData($form) {
+    var unindexedArray = $form.serializeArray()
+    var indexedArray = {}
+    $.map(unindexedArray, function (n, i) {
+        indexedArray[n['name']] = n['value'].trim()
+    })
+    return indexedArray
 }
 
