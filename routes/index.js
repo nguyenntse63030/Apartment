@@ -18,15 +18,15 @@ router.get('/*', async function (req, res, next) {
 })
 
 router.get('/admin/dashboard', function (req, res, next) {
-  res.render('admin/dashboard/list', { role: req.session.user.role });
+  res.render('admin/dashboard/list', { role: req.session.user.role, title: 'Dashboard' });
 });
 
 router.get('/admin/customer', function (req, res, next) {
-  res.render('admin/customer/list', { role: req.session.user.role });
+  res.render('admin/customer/list', { role: req.session.user.role, title: 'Customer' });
 });
 
 router.get('/admin/customer/:code', function (req, res, next) {
-  res.render('admin/customer/detail', { code: req.params.code, role: req.session.user.role });
+  res.render('admin/customer/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
 });
 
 router.get('/swagger', function (req, res, next) {
