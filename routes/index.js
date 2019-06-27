@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
+router.get('/', function (req, res, next) {
+  res.render('index', { title: 'Express' });
+});
 router.get('/admin/dashboard', function (req, res, next) {
-  res.render('admin/dashboard/list', { title: 'Express' });
+  res.render('admin/dashboard/list');
 });
 
 router.get('/admin/customer', function (req, res, next) {

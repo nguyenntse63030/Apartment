@@ -21,14 +21,16 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
             language: {
                 decimal: '.',
                 thousands: ',',
-                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Vietnamese.json'
+                url: '//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
             },
             search: {
                 caseInsensitive: true
             },
-            'columnDefs': [{
-                'targets': [0],
-                sortable: false
+            // aaSorting: [4, 'desc'],
+            order: [4, 'desc'],
+            columnDefs: [{
+                // targets: [0],
+                // sortable: false
             }],
             aaSorting: []
         })
