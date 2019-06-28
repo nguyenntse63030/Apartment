@@ -10,8 +10,12 @@ router.get('/', function (req, res, next) {
 router.get('/*', async function (req, res, next) {
   const token = req.session.token
   try {
-    await authService.isWebLogin(token)
-    next()
+    if (req.url.indexOf('/api/v1/') === 0) {
+      return next()
+    } else {
+      await authService.isWebLogin(token)
+      return next()
+    }
   } catch (error) {
     res.redirect('/')
   }
