@@ -7,17 +7,17 @@ const Bill = mongoose.model('Bill')
 const Apartment = mongoose.model('Apartment')
 
 async function createBill(data) {
-    let room =  await Room.findById(data.room.id)
+    let room =  await Room.findById(data.room.id).populate('apartment')
     if(!room){
         throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_NOT_FOUND })
     }
-    
-    let user = await User.findById(room.user.id)
+    let apartment = room.apartment
+    let user = await User.findById(room.user._id)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     // Bill Code 
-    let billCode ='B-'+ data.apartment.code +'-'+ data.room.number + '-' + Date.now().toString()
+    let billCode ='B-'+ apartment.code +'-'+ room.roomNumber + '-' + Date.now().toString()
 
     let bill = await Bill.findOne({ code: billCode })   //Tìm trong database theo code
 
@@ -28,8 +28,11 @@ async function createBill(data) {
     }
 
     var expiredDate = new Date(); // Now
-    expiredDate.setDate(date.getDate() + 30); // Set now + 30 days as the new date
-    
+    expiredDate.setDate(expiredDate.getDate() + 30); // Set now + 30 days as the new date
+    let manager = await User.findById(data.manager.id)
+    if (!manager) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
 
     //Đổ data vào bill
 
@@ -37,10 +40,11 @@ async function createBill(data) {
     bill.expiredTime = expiredDate.getTime()
     bill.type = data.type || ''
     bill.description = data.description || ''
-    bill.manager = data.manager || ''
-    bill.apartment = data.apartment || ''
-    bill.room = data.room || ''
-    bill.status = data.status || ''
+    bill.manager = manager || ''
+    bill.user = user || ''
+    bill.apartment = apartment || ''
+    bill.room = room || ''
+    bill.status = data.status || 'Unpaid'
     bill.code = billCode
     bill.oldNumber = data.oldNumber || ''
     bill.newNumber = data.newNumber || ''
@@ -49,12 +53,26 @@ async function createBill(data) {
 
     bil = await bill.save()       //Lưu user xuống database
 
-    return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
+    return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, bill: bill })
+}
+
+async function getBillByRoomId(roomId){
+    let bills = await Bill.find({ room : roomId}).sort({createdTime: -1})
+    return responseStatus.Code200({ listBill: bills })
+}
+
+async function getBillByUserId(userId){
+    let user = await User.findById( userId)
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+    let bills = await Bill.find({ user : userId}).sort({createdTime: -1})
+    return responseStatus.Code200({ listBill: bills })
 }
 
 
-
-
 module.exports = {
-    createBill
+    createBill,
+    getBillByRoomId,
+    getBillByUserId
 }

@@ -22,6 +22,11 @@ var BillSchema = new mongoose.Schema({
         ref: 'User',
         require: [true, 'manager is required']
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        require: [true, 'user is required']
+    },
     apartment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Apartment',
