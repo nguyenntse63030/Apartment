@@ -45,6 +45,10 @@ var UserSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    apartment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Apartment'
+    },
     createdTime: {
         type: Number,
         default: Date.now

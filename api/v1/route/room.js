@@ -1,7 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const roomController = require('../controllers/roomController')
+const authService = require('../services/authService')
 
+router.get('/', async (req, res, next) => {
+    try {
+        // let token = req.session.token || req.header['mobile-access-token']
+        // await authService.isWebLogin(token)
+        let response = await roomController.getAllRooms()
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
 router.get('/code/:roomCode', async (req, res, next) => {
     try {
         let response = await roomController.selectRoomByCode(req.params.roomCode)
@@ -11,8 +23,11 @@ router.get('/code/:roomCode', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/roomCount/:apartmentId', async (req, res, next) => {
+router.get('/apartment/:apartmentId', async (req, res, next) => {
     try {
+
+        // let token = req.session.token || req.header['mobile-access-token']
+        // await authService.isWebLogin(token)
         let response = await roomController.getRoomForApartment(req.params.apartmentId)
         return res.send(response)
     } catch (error) {

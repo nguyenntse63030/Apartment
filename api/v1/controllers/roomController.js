@@ -4,6 +4,11 @@ const constant = require('../../../configs/constant')
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
 
+async function getAllRooms() {
+    let rooms = await Room.find({}).populate('user', 'name').populate('apartment', 'name').sort({ roomNumber: 1 })
+    return responseStatus.Code200({ rooms: rooms })
+}
+
 async function addRoomForUser(roomId, userId) {
     let room = await Room.findById(roomId)
     if (!room) {
@@ -34,12 +39,12 @@ async function selectRoomsByUser(userCode) {
     return responseStatus.Code200({ listRoom: listRoom })
 }
 async function selectRoomByCode(roomCode) {
-    let room = await Room.findOne({code:roomCode}).populate('user').populate('apartment')
+    let room = await Room.findOne({ code: roomCode }).populate('user').populate('apartment')
     return responseStatus.Code200({ room: room })
 }
 
 async function getRoomForApartment(apartmentId) {
-    let rooms = await Room.find({ apartment: apartmentId }).populate('user','name').sort({ roomNumber: 1 })
+    let rooms = await Room.find({ apartment: apartmentId }).populate('user', 'name').sort({ roomNumber: 1 })
     return responseStatus.Code200({ rooms: rooms })
 }
 
@@ -47,5 +52,6 @@ module.exports = {
     addRoomForUser,
     selectRoomsByUser,
     getRoomForApartment,
-    selectRoomByCode
+    selectRoomByCode,
+    getAllRooms
 }

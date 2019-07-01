@@ -61,9 +61,9 @@ function loginAjax() {
             } else {
                 COMMON.setCookie('user', JSON.stringify(res.responseJSON.user))
                 if (res.responseJSON.user.role === 'Supervisor') {
-                    window.location.href = '/admin/dashboard'
+                    window.location.href = '/dashboard'
                 } else if (res.responseJSON.user.role === 'Manager') {
-                    return shakeModal('Manager is not support')
+                    window.location.href = '/dashboard'
                 } else {
                     return shakeModal(res.responseJSON.errorMessage)
                 }
