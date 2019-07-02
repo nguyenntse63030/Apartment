@@ -37,6 +37,20 @@ app.controller('detailController', ['$scope', 'apiService', function ($scope, ap
         })
     }
 
+    $scope.editProfile = () => {
+        $scope.customer.dateOfBirth = getTimestampFromDatePicker($('#birthdate'))
+        apiService.updateUser($scope.customer._id, $scope.customer).then(function (res) {
+            showNotification(res.data.message, 'success')
+            setTimeout(() => {
+                window.location.reload()
+                
+            }, 1000);
+        }).catch(function (res) {
+            console.log(res.data.errorMessage)
+            showNotification(res.data.errorMessage, 'danger')
+        })
+    }
+
     $scope.addRoomForUser = () => {
         if (!$scope.selectedApartment) {
             return showNotification('Please choose the apartment', 'danger')

@@ -11,11 +11,17 @@ async function getUserByCode(code) {
     return responseStatus.Code200({ user: user })
 }
 
-async function updateUserByCode(data, code) {
-    let user = await User.findOne({ code: code })   //Tìm hết User theo code trong database
+async function updateUser(id, data) {
+    let user = await User.findById(id)   //Tìm hết User theo code trong database
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    } else {
+        let userCheckPhone = await User.findOne({phone: data.phone, _id: {$ne: user._id}})
+        if (userCheckPhone){
+            throw responseStatus.Code400({errorMessage: responseStatus.PHONE_EXISTED})
+        }
     }
+    
 
     user.phone = data.phone || user.phone
     user.email = data.email || user.email
@@ -93,7 +99,7 @@ module.exports = {
     createUser,
     getUserByRole,
     deleteUserByCode,
-    updateUserByCode,
+    updateUser,
     getUserByCode,
-    changeAvatar
+    changeAvatar,
 }

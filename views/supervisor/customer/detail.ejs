@@ -26,7 +26,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Phone</label>
-                                    <input type="text" class="form-control" ng-model="customer.phone"
+                                    <input type="text" class="form-control numberInput" ng-model="customer.phone"
                                         value="{{customer.phone}} " ng-disabled="isNotEditing">
                                 </div>
                             </div>
@@ -42,8 +42,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Birthdate</label>
-                                    <input type="text" class="form-control" ng-model="customer.dateOfBirth"
-                                        value="{{customer.dateOfBirth}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" name="birthdate" id="birthdate"
+                                        value="{{customer.dateOfBirth | date:'dd/MM/yyyy'}}" ng-disabled="isNotEditing">
                                 </div>
                             </div>
                         </div>
@@ -164,15 +164,24 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-<script src="/javascripts/manager/customer/detail.js"></script>
+<script src="/javascripts/supervisor/customer/detail.js"></script>
 <script>
     clickSideBar('user-page')
     $(document).ready(function () {
+        $('#birthdate').datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+        })
         $('#selected-apartment').select2({
             placeholder: 'Select a apartment'
         });
         $('#selected-room').select2({
             placeholder: 'Select a room'
         });
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
     });
 </script>

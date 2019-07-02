@@ -48,3 +48,28 @@ function showNotification(message, type) { // type: ['success', 'danger']
 function showModalChangeAvatar() {
     $('#modal-change-avatar').modal('show')
 }
+
+function getTimestampFromDatePicker(selector) {
+    var str = $(selector).datepicker({ dateFormat: 'dd/mm/yy' }).val()
+    str = str.split('/')
+    var year = parseInt(str[2])
+    var month = parseInt(str[1]) - 1
+    var day = parseInt(str[0])
+    return new Date(year, month, day).getTime()
+}
+
+function numberFormat() {
+    (function ($, undefined) {
+        'use strict'
+        $(function () {
+            $('.numberInput').on('keyup', function (event) {
+                var $this = $(this)
+                var input = $this.val()
+                var input = input.replace(/[\D\s\._\-]+/g, '')
+                $this.val(function () {
+                    return input.toLocaleString('en-US')
+                })
+            })
+        })
+    })(jQuery)
+}

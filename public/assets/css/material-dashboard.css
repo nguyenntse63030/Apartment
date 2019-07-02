@@ -16154,6 +16154,11 @@ Copyright (c) 2015 Daniel Eden
   background-color: #ab47bc;
 }
 
+.card .table tr td a {
+  display: block;
+  padding: 12px 8px;
+}
+
 .card .table tr:hover td a {
   color: white;
 }

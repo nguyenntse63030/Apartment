@@ -68,12 +68,12 @@ router.delete('/:code', async (req, res, next) => {
     }
 })
 
-router.put('/:code', async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
     try {
 
         // const token = req.session.token || req.headers['x-access-token']
         // await authService.isLogined(token)
-        const response = await userController.updateUserByCode(req.body, req.params.code) //lấy biến code trong req.params
+        const response = await userController.updateUser(req.params.id, req.body) //lấy biến code trong req.params
         return res.send(response)
     } catch (error) {
         console.log(error)
