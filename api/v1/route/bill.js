@@ -15,4 +15,32 @@ router.post('/', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
+router.get('/room/:roomId', async (req,res, next) => {
+    try {
+        let response = await billController.getBillByRoomId(req.params.roomId)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+router.get('/user/unpaid/:userId', async (req,res, next) => {
+    try {
+        let response = await billController.getUnpaidBillByUserId(req.params.userId)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+router.get('/user/paid/:userId', async (req,res, next) => {
+    try {
+        let response = await billController.getPaidBillByUserId(req.params.userId)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 module.exports = router
