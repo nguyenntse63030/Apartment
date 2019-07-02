@@ -33,6 +33,7 @@ async function createBill(data) {
     if (!manager) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
+    
 
     //Đổ data vào bill
 
@@ -44,7 +45,7 @@ async function createBill(data) {
     bill.user = user || ''
     bill.apartment = apartment || ''
     bill.room = room || ''
-    bill.status = data.status || 'Unpaid'
+    bill.status = data.status || 'UNPAID'
     bill.code = billCode
     bill.oldNumber = data.oldNumber || ''
     bill.newNumber = data.newNumber || ''
@@ -61,12 +62,22 @@ async function getBillByRoomId(roomId){
     return responseStatus.Code200({ listBill: bills })
 }
 
-async function getBillByUserId(userId){
+async function getUnpaidBillByUserId(userId){
     let user = await User.findById( userId)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
-    let bills = await Bill.find({ user : userId}).sort({createdTime: -1})
+    let statusCheck = 'UNPAID'
+    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1})
+    return responseStatus.Code200({ listBill: bills })
+}
+async function getPaidBillByUserId(userId){
+    let user = await User.findById( userId)
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+    let statusCheck = 'PAID'
+    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1})
     return responseStatus.Code200({ listBill: bills })
 }
 
@@ -74,5 +85,6 @@ async function getBillByUserId(userId){
 module.exports = {
     createBill,
     getBillByRoomId,
-    getBillByUserId
+    getUnpaidBillByUserId,
+    getPaidBillByUserId
 }
