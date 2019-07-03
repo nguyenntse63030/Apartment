@@ -3,6 +3,8 @@ const responseStatus = require('../../../configs/responseStatus')
 const constant = require('../../../configs/constant')
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
+const Apartment = mongoose.model('Apartment')
+const common = require('../../common')
 
 async function getAllRooms() {
     let rooms = await Room.find({}).populate('user', 'name').populate('apartment', 'name').sort({ roomNumber: 1 })
@@ -50,10 +52,44 @@ async function getRoomForApartment(apartmentId) {
     return responseStatus.Code200({ rooms: rooms })
 }
 
+async function createRoomInFloor(apartmentId, floors) {
+    let apartment = await Apartment.findById(apartmentId)
+    if (!apartment) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.APARTMENT_NOT_FOUND })
+    }
+    let floorNumber = 1
+    for (let floor of floors) {
+        let baseRoomNumber = 100 * floorNumber
+        for (let number = 1; number <= floor; number++) {
+            let room = new Room()
+
+            room.roomNumber = baseRoomNumber + number
+
+            let roomCode = ''
+            apartment.name.split(/[ -]/i).forEach(function (element) {
+                if (element.match(/[a-z]/i)) {
+                    let str = common.changeAlias(element).toUpperCase()
+                    roomCode += str[0]
+                }
+            })
+            roomCode += '-' + room.roomNumber
+            room.code = roomCode
+            room.apartment = apartment._id
+
+            await room.save()
+        }
+        floorNumber++
+    }
+
+
+    return responseStatus.Code200({ message: responseStatus.CREATE_ROOM_SUCCESS })
+}
+
 module.exports = {
     addRoomForUser,
     getRoomsByUserCode,
     getRoomForApartment,
     getRoomByCode,
-    getAllRooms
+    getAllRooms,
+    createRoomInFloor
 }

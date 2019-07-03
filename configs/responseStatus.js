@@ -102,6 +102,7 @@ module.exports = {
   PHONE_EXISTED: 'Phone already existed',
   CREATE_USER_SUCCESS: 'Create account successfully',
   USER_NOT_FOUND: 'Can not found user',
+  MANAGER_NOT_FOUND: 'Can not found manager',
   DELETE_USER_SUCCESS: 'Delete user successfully',
   UPDATE_USER_SUCCESS: 'Update information successfully',
   ROOM_NOT_FOUND: 'Can not found Room',

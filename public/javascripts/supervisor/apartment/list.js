@@ -27,7 +27,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
             search: {
                 caseInsensitive: true
             },
-            // aaSorting: [4, 'desc'],
+            aaSorting: [4, 'desc'],
             order: [4, 'desc'],
             columnDefs: [{
                 // targets: [0],

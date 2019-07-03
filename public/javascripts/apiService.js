@@ -36,6 +36,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         },
         updateApartment: function(id, data){
             return $http.put(apiVersion + '/apartment/' + id, data)
-        }
+        },
+        createApartment: function(data){
+            return $http.post(apiVersion + '/apartment/', data)
+        },
     }
 }])
