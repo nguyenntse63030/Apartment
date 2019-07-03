@@ -58,7 +58,7 @@ async function createBill(data) {
 }
 
 async function getBillByRoomId(roomId){
-    let bills = await Bill.find({ room : roomId}).sort({createdTime: -1})
+    let bills = await Bill.find({ room : roomId}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
 
@@ -68,7 +68,7 @@ async function getUnpaidBillByUserId(userId){
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let statusCheck = 'UNPAID'
-    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1})
+    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
 async function getPaidBillByUserId(userId){
@@ -77,7 +77,7 @@ async function getPaidBillByUserId(userId){
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let statusCheck = 'PAID'
-    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1})
+    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
 
