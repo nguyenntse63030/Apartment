@@ -29,6 +29,10 @@ var RoomSchema = new mongoose.Schema({
     note: {
         type: String,
         default: ''
+    },
+    createdDate: {
+        type: Number,
+        default: Date.now
     }
 });
 

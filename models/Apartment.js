@@ -23,7 +23,7 @@ var ApartmentSchema = new mongoose.Schema({
     },
     createdDate: {
         type: Number,
-        default: 0
+        default: Date.now
     }
 });
 

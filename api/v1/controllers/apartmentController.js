@@ -4,6 +4,8 @@ const responseStatus = require('../../../configs/responseStatus')
 const Apartment = mongoose.model('Apartment')
 const User = mongoose.model('User')
 
+const roomController = require('./roomController')
+
 async function getApartments() {
     let apartments = await Apartment.find().populate('manager', 'name')
     return responseStatus.Code200({ apartments: apartments })
@@ -34,8 +36,33 @@ async function updateApartment(id, data) {
     return responseStatus.Code200({ message: responseStatus.UPDATE_SUCCESS })
 }
 
+async function createApartment(data) {
+    let apartment = await Apartment.findOne({ phone: data.apartment.phone })
+    if (apartment) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.PHONE_EXISTED })
+    }
+    apartment = new Apartment()
+    apartment.name = data.apartment.name || apartment.name
+    apartment.phone = data.apartment.phone || apartment.phone
+    apartment.address = data.apartment.address || apartment.address
+    if (data.apartment.manager) {
+        apartment.manager = data.apartment.manager
+        let manager = await User.findById(data.apartment.manager)
+        if (!manager) {
+            throw responseStatus.Code400({ errorMessage: responseStatus.MANAGER_NOT_FOUND })
+        }
+        manager.apartment = apartment._id
+        await manager.save()
+    }
+    apartment = await apartment.save()
+    await roomController.createRoomInFloor(apartment._id, data.floors)
+
+    return responseStatus.Code200({ message: responseStatus.UPDATE_SUCCESS })
+}
+
 module.exports = {
     getApartments,
     getApartmentByCode,
-    updateApartment
+    updateApartment,
+    createApartment
 }

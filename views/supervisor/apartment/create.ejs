@@ -1,0 +1,96 @@
+<% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    .modal-footer {
+        display: initial
+    }
+</style>
+<div class="container-fluid" ng-controller="createController">
+    <div class="row">
+        <div class="col-md-8" style="margin: 0px auto">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Create Apartment</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Name</label>
+                                    <input type="text" class="form-control" ng-model="apartment.name" id="name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Phone</label>
+                                    <input type="text" class="form-control numberInput" ng-model="apartment.phone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Manager</label>
+                                    <select style="width: 100%;" class="form-control" name="selected-manager"
+                                        id="selected-manager" ng-model="apartment.manager">
+                                        <option ng-repeat="manager in managers" value="{{manager._id}}">
+                                            {{manager.apartment ? manager.name  + ' - ' + manager.apartment.name : manager.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="label-floating">Number of floor</label>
+                                    <input type="text" class="form-control numberInput" ng-model="numberOfFloor">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" ng-repeat="i in getNumber(numberOfFloor)">
+                                <div class="form-group">
+                                    <label class="label-floating" style="color: #ab47bc">Floor {{i + 1}}</label>
+                                    <input type="text" placeholder="Enter the number of room"
+                                        ng-keydown="($event.keyCode == 13 || $event.keyCode == 9) && createRoomData(i)"
+                                        class="form-control numberInput" ng-init="initFormat();" ng-model="floors[i]">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Address</label>
+                                    <textarea type="text" rows="3" class="form-control" ng-model="apartment.address"
+                                        id="address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary pull-right" ng-click="createApartment()">Create</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/apartment/create.js"></script>
+<script>
+    clickSideBar('apartment-page')
+    $(document).ready(function () {
+        $('#selected-manager').select2();
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+</script>
