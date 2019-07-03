@@ -34,8 +34,8 @@ async function addRoomForUser(roomId, userId) {
     return responseStatus.Code200({ message: responseStatus.INSERT_ROOM_FOR_USER_SUCCESS })
 }
 
-async function getRoomsByUserCode(userCode) {
-    let user = await User.findById(userCode)
+async function getRoomsByUserId(userId) {
+    let user = await User.findById(userId)
     if (!user) {
         return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
@@ -87,7 +87,7 @@ async function createRoomInFloor(apartmentId, floors) {
 
 module.exports = {
     addRoomForUser,
-    getRoomsByUserCode,
+    getRoomsByUserId,
     getRoomForApartment,
     getRoomByCode,
     getAllRooms,
