@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 })
 router.get('/code/:roomCode', async (req, res, next) => {
     try {
-        let response = await roomController.selectRoomByCode(req.params.roomCode)
+        let response = await roomController.getRoomByCode(req.params.roomCode)
         return res.send(response)
     } catch (error) {
         console.log(error)
@@ -35,7 +35,7 @@ router.get('/apartment/:apartmentId', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/:userCode', async (req, res, next) => {
+router.get('/user/:userCode', async (req, res, next) => {
     try {
         let response = await roomController.selectRoomsByUser(req.params.userCode)
         return res.send(response)

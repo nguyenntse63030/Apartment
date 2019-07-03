@@ -58,10 +58,46 @@ router.get('/customer/:code', function (req, res, next) {
 router.get('/room', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
-    res.render('manager/room/list', { code: req.params.code, role: req.session.user.role, title: 'Room' });
+    res.render('manager/room/list', { role: req.session.user.role, title: 'Room' });
   } else if (role === constant.userRole.SUPERVISOR) {
-    res.render('supervisor/room/list', { code: req.params.code, role: req.session.user.role, title: 'Room' });
+    res.render('supervisor/room/list', { role: req.session.user.role, title: 'Room' });
 
+  }
+});
+
+router.get('/room/create', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/room/create', { code: req.params.code, role: req.session.user.role, title: 'Create Room' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/room/create', { code: req.params.code, role: req.session.user.role, title: 'Create Room' });
+  }
+});
+
+router.get('/room/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
+  }
+});
+
+router.get('/apartment/', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/apartment/list', { role: req.session.user.role, title: 'Apartment' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/apartment/list', { role: req.session.user.role, title: 'Apartment' });
+  }
+});
+
+router.get('/apartment/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/apartment/detail', { code: req.params.code, role: req.session.user.role, title: 'Apartment Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/apartment/detail', { code: req.params.code, role: req.session.user.role, title: 'Apartment Detail' });
   }
 });
 

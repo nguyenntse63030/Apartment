@@ -1,0 +1,108 @@
+<% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    .modal-footer {
+        display: initial
+    }
+</style>
+<p id="code" class="hide"> <%= code %></p>
+<div class="container-fluid" ng-controller="detailController">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Apartment Detail</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Name</label>
+                                    <input type="text" class="form-control" ng-model="apartment.name" id="name"
+                                        value="{{apartment.name}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Phone</label>
+                                    <input type="text" class="form-control numberInput" ng-model="apartment.phone"
+                                        value="{{apartment.phone}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Manager Name</label>
+                                    <input type="text" class="form-control" ng-model="apartment.manager.name"
+                                        id="manager-name" value="{{apartment.manager.name}} " ng-show="isNotEditing"
+                                        ng-disabled="isNotEditing">
+                                    <div ng-show="!isNotEditing">
+                                        <select style="width: 100%;" class="form-control" name="selected-manager"
+                                            id="selected-manager" ng-model="apartment.manager" >
+                                            <option ng-repeat="manager in managers" value="{{manager._id}}">
+                                                {{manager.apartment ? manager.name  + ' - ' + manager.apartment.name : manager.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Manager Phone</label>
+                                    <input type="text" class="form-control numberInput"
+                                        ng-model="apartment.manager.phone" value="{{apartment.manager.phone}} "
+                                        ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Address</label>
+                                    <textarea type="text" rows="3" class="form-control" ng-model="apartment.address"
+                                        ng-disabled="isNotEditing" id="address"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button ng-show="isNotEditing" type="submit" class="btn btn-primary pull-right"
+                            ng-click="isNotEditing=false;focusName()">Edit</button>
+                        <div ng-show="!isNotEditing">
+                            <button type="submit" class="btn btn-success pull-right"
+                                ng-click="isNotEditing=true;edit()">Save</button>
+                            <button type="submit" class="btn btn-danger pull-left"
+                                ng-click="isNotEditing=true">Cancel</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" ng-show="apartment.manager">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="/manager/{{apartment.manager.code}}">
+                        <img class="img" src="{{apartment.manager.photoURL || '/images/logo.png'}}" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray">Manager</h6>
+                    <h4 class="card-title">{{apartment.manager.name}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/apartment/detail.js"></script>
+<script>
+    clickSideBar('apartment-page')
+    $(document).ready(function () {
+        $('#selected-manager').select2();
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
+    });
+</script>

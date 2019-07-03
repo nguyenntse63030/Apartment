@@ -1,17 +1,18 @@
 
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
-    apiService.getUserByRole(COMMON.userRole.CUSTOMER).then(function (res) {
-        $scope.customers = res.data.listUser
+
+    apiService.getAllApartment().then(function (res) {
+        $scope.apartments = res.data.apartments
         setTimeout(() => {
-            initCustomersDatatable()
+            initApartmentDatatable()
         }, 200);
     }).catch(function (error) {
         console.log(error)
     })
 
-    function initCustomersDatatable() {
-        customerTable = $('#user-list-table').DataTable({
+    function initApartmentDatatable() {
+        apartmentTable = $('#apartment-table').DataTable({
             retrieve: true,
             aLengthMenu: [
                 [10, 20, 50, -1],

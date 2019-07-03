@@ -1,6 +1,9 @@
 
 var app = angular.module('SWD391')
 app.controller('detailController', ['$scope', 'apiService', function ($scope, apiService) {
+    $scope.customer = {
+        note: ' '
+    }
     const code = $('#code').text().trim()
     $scope.isNotEditing = true
     $scope.apartments = []

@@ -57,3 +57,11 @@
     transform: rotate(0deg);
   }
 }
+
+.btn-plus{
+  width: 100px
+}
+
+.plus-icon{
+  transform: scale(2)
+}

@@ -96,6 +96,7 @@ module.exports = {
     }, object)
   },
 
+  UPDATE_SUCCESS: 'Update Successfully',
   IVALID_PHONE_OR_PASSWORD: 'Invalid email/password combination',
   INVALID_REQUEST: 'Invalid Request',
   PHONE_EXISTED: 'Phone already existed',
@@ -112,5 +113,6 @@ module.exports = {
   NEWS_EXISTED: "News already existed",
   CREATE_NEWS_SUCCESS: 'Create news successfully',
   BILL_EXISTED: 'Bill already existed',
+  APARTMENT_NOT_FOUND: 'Can not found apartment',
 
 }

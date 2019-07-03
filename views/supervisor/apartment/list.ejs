@@ -6,57 +6,57 @@
     }
 </style>
 <div class="container-fluid" ng-controller="listController">
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-md-12">
-            <a href="/room/create">
+            <a href="/apartment/create">
                 <button type="submit" class="btn btn-plus btn-primary pull-left">
                     <i class="fas fa-plus plus-icon"></i>
                 </button>
             </a>
         </div>
-    </div> -->
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4 class="card-title ">Room List</h4>
+                    <h4 class="card-title ">Apartment List</h4>
                     <p class="card-category"></p>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table" id="rooms-table">
+                        <table class="table" id="apartment-table">
                             <thead class=" text-primary">
-                                <th style="width: 10%">Number</th>
-                                <th style="width: 20%">Owner</th>
-                                <th style="width: 30%">Apartment</th>
-                                <th style="width: 15%">Sign Date</th>
-                                <th style="width: 15%">Expired Date</th>
+                                <th style="width: 10%">Name</th>
+                                <th style="width: 20%">Phone</th>
+                                <th style="width: 15%">Manger</th>
+                                <th style="width: 30%">Address</th>
+                                <th style="width: 15%">Created Date</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="room in rooms">
+                                <tr ng-repeat="apartment in apartments">
                                     <td>
-                                        <a href="/room/{{room.code}}">
-                                            {{room.roomNumber}}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="/room/{{room.code}}">
-                                            {{room.user.name}}
+                                        <a href="/apartment/{{apartment.code}}">
+                                            {{apartment.name}}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/room/{{room.code}}">
-                                            {{room.apartment.name}}
+                                        <a href="/apartment/{{apartment.code}}">
+                                            {{apartment.phone}}
                                         </a>
                                     </td>
-                                    <td data-order="room.signDate">
-                                        <a href="/room/{{room.code}}">
-                                            {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                    <td>
+                                        <a href="/apartment/{{apartment.code}}">
+                                            {{apartment.manager.name}}
                                         </a>
                                     </td>
-                                    <td data-order="room.expiredDate">
-                                        <a href="/room/{{room.code}}">
-                                            {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                    <td>
+                                        <a href="/apartment/{{apartment.code}}">
+                                            {{apartment.address}}
+                                        </a>
+                                    </td>
+                                    <td data-order="apartment.createdDate">
+                                        <a href="/apartment/{{apartment.code}}">
+                                            {{apartment.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>
                                     </td>
                                 </tr>
@@ -68,7 +68,7 @@
         </div>
     </div>
 </div>
-<script src="/javascripts/supervisor/room/list.js"></script>
+<script src="/javascripts/supervisor/apartment/list.js"></script>
 <script>
-    clickSideBar('room-page')
+    clickSideBar('apartment-page')
 </script>

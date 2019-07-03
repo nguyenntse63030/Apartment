@@ -8,8 +8,8 @@ updateRoomCode = async () => {
         let rooms = await Room.find().populate('apartment', 'name')
         for (let room of rooms) {
             let roomCode = ''
-            room.apartment.name.split(' ').forEach(function (element) {
-                if (element.match(/[ -]/i)) {
+            room.apartment.name.split(/[ -]/i).forEach(function (element) {
+                if (element.match(/[a-z]/i)) {
                     let str = common.changeAlias(element).toUpperCase()
                     roomCode += str[0]
                 }

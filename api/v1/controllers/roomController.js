@@ -25,12 +25,14 @@ async function addRoomForUser(roomId, userId) {
     }
 
     room.user = user._id
+    room.signDate = Date.now()
+    room.expiredDate = new Date().setFullYear(new Date().getFullYear() + 1)
 
     await room.save()
     return responseStatus.Code200({ message: responseStatus.INSERT_ROOM_FOR_USER_SUCCESS })
 }
 
-async function selectRoomsByUser(userCode) {
+async function getRoomsByUserCode(userCode) {
     let user = await User.findById(userCode)
     if (!user) {
         return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
@@ -38,7 +40,7 @@ async function selectRoomsByUser(userCode) {
     let listRoom = await Room.find({ user: userCode }).populate('user').populate('apartment')
     return responseStatus.Code200({ listRoom: listRoom })
 }
-async function selectRoomByCode(roomCode) {
+async function getRoomByCode(roomCode) {
     let room = await Room.findOne({ code: roomCode }).populate('user').populate('apartment')
     return responseStatus.Code200({ room: room })
 }
@@ -50,8 +52,8 @@ async function getRoomForApartment(apartmentId) {
 
 module.exports = {
     addRoomForUser,
-    selectRoomsByUser,
+    getRoomsByUserCode,
     getRoomForApartment,
-    selectRoomByCode,
+    getRoomByCode,
     getAllRooms
 }

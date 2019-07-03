@@ -25,6 +25,10 @@ var RoomSchema = new mongoose.Schema({
     expiredDate: {
         type: Number,
         default: 0
+    },
+    note: {
+        type: String,
+        default: ''
     }
 });
 

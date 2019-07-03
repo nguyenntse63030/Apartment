@@ -21,6 +21,10 @@ var ApartmentSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    createdDate: {
+        type: Number,
+        default: 0
+    }
 });
 
 

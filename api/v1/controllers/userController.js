@@ -30,6 +30,7 @@ async function updateUser(id, data) {
     user.role = data.role || user.role
     user.name = data.name || user.name
     user.address = data.address || user.address
+    user.note = data.note || user.note
 
     await user.save()       //Lưu user xuống database
 
@@ -47,7 +48,7 @@ async function deleteUserByCode(code) {
 }
 
 async function getUserByRole(role) {
-    let listUser = await User.find({ role: role })   //Tìm hết User theo role trong database
+    let listUser = await User.find({ role: role }).populate('apartment')   //Tìm hết User theo role trong database
     return responseStatus.Code200({ listUser: listUser })
 }
 
