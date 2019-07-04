@@ -11,6 +11,12 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
         console.log(error)
     })
 
+    apiService.getAllApartment().then(function (res) {
+        $scope.apartments = res.data.apartments
+    }).catch(function (error) {
+        console.log(error)
+    })
+
     function initRoomsDatatable() {
         roomsTable = $('#rooms-table').DataTable({
             retrieve: true,
@@ -27,13 +33,20 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
             search: {
                 caseInsensitive: true
             },
-            // aaSorting: [4, 'desc'],
-            order: [4, 'desc'],
+            // aaSorting: [2, 'desc'],
+            order: [2, 'desc'],
             columnDefs: [{
                 // targets: [0],
                 // sortable: false
             }],
             aaSorting: []
         })
+    }
+
+    $scope.filterApartment = () => {
+        let _table = $('#rooms-table').DataTable()
+        _table.columns(2)
+            .search($scope.selectedApartment)
+            .draw()
     }
 }])
