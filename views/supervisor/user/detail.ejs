@@ -98,17 +98,12 @@
             <div class="card card-profile">
                 <div class="card-avatar" onclick="showModalChangeAvatar()">
                     <a href="#pablo">
-                        <img class="img" src="{{customer.photoURL}}" />
+                        <img class="img" src="{{customer.photoURL || '/images/logo.png'}}" />
                     </a>
                 </div>
                 <div class="card-body">
-                    <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                    <h4 class="card-title">Alec Thompson</h4>
-                    <p class="card-description">
-                        Don't be scared of the truth because we need to restart the human foundation in truth And I love
-                        you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                    </p>
-                    <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+                    <h6 class="card-category text-gray">Customer</h6>
+                    <h4 class="card-title">{{customer.name}}</h4>
                 </div>
             </div>
             <button ng-click="getApartments()" type="submit" class="btn btn-primary pull-left" data-toggle="modal"
@@ -164,7 +159,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-<script src="/javascripts/supervisor/customer/detail.js"></script>
+<script src="/javascripts/supervisor/user/detail.js"></script>
 <script>
     clickSideBar('user-page')
     $(document).ready(function () {

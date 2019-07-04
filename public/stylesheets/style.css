@@ -58,14 +58,19 @@
   }
 }
 
-.btn-plus{
+.btn-plus {
   width: 100px
 }
 
-.plus-icon{
+.plus-icon {
   transform: scale(2)
 }
 
 .w-max-content {
   width: max-content
+}
+
+.selected-btn {
+  color: white !important;
+  background-color: #c44ad8 !important;
 }

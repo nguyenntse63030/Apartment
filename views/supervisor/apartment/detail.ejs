@@ -22,7 +22,6 @@
                             </button>
                         </div>
                     </div>
-
                 </div>
                 <div class="card-body">
                     <form>
@@ -89,118 +88,120 @@
                     </form>
                 </div>
             </div>
-            <div class="col-md-4" ng-show="apartment.manager">
-                <div class="card card-profile">
-                    <div class="card-avatar">
-                        <a href="/manager/{{apartment.manager.code}}">
-                            <img class="img" src="{{apartment.manager.photoURL || '/images/logo.png'}}" />
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-category text-gray">Manager</h6>
-                        <h4 class="card-title">{{apartment.manager.name}}</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header card-header-primary">
-                        <h4 class="card-title ">Room of apartment</h4>
-                        <p class="card-category"></p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="rooms-table">
-                                <thead class=" text-primary">
-                                    <th style="width: 10%">Number</th>
-                                    <th style="width: 20%">Owner</th>
-                                    <th style="width: 15%">Sign Date</th>
-                                    <th style="width: 15%">Expired Date</th>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="room in rooms">
-                                        <td>
-                                            <a href="/room/{{room.code}}">
-                                                {{room.roomNumber}}
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="/room/{{room.code}}">
-                                                {{room.user.name ? room.user.name : 'N/A'}}
-                                            </a>
-                                        </td>
-                                        <td data-order="room.signDate">
-                                            <a href="/room/{{room.code}}">
-                                                {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
-                                            </a>
-                                        </td>
-                                        <td data-order="room.expiredDate">
-                                            <a href="/room/{{room.code}}">
-                                                {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade model-center" id="createRoomModel" role="dialog" aria-labelledby="addRoomModelLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="createRoomModel" data-color="purple">Add New Room</h3>
-                        <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <select style="width: 100%" class="form-control" name="selected-floor"
-                                        id="selected-floor" ng-model="selectedFloor" ng-change="getMaxRoomInFloor()">
-                                        <option ng-repeat="i in getNumber(apartment.floors)" value="{{i+1}}">
-                                            Floor {{i+1}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="label-floating">Room Number</label>
-                                    <input type="text" class="form-control numberInput" ng-model="roomNumber">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary pull-right"
-                            ng-click="createRoomForApartment()">Add</button>
+        <div class="col-md-4">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="/manager/{{apartment.manager.code}}">
+                        <img class="img" src="{{apartment.manager.photoURL || '/images/logo.png'}}" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray">Manager</h6>
+                    <h4 class="card-title">{{apartment.manager.name}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">Room of apartment</h4>
+                    <p class="card-category"></p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="rooms-table">
+                            <thead class=" text-primary">
+                                <th style="width: 10%">Number</th>
+                                <th style="width: 20%">Owner</th>
+                                <th style="width: 15%">Sign Date</th>
+                                <th style="width: 15%">Expired Date</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="room in rooms">
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.roomNumber}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.user.name ? room.user.name : 'N/A'}}
+                                        </a>
+                                    </td>
+                                    <td data-order="room.signDate">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                    <td data-order="room.expiredDate">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-    <script src="/javascripts/supervisor/apartment/detail.js"></script>
-    <script>
-        clickSideBar('apartment-page')
-        $(document).ready(function () {
-            $('#selected-manager').select2();
-            $('#selected-floor').select2();
-            setTimeout(() => {
-                numberFormat()
-            }, 200);
-        });
-    </script>
+    <!-- Modal -->
+    <div class="modal fade model-center" id="createRoomModel" role="dialog" aria-labelledby="addRoomModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="createRoomModel" data-color="purple">Add New Room</h3>
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select style="width: 100%" class="form-control" name="selected-floor"
+                                    id="selected-floor" ng-model="selectedFloor" ng-change="getMaxRoomInFloor()">
+                                    <option ng-repeat="i in getNumber(apartment.floors)" value="{{i+1}}">
+                                        Floor {{i+1}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label-floating">Room Number</label>
+                                <input type="text" class="form-control numberInput" ng-model="roomNumber">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary pull-right"
+                        ng-click="createRoomForApartment()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/apartment/detail.js"></script>
+<script>
+    clickSideBar('apartment-page')
+    $(document).ready(function () {
+        $('#selected-manager').select2();
+        $('#selected-floor').select2();
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
+    });
+</script>

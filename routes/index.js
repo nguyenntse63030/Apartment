@@ -38,12 +38,12 @@ router.get('/dashboard', function (req, res, next) {
   }
 });
 
-router.get('/customer', function (req, res, next) {
+router.get('/user', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
-    res.render('manager/customer/list', { role: req.session.user.role, title: 'Customer' });
+    res.render('manager/user/list', { role: req.session.user.role, title: 'User' });
   } else if (role === constant.userRole.SUPERVISOR) {
-    res.render('supervisor/customer/list', { role: req.session.user.role, title: 'Customer' });
+    res.render('supervisor/user/list', { role: req.session.user.role, title: 'User' });
   } else {
     res.redirect('/')
   }
@@ -52,9 +52,20 @@ router.get('/customer', function (req, res, next) {
 router.get('/customer/:code', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
-    res.render('manager/customer/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
+    res.render('manager/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
   } else if (role === constant.userRole.SUPERVISOR) {
-    res.render('supervisor/customer/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
+    res.render('supervisor/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/manager/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Manager Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Manager Detail' });
   } else {
     res.redirect('/')
   }
