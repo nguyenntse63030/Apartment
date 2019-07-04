@@ -52,7 +52,7 @@ async function getRoomForApartment(apartmentId) {
     return responseStatus.Code200({ rooms: rooms })
 }
 
-async function createRoomInFloor(apartmentId, floors) {
+async function createRoomInApartment(apartmentId, floors) {
     let apartment = await Apartment.findById(apartmentId)
     if (!apartment) {
         throw responseStatus.Code400({ errorMessage: responseStatus.APARTMENT_NOT_FOUND })
@@ -85,11 +85,57 @@ async function createRoomInFloor(apartmentId, floors) {
     return responseStatus.Code200({ message: responseStatus.CREATE_ROOM_SUCCESS })
 }
 
+async function getMaxRoomInFloor(apartmentId, floor) {
+    let apartment = await Apartment.findById(apartmentId)
+    if (!apartment) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.APARTMENT_NOT_FOUND })
+    }
+
+    let min = Number(Number(floor) * 100)
+    let max = Number(Number(min) + 100)
+    let room = await Room.findOne({ apartment: apartment._id, roomNumber: { $gte: min, $lt: max } }).sort({ roomNumber: -1 }).limit(1)
+
+
+    return responseStatus.Code200({ roomNumber: room.roomNumber })
+}
+
+async function addRoomForApartment(apartmentId, roomNumber) {
+    let apartment = await Apartment.findById(apartmentId)
+    if (!apartment) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.APARTMENT_NOT_FOUND })
+    }
+
+    let room = await Room.findOne({ apartment: apartment._id, roomNumber: roomNumber })
+    if (room) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_NUMBER_HAD_EXISTED })
+    }
+
+    room = new Room()
+    room.roomNumber = roomNumber
+    room.apartment = apartment._id
+
+    let roomCode = ''
+    apartment.name.split(/[ -]/i).forEach(function (element) {
+        if (element.match(/[a-z]/i)) {
+            let str = common.changeAlias(element).toUpperCase()
+            roomCode += str[0]
+        }
+    })
+    roomCode += '-' + room.roomNumber
+    room.code = roomCode
+
+    await room.save()
+
+    return responseStatus.Code200({ message: responseStatus.CREATE_ROOM_SUCCESS })
+}
+
 module.exports = {
     addRoomForUser,
     getRoomsByUserId,
     getRoomForApartment,
     getRoomByCode,
     getAllRooms,
-    createRoomInFloor
+    createRoomInApartment,
+    getMaxRoomInFloor,
+    addRoomForApartment
 }

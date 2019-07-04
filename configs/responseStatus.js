@@ -115,5 +115,7 @@ module.exports = {
   CREATE_NEWS_SUCCESS: 'Create news successfully',
   BILL_EXISTED: 'Bill already existed',
   APARTMENT_NOT_FOUND: 'Can not found apartment',
+  ROOM_NUMBER_HAD_EXISTED: 'Room Number already existed, please change your room number',
+  CREATE_ROOM_SUCCESS: 'Create Room for apartment successfully'
 
 }

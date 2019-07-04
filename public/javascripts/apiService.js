@@ -7,7 +7,7 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getUser: function (code) {
             return $http.get(apiVersion + '/user/' + code)
         },
-        updateUser: function (id,data) {
+        updateUser: function (id, data) {
             return $http.put(apiVersion + '/user/' + id, data)
         },
         getApartments: function () {
@@ -28,17 +28,23 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         addRoomForUser: function (roomId, userId) {
             return $http.put(apiVersion + '/room/' + roomId + '/user/' + userId)
         },
-        getAllApartment: function(){
+        getAllApartment: function () {
             return $http.get(apiVersion + '/apartment/')
         },
-        getApartmentByCode: function(code){
+        getApartmentByCode: function (code) {
             return $http.get(apiVersion + '/apartment/' + code)
         },
-        updateApartment: function(id, data){
+        updateApartment: function (id, data) {
             return $http.put(apiVersion + '/apartment/' + id, data)
         },
-        createApartment: function(data){
+        createApartment: function (data) {
             return $http.post(apiVersion + '/apartment/', data)
+        },
+        getMaxRoomInFloor: function (apartmentId, floor) {
+            return $http.get(apiVersion + '/room/apartment/' + apartmentId + '/floor/' + floor)
+        },
+        createRoomForApartment: function (apartmentId, data) {
+            return $http.post(apiVersion + '/room/apartment/' + apartmentId, data)
         },
     }
 }])

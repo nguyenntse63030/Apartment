@@ -65,3 +65,7 @@
 .plus-icon{
   transform: scale(2)
 }
+
+.w-max-content {
+  width: max-content
+}

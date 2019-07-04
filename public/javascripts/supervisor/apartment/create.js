@@ -22,19 +22,19 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         })
     }
 
-    $scope.focusName = () => {
-        setTimeout(() => {
-            $('#selected-manager').val($scope.apartment.manager._id).trigger('change')
-            $('#name').focus()
-        }, 100);
-    }
-
     $scope.getNumber = function (num) {
         if (num) {
             let number = Number(num)
             return Array.apply(null, { length: number }).map(Number.call, Number)
         }
         return []
+    }
+
+    $scope.focusName = () => {
+        setTimeout(() => {
+            $('#selected-manager').val($scope.apartment.manager._id).trigger('change')
+            $('#name').focus()
+        }, 100);
     }
 
     $scope.initFormat = function () {

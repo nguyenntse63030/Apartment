@@ -13,6 +13,10 @@ var ApartmentSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    floors: {
+        type: Number,
+        default: 0
+    },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

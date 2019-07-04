@@ -44,6 +44,17 @@ router.get('/userId/:userId', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
+
+router.get('/apartment/:id/floor/:floor', async (req, res, next) => {
+    try {
+        let response = await roomController.getMaxRoomInFloor(req.params.id, req.params.floor)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.put('/:roomId/user/:userId', async (req, res, next) => {
     try {
         let response = await roomController.addRoomForUser(req.params.roomId, req.params.userId)
@@ -54,6 +65,14 @@ router.put('/:roomId/user/:userId', async (req, res, next) => {
     }
 })
 
-
+router.post('/apartment/:id', async (req, res, next) => {
+    try {
+        let response = await roomController.addRoomForApartment(req.params.id, Number(req.body.roomNumber))
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
 
 module.exports = router

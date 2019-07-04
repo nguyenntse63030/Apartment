@@ -54,8 +54,19 @@ async function createApartment(data) {
         manager.apartment = apartment._id
         await manager.save()
     }
+
+    let apartmentCode = ''
+    apartment.name.split(/[ -]/i).forEach(function (element) {
+        if (element.match(/[a-z]/i)) {
+            let str = common.changeAlias(element).toUpperCase()
+            roomCode += str[0]
+        }
+    })
+    apartmentCode += '-' + Date.now().toString().slice(9)
+    apartment.code = apartmentCode
+
     apartment = await apartment.save()
-    await roomController.createRoomInFloor(apartment._id, data.floors)
+    await roomController.createRoomInApartment(apartment._id, data.floors)
 
     return responseStatus.Code200({ message: responseStatus.UPDATE_SUCCESS })
 }
