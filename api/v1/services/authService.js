@@ -39,7 +39,7 @@ async function checkSocialLogin(data) {
     if (!user) {
         let newUser = {
             email: data.email,
-            name: data.familyName + ' ' + data.personGivenName,
+            name: data.personFamilyName + ' ' + data.personGivenName,
             isGoogleAcc: true,
             photoURL: data.personPhoto
         }

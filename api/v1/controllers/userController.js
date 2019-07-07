@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const responseStatus = require('../../../configs/responseStatus')
+const common = require('../../common')
+const jwt = require('jsonwebtoken')
+const config = require('../../../config')
 
 async function getUserByCode(code) {
     let user = await User.findOne({ code: code })   //Tìm User theo code trong database
