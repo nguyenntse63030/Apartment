@@ -4,6 +4,7 @@ var User = mongoose.model('User')
 var config = require('../../../config')
 var responseStatus = require('../../../configs/responseStatus')
 var constants = require('../../../configs/constant')
+const userController = require('../controllers/userController')
 
 async function isWebLogin(token) {
     let decode = await jwt.verify(token, config.secret)
@@ -26,6 +27,32 @@ async function isWebLogin(token) {
     }
 }
 
+
+async function checkSocialLogin(data) {
+    let token = undefined
+    let user = await User.findOne({ email: data.email })
+    if (user) {
+        token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
+            expiresIn: config.tokenExpire
+        })
+    }
+    if (!user) {
+        let newUser = {
+            email: data.email,
+            name: data.familyName + ' ' + data.personGivenName,
+            isGoogleAcc: true,
+            photoURL: data.personPhoto
+        }
+        let dataReturn = await userController.signUpForSocial(newUser);
+        user = dataReturn.user
+        token = dataReturn.token
+    }
+    return responseStatus.Code200({
+        user: user,
+        token: token
+    })
+}
 module.exports = {
-    isWebLogin
+    isWebLogin,
+    checkSocialLogin
 }

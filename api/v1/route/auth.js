@@ -3,6 +3,7 @@ const router = express.Router()
 const passport = require('../../../configs/passport').passport
 const responseStatus = require('../../../configs/responseStatus')
 const constants = require('../../../configs/constant')
+const authService = require('../services/authService')
 
 
 router.get('/sign_out', async function (req, res) {
@@ -16,25 +17,34 @@ router.get('/sign_out', async function (req, res) {
     }
 })
 
-router.get('/google', passport.authenticate('google', {
-    scope:
-        ['https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile']
-}))
-
-router.get('/google/callback', function (req, res, next) {
-    passport.authenticate('google', function (err, user, info) {
-        if (err) {
-            return res.send({ errorMessage: err })
-        }
-        // req.session.user = info.user;
-        // req.session.token = info.token;
-        return res.send(responseStatus.Code200({
-            user: info.user,
-            token: info.token
-        }))
-    })(req, res, next)
+// router.get('/google', passport.authenticate('google', {
+//     scope:
+//         ['https://www.googleapis.com/auth/userinfo.email',
+//             'https://www.googleapis.com/auth/userinfo.profile']
+// }))
+router.post('/verifyGoogle', async function (req, res, next) {
+    try {
+        let response = await authService.checkSocialLogin(req.body)
+        res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
 })
+
+// router.get('/google/callback', function (req, res, next) {
+//     passport.authenticate('google', function (err, user, info) {
+//         if (err) {
+//             return res.send({ errorMessage: err })
+//         }
+//         // req.session.user = info.user;
+//         // req.session.token = info.token;
+//         return res.send(responseStatus.Code200({
+//             user: info.user,
+//             token: info.token
+//         }))
+//     })(req, res, next)
+// })
 
 router.post('/sign_in', async function (req, res, next) {
     try {
