@@ -44,8 +44,8 @@ async function createPassportConfig(app) {
       {
         clientID: '469629757306-eb87hjdvp4167srimhk4bam7uanurdv1.apps.googleusercontent.com',
         clientSecret: '4fsDLQPlmiNi438dbIxYx7m0',
-        // callbackURL: 'https://cinemademo.herokuapp.com/api/v1/user/google/callback'
-        callbackURL: 'http://localhost:1998/api/v1/auth/google/callback'
+        callbackURL: 'https://apartmentswd391.herokuapp.com/api/v1/user/google/callback'
+        // callbackURL: 'http://localhost:1998/api/v1/auth/google/callback'
       },
       function (req, accessToken, refreshToken, profile, done) {
         User.findOne({ email: profile.emails[0].value }, async function (err, user) {
