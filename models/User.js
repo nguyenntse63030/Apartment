@@ -49,6 +49,10 @@ var UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Apartment'
     },
+    isGoogleAcc: {
+        type: Boolean,
+        default: false
+    },
     createdTime: {
         type: Number,
         default: Date.now

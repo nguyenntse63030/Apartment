@@ -7,6 +7,9 @@ var jwt = require('jsonwebtoken')
 var responseStatus = require('./responseStatus')
 const config = require('../config')
 var LocalStrategy = require('passport-local').Strategy
+const userController = require('../api/v1/controllers/userController')
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 
 async function createPassportConfig(app) {
   try {
@@ -34,6 +37,38 @@ async function createPassportConfig(app) {
             token: token
           })
         }
+      }
+    ))
+
+    passport.use(new GoogleStrategy(
+      {
+        clientID: '469629757306-eb87hjdvp4167srimhk4bam7uanurdv1.apps.googleusercontent.com',
+        clientSecret: '4fsDLQPlmiNi438dbIxYx7m0',
+        // callbackURL: 'https://cinemademo.herokuapp.com/api/v1/user/google/callback'
+        callbackURL: 'http://localhost:1998/api/v1/auth/google/callback'
+      },
+      function (req, accessToken, refreshToken, profile, done) {
+        User.findOne({ email: profile.emails[0].value }, async function (err, user) {
+          if (err) { return done(err) }
+          if (user) {
+            var token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
+              expiresIn: config.tokenExpire
+            })
+            return done(null, true, {
+              user: user,
+              token: token
+            })
+          }
+          if (!user) {
+            let newUser = {
+              email: profile.emails[0].value,
+              name: profile.name.givenName + profile.name.familyName,
+              isGoogleAcc: true,
+            }
+            let dataReturn = await userController.signUpForSocial(newUser);
+            done(null, user, dataReturn)
+          }
+        })
       }
     ))
   } catch (error) {

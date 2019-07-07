@@ -16,12 +16,12 @@ async function updateUser(id, data) {
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     } else {
-        let userCheckPhone = await User.findOne({phone: data.phone, _id: {$ne: user._id}})
-        if (userCheckPhone){
-            throw responseStatus.Code400({errorMessage: responseStatus.PHONE_EXISTED})
+        let userCheckPhone = await User.findOne({ phone: data.phone, _id: { $ne: user._id } })
+        if (userCheckPhone) {
+            throw responseStatus.Code400({ errorMessage: responseStatus.PHONE_EXISTED })
         }
     }
-    
+
 
     user.phone = data.phone || user.phone
     user.email = data.email || user.email
@@ -96,6 +96,29 @@ async function createUser(data) {
     return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
 }
 
+const signUpForSocial = async function (newUser) {
+    try {
+        // User Code 
+        userCode = ''
+        newUser.name.split(' ').forEach(function (element) {
+            if (element.match(/[a-z]/i)) {
+                let str = common.changeAlias(element).toUpperCase()
+                userCode += str[0]
+            }
+        })
+        userCode += '-' + Date.now().toString().slice(9)
+        newUser.code = userCode
+        let user = new User(newUser)
+        await user.save()
+        let token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
+            expiresIn: config.tokenExpire
+        })
+        return responseStatus.Code200({ user: user, token: token })
+    } catch (error) {
+        return error;
+    }
+}
+
 module.exports = {
     createUser,
     getUserByRole,
@@ -103,4 +126,5 @@ module.exports = {
     updateUser,
     getUserByCode,
     changeAvatar,
+    signUpForSocial,
 }
