@@ -46,6 +46,16 @@ router.put('/changeAvatar/:userCode', authorize(), multipartMiddleware, async (r
     }
 })
 
+router.put('/deposit', authorize(), async (req, res, next) => {
+    try {
+        const response = await userController.depositAccount(req.user.id, req.body.money)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.delete('/:code', authorize(), async (req, res, next) => {
     try {
         const response = await userController.deleteUserByCode(req.params.code) //lấy biến code trong req.params

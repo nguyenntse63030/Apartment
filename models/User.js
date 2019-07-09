@@ -53,6 +53,10 @@ var UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    account: {
+        type: Number,
+        default: 0
+    },
     createdTime: {
         type: Number,
         default: Date.now

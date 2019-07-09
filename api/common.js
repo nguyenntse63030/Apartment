@@ -11,6 +11,12 @@ function changeAlias(str) {
     return str
 }
 
+function parseNumberToMoney(number) {
+    if (!number) return 0
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
 module.exports = {
-    changeAlias
+    changeAlias,
+    parseNumberToMoney
 }

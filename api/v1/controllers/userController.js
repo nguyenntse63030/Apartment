@@ -121,6 +121,22 @@ const signUpForSocial = async function (newUser) {
     }
 }
 
+const depositAccount = async function (userId, data) {
+    let customer = await User.findById(userId)
+    if (!customer) {
+        throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
+    }
+
+    customer.account += Number(data)
+    customer = await customer.save()
+    let money = common.parseNumberToMoney(Number(data))
+    let totalMoney = common.parseNumberToMoney(customer.account)
+    return responseStatus.Code200({
+        message: 'Bạn đã nạp ' + money + ' vào tài khoản thành công. Tài khoản hiện tại của bạn có ' + totalMoney + ' VND',
+        newAccount: customer.account
+    })
+}
+
 
 module.exports = {
     createUser,
@@ -130,4 +146,5 @@ module.exports = {
     getUserByCode,
     changeAvatar,
     signUpForSocial,
+    depositAccount,
 }
