@@ -1,14 +1,16 @@
 const mongoose = require('mongoose')
 const responseStatus = require('../../../configs/responseStatus')
+const constant = require('../../../configs/constant')
 
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
 const Bill = mongoose.model('Bill')
 const Apartment = mongoose.model('Apartment')
 
+
 async function createBill(data) {
-    let room =  await Room.findById(data.room.id).populate('apartment')
-    if(!room){
+    let room = await Room.findById(data.room.id).populate('apartment')
+    if (!room) {
         throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_NOT_FOUND })
     }
     let apartment = room.apartment
@@ -17,7 +19,7 @@ async function createBill(data) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     // Bill Code 
-    let billCode ='B-'+ apartment.code +'-'+ room.roomNumber + '-' + Date.now().toString()
+    let billCode = 'B-' + apartment.code + '-' + room.roomNumber + '-' + Date.now().toString()
 
     let bill = await Bill.findOne({ code: billCode })   //Tìm trong database theo code
 
@@ -33,7 +35,7 @@ async function createBill(data) {
     if (!manager) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
-    
+
 
     //Đổ data vào bill
 
@@ -57,28 +59,66 @@ async function createBill(data) {
     return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, bill: bill })
 }
 
-async function getBillByRoomId(roomId){
-    let bills = await Bill.find({ room : roomId}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
+async function getBillByRoomId(roomId) {
+    let bills = await Bill.find({ room: roomId }).sort({ createdTime: -1 }).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
 
-async function getUnpaidBillByUserId(userId){
-    let user = await User.findById( userId)
+async function getUnpaidBillByUserId(userId) {
+    let user = await User.findById(userId)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let statusCheck = 'UNPAID'
-    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
+    let bills = await Bill.find({ user: userId }).find({ status: statusCheck }).sort({ createdTime: -1 }).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
-async function getPaidBillByUserId(userId){
-    let user = await User.findById( userId)
+
+async function getPaidBillByUserId(userId) {
+    let user = await User.findById(userId)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let statusCheck = 'PAID'
-    let bills = await Bill.find({ user : userId}).find({status:statusCheck}).sort({createdTime: -1}).populate('apartment').populate('manager').populate('room').populate('user')
+    let bills = await Bill.find({ user: userId }).find({ status: statusCheck }).sort({ createdTime: -1 }).populate('apartment').populate('manager').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
+}
+
+async function paymentBill(userId, billId) {
+    let customer = await User.findById(userId)
+    if (!customer) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+
+    let bill = await Bill.findById(billId)
+    if (!bill) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.BILL_NOT_FOUND })
+    }
+
+    if (bill.user.toString() !== customer._id.toString()) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.INVALID_ACCOUNT_PAYMENT })
+    }
+
+    if (bill.total > customer.account) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.ACCOUNT_NOT_ENOUGHT_MONEY })
+    }
+
+    customer.account -= bill.total
+    await customer.save()
+    changeBillStatus(bill._id, constant.billStatus.PAID)
+
+    return responseStatus.Code200({ message: responseStatus.PAYMENT_SUCCESS })
+}
+
+async function changeBillStatus(billId, status) {
+    let bill = await Bill.findById(billId)
+    if (!bill) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.BILL_NOT_FOUND })
+    }
+
+    bill.status = status
+    await bill.save()
+    return responseStatus.Code200({ message: responseStatus.BILL })
 }
 
 
@@ -86,5 +126,7 @@ module.exports = {
     createBill,
     getBillByRoomId,
     getUnpaidBillByUserId,
-    getPaidBillByUserId
+    getPaidBillByUserId,
+    paymentBill,
+    changeBillStatus,
 }

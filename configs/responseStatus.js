@@ -114,9 +114,14 @@ module.exports = {
   NEWS_EXISTED: "News already existed",
   CREATE_NEWS_SUCCESS: 'Create news successfully',
   BILL_EXISTED: 'Bill already existed',
+  BILL_NOT_FOUND: 'Bill is not found',
+  UPDATE_BILL_SUCCESS: 'Update Bill successfully',
   APARTMENT_NOT_FOUND: 'Can not found apartment',
   ROOM_NUMBER_HAD_EXISTED: 'Room Number already existed, please change your room number',
   CREATE_ROOM_SUCCESS: 'Create Room for apartment successfully',
-  
+  ACCOUNT_NOT_ENOUGHT_MONEY: 'Your account is not enought money',
+  PAYMENT_SUCCESS: 'Payment successfully',
+  INVALID_ACCOUNT_PAYMENT: "Your account don't have permission to pay this bill"
+
 
 }

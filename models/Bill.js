@@ -39,7 +39,8 @@ var BillSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'Unpaid'
+        default: 'UNPAID',
+        enum: ['UNPAID', 'PAID']
     },
     createdTime: {
         type: Number,
