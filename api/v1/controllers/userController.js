@@ -25,13 +25,12 @@ async function updateUser(id, data) {
         }
     }
 
-
-    user.phone = data.phone || user.phone
-    user.email = data.email || user.email
+    user.name = data.name || user.name
     user.dateOfBirth = data.dateOfBirth || user.dateOfBirth
     user.gender = data.gender || user.gender
     user.role = data.role || user.role
-    user.name = data.name || user.name
+    // user.phone = data.phone || user.phone
+    // user.email = data.email || user.email
     user.address = data.address || user.address
     user.note = data.note || user.note
 
@@ -121,6 +120,7 @@ const signUpForSocial = async function (newUser) {
         return error;
     }
 }
+
 
 module.exports = {
     createUser,

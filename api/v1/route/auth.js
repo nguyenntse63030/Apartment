@@ -4,6 +4,7 @@ const passport = require('../../../configs/passport').passport
 const responseStatus = require('../../../configs/responseStatus')
 const constants = require('../../../configs/constant')
 const authService = require('../services/authService')
+const authorize = require('../middleware/authorize')
 
 
 router.get('/sign_out', async function (req, res) {

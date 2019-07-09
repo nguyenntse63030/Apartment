@@ -1,12 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const roomController = require('../controllers/roomController')
-const authService = require('../services/authService')
+const authorize = require('../middleware/authorize')
 
-router.get('/', async (req, res, next) => {
+router.get('/', authorize(), async (req, res, next) => {
     try {
-        // let token = req.session.token || req.header['mobile-access-token']
-        // await authService.isWebLogin(token)
         let response = await roomController.getAllRooms()
         return res.send(response)
     } catch (error) {
@@ -14,7 +12,7 @@ router.get('/', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/code/:roomCode', async (req, res, next) => {
+router.get('/code/:roomCode', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.getRoomByCode(req.params.roomCode)
         return res.send(response)
@@ -23,11 +21,8 @@ router.get('/code/:roomCode', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/apartment/:apartmentId', async (req, res, next) => {
+router.get('/apartment/:apartmentId', authorize(), async (req, res, next) => {
     try {
-
-        // let token = req.session.token || req.header['mobile-access-token']
-        // await authService.isWebLogin(token)
         let response = await roomController.getRoomForApartment(req.params.apartmentId)
         return res.send(response)
     } catch (error) {
@@ -35,7 +30,7 @@ router.get('/apartment/:apartmentId', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/userId/:userId', async (req, res, next) => {
+router.get('/userId/:userId', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.getRoomsByUserId(req.params.userId)
         return res.send(response)
@@ -45,7 +40,7 @@ router.get('/userId/:userId', async (req, res, next) => {
     }
 })
 
-router.get('/apartment/:id/floor/:floor', async (req, res, next) => {
+router.get('/apartment/:id/floor/:floor', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.getMaxRoomInFloor(req.params.id, req.params.floor)
         return res.send(response)
@@ -55,7 +50,7 @@ router.get('/apartment/:id/floor/:floor', async (req, res, next) => {
     }
 })
 
-router.put('/:roomId/user/:userId', async (req, res, next) => {
+router.put('/:roomId/user/:userId', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.addRoomForUser(req.params.roomId, req.params.userId)
         return res.send(response)
@@ -65,7 +60,7 @@ router.put('/:roomId/user/:userId', async (req, res, next) => {
     }
 })
 
-router.post('/apartment/:id', async (req, res, next) => {
+router.post('/apartment/:id', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.addRoomForApartment(req.params.id, Number(req.body.roomNumber))
         return res.send(response)

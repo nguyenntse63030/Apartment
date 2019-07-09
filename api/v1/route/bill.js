@@ -1,13 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const billController = require('../controllers/billController')
+const authorize = require('../middleware/authorize')
 
-
-
-router.post('/', async (req, res, next) => {
+router.post('/', authorize(), async (req, res, next) => {
     try {
-        // const token = req.session.token || req.headers['x-access-token']
-        // await authService.isLogined(token)
         const response = await billController.createBill(req.body)
         return res.send(response)
     } catch (error) {
@@ -15,7 +12,7 @@ router.post('/', async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/room/:roomId', async (req,res, next) => {
+router.get('/room/:roomId', authorize(), async (req,res, next) => {
     try {
         let response = await billController.getBillByRoomId(req.params.roomId)
         return res.send(response)
@@ -24,7 +21,7 @@ router.get('/room/:roomId', async (req,res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/user/unpaid/:userId', async (req,res, next) => {
+router.get('/user/unpaid/:userId', authorize(), async (req,res, next) => {
     try {
         let response = await billController.getUnpaidBillByUserId(req.params.userId)
         return res.send(response)
@@ -33,7 +30,7 @@ router.get('/user/unpaid/:userId', async (req,res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.get('/user/paid/:userId', async (req,res, next) => {
+router.get('/user/paid/:userId', authorize(), async (req,res, next) => {
     try {
         let response = await billController.getPaidBillByUserId(req.params.userId)
         return res.send(response)

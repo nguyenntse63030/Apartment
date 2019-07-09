@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const apartmentController = require('../controllers/apartmentController')
+const authorize = require('../middleware/authorize')
 
-router.get('/', async (req, res, next) => {
+router.get('/', authorize(), async (req, res, next) => {
     try {
         let response = await apartmentController.getApartments()
         return res.send(response)
@@ -12,7 +13,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:code', async (req, res, next) => {
+router.get('/:code', authorize(), async (req, res, next) => {
     try {
         let response = await apartmentController.getApartmentByCode(req.params.code)
         return res.send(response)
@@ -22,7 +23,7 @@ router.get('/:code', async (req, res, next) => {
     }
 })
 
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authorize(), async (req, res, next) => {
     try {
         let response = await apartmentController.updateApartment(req.params.id, req.body)
         return res.send(response)
@@ -32,7 +33,7 @@ router.put('/:id', async (req, res, next) => {
     }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', authorize(), async (req, res, next) => {
     try {
         let response = await apartmentController.createApartment(req.body)
         return res.send(response)

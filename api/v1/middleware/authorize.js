@@ -15,7 +15,7 @@ function authorize(roles = []) {
         (req, res, next) => {
             const token = req.headers['mobile-access-token'] || req.session.token
             if (!token) {
-                return res.status(401).json({ errorMessage: 'Access denine' });
+                return res.status(401).json({ errorMessage: 'Access denied' });
             }
 
             try {
@@ -23,7 +23,7 @@ function authorize(roles = []) {
                 req.user = decode
                 return next()
             } catch (error) {
-                return res.status(400).json({ errorMessage: 'Invalid token' });
+                return res.status(400).json({ errorMessage: 'Access denied' });
             }
         },
 
@@ -31,7 +31,7 @@ function authorize(roles = []) {
         (req, res, next) => {
             if (roles.length && !roles.includes(req.user.role)) {
                 // user's role is not authorized
-                return res.status(401).json({ message: 'Access denine' });
+                return res.status(401).json({ message: 'Access denied' });
             }
 
             // authentication and authorization successful

@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const newsController = require('../controllers/newsController')
+const authorize = require('../middleware/authorize')
 
-router.get('/', async (req,res, next) => {
+router.get('/', authorize(), async (req, res, next) => {
     try {
         let response = await newsController.getNews()
         return res.send(response)
@@ -12,10 +13,8 @@ router.get('/', async (req,res, next) => {
     }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', authorize(), async (req, res, next) => {
     try {
-        // const token = req.session.token || req.headers['x-access-token']
-        // await authService.isLogined(token)
         const response = await newsController.createNews(req.body)
         return res.send(response)
     } catch (error) {
