@@ -100,6 +100,7 @@ module.exports = {
   IVALID_PHONE_OR_PASSWORD: 'Invalid email/password combination',
   INVALID_REQUEST: 'Invalid Request',
   PHONE_EXISTED: 'Phone already existed',
+  EMAIL_EXISTED: 'Email already existed',
   CREATE_USER_SUCCESS: 'Create account successfully',
   USER_NOT_FOUND: 'Can not found user',
   MANAGER_NOT_FOUND: 'Can not found manager',

@@ -1,4 +1,3 @@
-
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
 

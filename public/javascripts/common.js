@@ -27,6 +27,11 @@ const COMMON = {
         SUPERVISOR: 'Supervisor'
     },
 
+    gender: {
+        MALE: 'Male',
+        FEMALE: 'Female'
+    },
+
     uploadKey: 'c940089d6e1e3588e2db9c277d519696'
 }
 

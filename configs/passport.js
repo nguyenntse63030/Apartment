@@ -22,21 +22,21 @@ async function createPassportConfig(app) {
       async function (req, username, password, done) {
         const usernameTrim = trimUsername(username);
         let user = await User.findOne({ phone: usernameTrim })
-
-        if (user) {
-          if (!await user.authenticate(password)) {
-            return done(responseStatus.Code401({ errorMessage: responseStatus.IVALID_PHONE_OR_PASSWORD }), false)
-          }
-
-          let token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
-            expiresIn: config.tokenExpire
-          })
-          delete user.password
-          return done(null, true, {
-            user: user,
-            token: token
-          })
+        if (!user) {
+          return done(responseStatus.Code400({ errorMessage: responseStatus.INVALID_REQUEST }))
         }
+        if (!await user.authenticate(password)) {
+          return done(responseStatus.Code401({ errorMessage: responseStatus.IVALID_PHONE_OR_PASSWORD }), false)
+        }
+
+        let token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
+          expiresIn: config.tokenExpire
+        })
+        delete user.password
+        return done(null, true, {
+          user: user,
+          token: token
+        })
       }
     ))
 
@@ -78,6 +78,10 @@ async function createPassportConfig(app) {
   const trimUsername = name => {
     return name.replace(/[\s.,]/g, '')
   }
+
+  passport.serializeUser(function (user, cb) {
+    cb(null, user)
+  })
 
   app.use(passport.initialize())
   app.use(passport.session())

@@ -2,6 +2,7 @@
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
     $scope.user = 'Customer'
+    $scope.createLink = '/customer/create'
     apiService.getUserByRole(COMMON.userRole.CUSTOMER).then(function (res) {
         $scope.customers = res.data.listUser
         setTimeout(() => {

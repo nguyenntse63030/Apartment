@@ -8,6 +8,15 @@
 <div class="container-fluid" ng-controller="listController">
     <div class="row">
         <div class="col-md-12">
+            <a href="/user/create">
+                <button type="submit" class="btn btn-plus btn-primary pull-left">
+                    <i class="fas fa-plus plus-icon"></i>
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-primary">
                     <div class="row">
@@ -60,7 +69,7 @@
                                             {{customer.email}}
                                         </a>
                                     </td>
-                                    <td data-order="customer.createdTime">
+                                    <td data-order="{{customer.createdTime}}">
                                         <a href="/customer/{{customer.code}}">
                                             {{customer.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>
@@ -100,7 +109,7 @@
                                             {{manager.email}}
                                         </a>
                                     </td>
-                                    <td data-order="manager.createdTime">
+                                    <td data-order="{{manager.createdTime}}">
                                         <a href="/manager/{{manager.code}}">
                                             {{manager.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>

@@ -73,6 +73,13 @@ async function createUser(data) {
         throw responseStatus.Code400({ errorMessage: responseStatus.PHONE_EXISTED })
     }
 
+    data.email = data.email.toLowerCase().trim()
+
+    user = await User.findOne({ email: data.email })
+    if (user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.EMAIL_EXISTED })
+    }
+
     //Đổ data vào User
     user = new User()
     user.phone = data.phone || ''
@@ -83,6 +90,7 @@ async function createUser(data) {
     user.name = data.name || ''
     user.address = data.address || ''
 
+    let userCode = ''
     // User Code 
     user.name.split(' ').forEach(function (element) {
         if (element.match(/[a-z]/i)) {

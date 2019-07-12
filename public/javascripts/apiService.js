@@ -7,6 +7,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getUser: function (code) {
             return $http.get(apiVersion + '/user/' + code)
         },
+        createUser: function (data) {
+            return $http.post(apiVersion + '/user/', data)
+        },
         updateUser: function (id, data) {
             return $http.put(apiVersion + '/user/' + id, data)
         },

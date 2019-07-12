@@ -23,7 +23,7 @@ router.get('/*', async function (req, res, next) {
       return next()
     }
   } catch (error) {
-    res.redirect('/')
+    return res.redirect('/')
   }
 })
 
@@ -49,12 +49,33 @@ router.get('/user', function (req, res, next) {
   }
 });
 
+router.get('/user/create', function (req, res, next) {
+  let role = req.session.user.role
+  // if (role === constant.userRole.MANAGER) {
+  //   res.render('manager/user/create', { role: req.session.user.role, title: 'Create User' });
+  // } else 
+  if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/user/create', { role: req.session.user.role, title: 'Create User' });
+  } else {
+    res.redirect('/')
+  }
+});
+
 router.get('/customer/:code', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
     res.render('manager/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
   } else if (role === constant.userRole.SUPERVISOR) {
     res.render('supervisor/user/detail', { code: req.params.code, role: req.session.user.role, title: 'Customer Detail' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/manager/create', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/manager/create', { role: req.session.user.role, title: 'Create Manager' });
   } else {
     res.redirect('/')
   }

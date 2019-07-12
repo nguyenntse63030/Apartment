@@ -50,6 +50,7 @@ router.post('/verifyGoogle', async function (req, res, next) {
 router.post('/sign_in', async function (req, res, next) {
     try {
         passport.authenticate('local', async function (err, user, info) {
+            if (err) return res.status(err.status || 500).send(err)
             if (!user) {
                 return res.status(401).send(responseStatus.Code401({ errorMessage: responseStatus.IVALID_PHONE_OR_PASSWORD }))
             }
@@ -67,7 +68,7 @@ router.post('/sign_in', async function (req, res, next) {
         })(req, res, next)
     } catch (error) {
         console.log(error)
-        return res.status(error.status || 500).send(error)
+        res.status(error.status || 500).send(error)
     }
 })
 

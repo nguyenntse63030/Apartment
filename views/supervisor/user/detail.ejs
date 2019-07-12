@@ -27,7 +27,7 @@
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Phone</label>
                                     <input type="text" class="form-control numberInput" ng-model="customer.phone"
-                                        value="{{customer.phone}} " ng-disabled="isNotEditing">
+                                        value="{{customer.phone}} " ng-disabled="true">
                                 </div>
                             </div>
                         </div>
@@ -35,8 +35,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Gender</label>
-                                    <input type="text" class="form-control" ng-model="customer.gender"
-                                        value="{{customer.gender}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" value=" " ng-hide="true">
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="customer.gender" ng-disabled="isNotEditing">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -58,8 +63,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Role</label>
-                                    <input type="text" class="form-control" ng-model="customer.role"
-                                        value="{{customer.role}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" value=" " ng-hide="true">
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="customer.role" id="role" ng-disabled="isNotEditing">
+                                        <option value="Customer">Customer</option>
+                                        <option value="Manager">Manager</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +177,7 @@
             autoclose: true,
             changeMonth: true,
             changeYear: true,
+            yearRange: '-100:' + new Date().getFullYear()
         })
         $('#selected-apartment').select2({
             placeholder: 'Select a apartment'
@@ -175,6 +185,7 @@
         $('#selected-room').select2({
             placeholder: 'Select a room'
         });
+        $('.select2-single').select2()
         setTimeout(() => {
             numberFormat()
         }, 200);
