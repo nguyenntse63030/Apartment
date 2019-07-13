@@ -67,11 +67,18 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="expiredDate pull-right">Expired Date</label>
-                                <input type="text" class="form-control" ng-value="room.expiredDate > 0 ? (room.expiredDate | date: 'dd/MM/yyyy') : 'N/A'"
+                                <input type="text" class="form-control"
+                                    ng-value="room.expiredDate > 0 ? (room.expiredDate | date: 'dd/MM/yyyy') : 'N/A'"
                                     id="expiredDate" disabled>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: -20px;">
+                <div class="col-md-12">
+                    <a style="width: 100%" href="/room/{{room.code}}/bill/create"
+                        class="btn btn-primary pull-left">Add Bill</a>
                 </div>
             </div>
         </div>

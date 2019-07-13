@@ -121,6 +121,14 @@ async function changeBillStatus(billId, status) {
     return responseStatus.Code200({ message: responseStatus.BILL })
 }
 
+async function getAllBill() {
+    let bills = await Bill.find().sort({createdtime: -1})
+    .populate('apartment', 'name')
+    .populate('room', 'roomNumber')
+    .populate('user')
+    return responseStatus.Code200({ bills: bills })
+}
+
 
 module.exports = {
     createBill,
@@ -129,4 +137,5 @@ module.exports = {
     getPaidBillByUserId,
     paymentBill,
     changeBillStatus,
+    getAllBill
 }

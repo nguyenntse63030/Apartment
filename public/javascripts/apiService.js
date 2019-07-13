@@ -49,5 +49,8 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         createRoomForApartment: function (apartmentId, data) {
             return $http.post(apiVersion + '/room/apartment/' + apartmentId, data)
         },
+        getAllBill: function () {
+            return $http.get(apiVersion + '/bill/')
+        },
     }
 }])

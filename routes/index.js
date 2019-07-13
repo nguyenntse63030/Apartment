@@ -125,6 +125,17 @@ router.get('/room/:code', function (req, res, next) {
   }
 });
 
+router.get('/room/:code/bill/create', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/bill/create', { roomCode: req.params.code, role: req.session.user.role, title: 'Create Bill' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/bill/create', { roomCode: req.params.code, role: req.session.user.role, title: 'Create Bill' });
+  } else {
+    res.redirect('/')
+  }
+});
+
 router.get('/apartment/', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
@@ -146,6 +157,17 @@ router.get('/apartment/:code', function (req, res, next) {
     res.render('manager/apartment/detail', { code: req.params.code, role: req.session.user.role, title: 'Apartment Detail' });
   } else if (role === constant.userRole.SUPERVISOR) {
     res.render('supervisor/apartment/detail', { code: req.params.code, role: req.session.user.role, title: 'Apartment Detail' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/bill', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/bill/list', { role: req.session.user.role, title: 'Bill' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/bill/list', { role: req.session.user.role, title: 'Bill' });
   } else {
     res.redirect('/')
   }
