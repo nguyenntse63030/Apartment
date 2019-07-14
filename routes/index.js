@@ -114,23 +114,23 @@ router.get('/room/create', function (req, res, next) {
   }
 });
 
-router.get('/room/:code', function (req, res, next) {
-  let role = req.session.user.role
-  if (role === constant.userRole.MANAGER) {
-    res.render('manager/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
-  } else if (role === constant.userRole.SUPERVISOR) {
-    res.render('supervisor/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
-  } else {
-    res.redirect('/')
-  }
-});
-
 router.get('/room/:code/bill/create', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
     res.render('manager/bill/create', { roomCode: req.params.code, role: req.session.user.role, title: 'Create Bill' });
   } else if (role === constant.userRole.SUPERVISOR) {
     res.render('supervisor/bill/create', { roomCode: req.params.code, role: req.session.user.role, title: 'Create Bill' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/room/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/room/detail', { code: req.params.code, role: req.session.user.role, title: 'Room Detail' });
   } else {
     res.redirect('/')
   }
@@ -168,6 +168,17 @@ router.get('/bill', function (req, res, next) {
     res.render('manager/bill/list', { role: req.session.user.role, title: 'Bill' });
   } else if (role === constant.userRole.SUPERVISOR) {
     res.render('supervisor/bill/list', { role: req.session.user.role, title: 'Bill' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/bill/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/bill/detail', { code: req.params.code, role: req.session.user.role, title: 'Bill Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/bill/detail', { code: req.params.code, role: req.session.user.role, title: 'Bill Detail' });
   } else {
     res.redirect('/')
   }

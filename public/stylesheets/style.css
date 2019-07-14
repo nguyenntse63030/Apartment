@@ -82,3 +82,20 @@
 .flex {
   display: flex
 }
+
+.select-in-form > span.select2.select2-container {
+  margin-top: 10px;
+}
+
+.bill-value{
+  color: #495057;
+}
+
+.modal-footer {
+  display: initial
+}
+
+.model-content{
+  width: 100%;
+  text-align: center;
+}

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const responseStatus = require('../../../configs/responseStatus')
 const constant = require('../../../configs/constant')
+const common = require('../../common')
 
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
@@ -8,55 +9,77 @@ const Bill = mongoose.model('Bill')
 const Apartment = mongoose.model('Apartment')
 
 
-async function createBill(data) {
-    let room = await Room.findById(data.room.id).populate('apartment')
+async function createBill(roomId, data, creator) {
+    let currentDate = new Date()
+
+    let room = await Room.findById(roomId)
     if (!room) {
         throw responseStatus.Code400({ errorMessage: responseStatus.ROOM_NOT_FOUND })
     }
-    let apartment = room.apartment
     let user = await User.findById(room.user._id)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
-    // Bill Code 
-    let billCode = 'B-' + apartment.code + '-' + room.roomNumber + '-' + Date.now().toString()
 
-    let bill = await Bill.findOne({ code: billCode })   //Tìm trong database theo code
+    let apartment = await Apartment.findById(room.apartment)
+    if (!apartment) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.APARTMENT_NOT_FOUND })
+    }
 
+    // Bill Code
+    let date = common.formatDateCode(new Date())
+    let apartmentCode = apartment.code.split('-')
+    let billCode = 'B-' + apartmentCode[0] + '-' + room.roomNumber + '-' + date + '-' + currentDate.getTime().toString().slice(9)
+
+    let bill = await Bill.findOne({ code: billCode })
     if (bill) {
-        //Nếu bill đã tồn tại
-        //Thống báo về phía client một message
         throw responseStatus.Code400({ errorMessage: responseStatus.BILL_EXISTED })
     }
 
-    var expiredDate = new Date(); // Now
-    expiredDate.setDate(expiredDate.getDate() + 30); // Set now + 30 days as the new date
-    let manager = await User.findById(data.manager.id)
-    if (!manager) {
-        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    // currentDate.setDate(currentDate.getDate() + 30)
+    bill = new Bill()
+    bill.expiredTime = data.expiredTime || undefined
+    bill.type = data.type || constant.billTypes.OTHER
+    bill.description = data.description || ''
+    bill.creator = creator || undefined
+    bill.user = user._id || undefined
+    bill.apartment = apartment._id || undefined
+    bill.room = room._id || undefined
+    bill.status = data.status || constant.billStatus.UNPAID
+    bill.code = billCode
+    bill.oldNumber = data.oldNumber || 0
+    bill.newNumber = data.newNumber || 0
+    bill.usedNumber = data.usedNumber || (Number(data.newNumber) - Number(data.oldNumber))
+    bill.unitPrice = data.unitPrice || 0
+    bill.total = data.total || 0
+    bill.title = common.generateBillTitle(bill.type)
+
+    bill = await bill.save()       //Lưu user xuống database
+
+    return responseStatus.Code200({ message: responseStatus.CREATE_BILL_SUCCESS })
+}
+
+async function updateBill(id, data, editor) {
+
+    let bill = await Bill.findById(id)
+    if (!bill) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.BILL_NOT_FOUND })
     }
 
-
-    //Đổ data vào bill
-
-    bill = new Bill()
-    bill.expiredTime = expiredDate.getTime()
-    bill.type = data.type || ''
+    bill.expiredTime = data.expiredTime || undefined
+    bill.type = data.type || constant.billTypes.OTHER
     bill.description = data.description || ''
-    bill.manager = manager || ''
-    bill.user = user || ''
-    bill.apartment = apartment || ''
-    bill.room = room || ''
-    bill.status = data.status || 'UNPAID'
-    bill.code = billCode
-    bill.oldNumber = data.oldNumber || ''
-    bill.newNumber = data.newNumber || ''
-    let usedNumber = Number(data.newNumber) - Number(data.oldNumber)
-    bill.usedNumber = usedNumber
+    bill.editor = editor || undefined
+    bill.status = data.status || constant.billStatus.UNPAID
+    bill.oldNumber = data.oldNumber || 0
+    bill.newNumber = data.newNumber || 0
+    bill.usedNumber = data.usedNumber || (Number(data.newNumber) - Number(data.oldNumber))
+    bill.unitPrice = data.unitPrice || 0
+    bill.total = data.total || 0
 
-    bil = await bill.save()       //Lưu user xuống database
+    bill = await bill.save()
 
-    return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, bill: bill })
+    return responseStatus.Code200({ message: responseStatus.UPDATE_BILL_SUCCESS })
 }
 
 async function getBillByRoomId(roomId) {
@@ -122,13 +145,31 @@ async function changeBillStatus(billId, status) {
 }
 
 async function getAllBill() {
-    let bills = await Bill.find().sort({createdtime: -1})
-    .populate('apartment', 'name')
-    .populate('room', 'roomNumber')
-    .populate('user')
+    let bills = await Bill.find().sort({ createdtime: -1 })
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
+        .populate('user')
     return responseStatus.Code200({ bills: bills })
 }
 
+async function getBillByCode(code) {
+    let bill = await Bill.findOne({ code: code })
+        .populate('user', 'name')
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
+        .populate('creator', 'name role')
+    if (!bill) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.BILL_NOT_FOUND })
+    }
+
+    return responseStatus.Code200({ bill: bill })
+}
+
+async function deleteBill(id) {
+    await Bill.findByIdAndRemove(id)
+
+    return responseStatus.Code200({ message: responseStatus.DELETE_BILL_SUCCESS })
+}
 
 module.exports = {
     createBill,
@@ -137,5 +178,8 @@ module.exports = {
     getPaidBillByUserId,
     paymentBill,
     changeBillStatus,
-    getAllBill
+    getAllBill,
+    getBillByCode,
+    updateBill,
+    deleteBill
 }

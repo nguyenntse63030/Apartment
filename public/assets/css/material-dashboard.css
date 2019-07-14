@@ -10865,7 +10865,8 @@ label {
 .is-focused .bmd-label-floating, .is-filled .bmd-label-floating {
   top: -1rem;
   left: 0;
-  font-size: 0.6875rem;
+  color: #ab47bc !important;
+  font-size: 14px;
 }
 
 .bmd-label-static {
@@ -16191,5 +16192,7 @@ table.dataTable.no-footer {
 .table-responsive>div>div>label, .dataTables_info {
   color: #ab47bc !important;
 }
+
+
 
 /*# sourceMappingURL=dashboard-free.css.map */

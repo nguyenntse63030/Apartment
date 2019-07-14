@@ -52,5 +52,17 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getAllBill: function () {
             return $http.get(apiVersion + '/bill/')
         },
+        createBill: function (roomId, data) {
+            return $http.post(apiVersion + '/bill/room/' + roomId, data)
+        },
+        getBillByCode: function (code) {
+            return $http.get(apiVersion + '/bill/' + code)
+        },
+        updateBill: function (id, data) {
+            return $http.put(apiVersion + '/bill/' + id, data)
+        },
+        deleteBill: function (id) {
+            return $http.delete(apiVersion + '/bill/' + id)
+        },
     }
 }])

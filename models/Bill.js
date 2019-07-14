@@ -5,6 +5,14 @@ var BillSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    title: {
+        type: String,
+        default: ''
+    },
+    unitPrice: {
+        type: Number,
+        default: 0
+    },
     total: {
         type: Number,
         default: 0
@@ -17,25 +25,25 @@ var BillSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    manager: {
+    editor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: [true, 'manager is required']
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: [true, 'user is required']
     },
     apartment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Apartment',
-        require: [true, 'apartment is required']
     },
     room: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room',
-        require: [true, 'room is required']
     },
     status: {
         type: String,

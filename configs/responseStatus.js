@@ -122,7 +122,9 @@ module.exports = {
   CREATE_ROOM_SUCCESS: 'Create Room for apartment successfully',
   ACCOUNT_NOT_ENOUGHT_MONEY: 'Your account is not enought money',
   PAYMENT_SUCCESS: 'Payment successfully',
-  INVALID_ACCOUNT_PAYMENT: "Your account don't have permission to pay this bill"
+  INVALID_ACCOUNT_PAYMENT: "Your account don't have permission to pay this bill",
+  CREATE_BILL_SUCCESS: "Create bill successfully",
+  DELETE_BILL_SUCCESS: "Delete bill successfully"
 
 
 }

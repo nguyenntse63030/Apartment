@@ -42,18 +42,50 @@ router.get('/user/paid/:userId', authorize(), async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
-router.post('/', authorize(), async (req, res, next) => {
+
+router.get('/:code', authorize(), async (req, res, next) => {
     try {
-        const response = await billController.createBill(req.body)
+        let response = await billController.getBillByCode(req.params.code)
         return res.send(response)
     } catch (error) {
         console.log(error)
         return res.status(error.status || 500).send(error)
     }
 })
+
+router.post('/room/:id', authorize(), async (req, res, next) => {
+    try {
+        const response = await billController.createBill(req.params.id, req.body, req.user.id)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+router.put('/:id', authorize(), async (req, res, next) => {
+    try {
+        const response = await billController.updateBill(req.params.id, req.body, req.user.id)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.put('/payment/:billId', authorize(), async (req, res, next) => {
     try {
         const response = await billController.paymentBill(req.user.id, req.params.billId)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+router.delete('/:id', authorize(), async (req, res, next) => {
+    try {
+        const response = await billController.deleteBill(req.params.id)
         return res.send(response)
     } catch (error) {
         console.log(error)

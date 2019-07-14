@@ -1,15 +1,20 @@
 
 var app = angular.module('SWD391')
 app.controller('createController', ['$scope', 'apiService', function ($scope, apiService) {
+    $scope.bill = {
+        type: 'Electricity',
+        oldNumber: 0,
+        newNumber: 0,
+        usedNumber: 0,
+        status: 'UNPAID',
+        total: 0
+    }
+    let roomCode = $('#roomCode').text().trim()
 
-    let code = $('#code').text().trim()
-    $scope.isNotEditing = true
-    apiService.getBillByCode(code).then(function (res) {
-        $scope.bill = res.data.bill
-        $scope.unitPrice = $scope.bill.unitPrice
-        $scope.bill.oldNumber = parseNumberToMoney($scope.bill.oldNumber)
-        $scope.bill.newNumber = parseNumberToMoney($scope.bill.newNumber)
-        $scope.bill.total = parseNumberToMoney($scope.bill.total)
+    $scope.unitPrice = 2300
+
+    apiService.getRoomByCode(roomCode).then(function (res) {
+        $scope.room = res.data.room
     }).catch(function (error) {
         console.log(error)
         showNotification(error.data.errorMessage, 'danger')
@@ -23,7 +28,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         $scope.bill.total = parseNumberToMoney(Number(Math.round(usedNumber * $scope.unitPrice, 10)))
     }
 
-    $scope.updateBill = () => {
+    $scope.createBill = () => {
         if ($scope.bill.total < 1) {
             return showNotification('Total Bill must > 0', 'danger')
         }
@@ -32,25 +37,13 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         } else {
             $scope.bill.expiredTime = (getTimestampFromDatePicker('#expiredDate')) + 86399 * 1000
         }
-
+        
         $scope.bill.oldNumber = parseMoneyToNumber($scope.bill.oldNumber)
         $scope.bill.newNumber = parseMoneyToNumber($scope.bill.newNumber)
         $scope.bill.total = parseMoneyToNumber($scope.bill.total)
         $scope.bill.unitPrice = Number($scope.unitPrice)
 
-        apiService.updateBill($scope.bill._id, $scope.bill).then(function (res) {
-            showNotification(res.data.message, 'success')
-            setTimeout(() => {
-                window.location.reload()
-            }, 2000);
-        }).catch(function (error) {
-            console.log(error)
-            showNotification(error.data.errorMessage, 'danger')
-        })
-    }
-
-    $scope.deleteBill = () => {
-        apiService.deleteBill($scope.bill._id).then(function (res) {
+        apiService.createBill($scope.room._id, $scope.bill).then(function (res) {
             showNotification(res.data.message, 'success')
             setTimeout(() => {
                 window.location.href = '/bill'

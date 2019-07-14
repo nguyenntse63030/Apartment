@@ -32,6 +32,17 @@ const COMMON = {
         FEMALE: 'Female'
     },
 
+    billTypes: {
+        ELECTRICITY: 'Electricity',
+        WATER: 'Water',
+        SERVICE: 'Service'
+    },
+
+    billStatus: {
+        UNPAID: 'UNPAID',
+        PAID: 'PAID'
+    },
+
     uploadKey: 'c940089d6e1e3588e2db9c277d519696'
 }
 
@@ -79,6 +90,58 @@ function numberFormat() {
     })(jQuery)
 }
 
+function currencyFormat() {
+    (function ($, undefined) {
+        'use strict'
+
+        // When ready.
+        $(function () {
+            $('.currencyInput').on('keyup', function (event) {
+                // When user select text in the document, also abort.
+                var selection = window.getSelection().toString()
+                if (selection !== '') {
+                    return
+                }
+
+                // When the arrow keys are pressed, abort.
+                if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
+                    return
+                }
+
+                var $this = $(this)
+
+                // Get the value.
+                var input = $this.val()
+
+                input = input.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '') // https://stackoverflow.com/a/43670484
+                if (!input) {
+                    return $this.val('')
+                }
+                input = isNaN(input) ? input : parseInt(input, 10)
+                $this.val(function () {
+                    return input.toLocaleString('en-US')
+                })
+            })
+
+            /**
+               * ==================================
+               * When Form Submitted
+               * ==================================
+               */
+            $('form').on('submit', function (event) {
+                var $this = $(this)
+                var arr = $this.serializeArray()
+
+                for (var i = 0; i < arr.length; i++) {
+                    arr[i].value = arr[i].value.replace(/[($)\s\._\-]+/g, '') // Sanitize the values.
+                };
+
+                event.preventDefault()
+            })
+        })
+    })(jQuery)
+}
+
 function change_alias(str) {
     if (!str) return ''
     str = str.toLowerCase().trim()
@@ -90,4 +153,14 @@ function change_alias(str) {
     str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y')
     str = str.replace(/đ/g, 'd')
     return str
+}
+
+function parseNumberToMoney(number) {
+    if (!number) return 0
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+function parseMoneyToNumber(money) {
+    if (!money) return 0
+    return parseInt(money.toString().replace(/,/g, ''))
 }
