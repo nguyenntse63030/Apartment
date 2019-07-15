@@ -193,5 +193,16 @@ router.get('/setting', function (req, res, next) {
   }
 });
 
+router.get('/profile', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/profile', { id: req.session._id, role: req.session.user.role, title: 'User Profile' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/profile', { id: req.session._id, role: req.session.user.role, title: 'User Profile' });
+  } else {
+    res.redirect('/')
+  }
+});
+
 module.exports = router;
 

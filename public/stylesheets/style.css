@@ -103,3 +103,11 @@
 form>.row {
   margin-top: 20px;
 }
+
+.sb-user-infor{
+  color: #ab47bc
+}
+
+h3.sb-user-infor {
+  font-size: 20px;
+}
