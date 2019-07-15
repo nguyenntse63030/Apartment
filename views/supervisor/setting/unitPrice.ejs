@@ -1,0 +1,55 @@
+<% layout('../../layouts/layout.ejs') -%>
+<style>
+    .modal-footer {
+        display: initial
+    }
+
+    form>.row {
+        margin-top: 20px;
+    }
+</style>
+<div class="container-fluid" ng-controller="unitPriceController">
+    <div class="row flex">
+        <div class="col-md-8 mg-0-auto">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Unit Price Setting</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Electricity Unit Price</label>
+                                    <input type="text" class="form-control currencyInput" value=" "
+                                        ng-model="unitPrice.electricity">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Water Unit Price (VND/m<sup>3</sup>)</label>
+                                    <input type="text" class="form-control currencyInput" value=" "
+                                        ng-model="unitPrice.water" id="water-unit-price">
+                                </div>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right"
+                            ng-click="saveUnitPrice()">Save</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/javascripts/supervisor/setting/unitPrice.js"></script>
+<script>
+    clickSideBar('setting-page')
+    $(document).ready(function () {
+        setTimeout(function () {
+            currencyFormat()
+        }, 200)
+    })
+</script>

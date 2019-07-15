@@ -6,10 +6,26 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     $scope.isNotEditing = true
     apiService.getBillByCode(code).then(function (res) {
         $scope.bill = res.data.bill
-        $scope.unitPrice = $scope.bill.unitPrice
+        $scope.bill.unitPrice = parseNumberToMoney($scope.bill.unitPrice)
         $scope.bill.oldNumber = parseNumberToMoney($scope.bill.oldNumber)
         $scope.bill.newNumber = parseNumberToMoney($scope.bill.newNumber)
         $scope.bill.total = parseNumberToMoney($scope.bill.total)
+    }).catch(function (error) {
+        console.log(error)
+        showNotification(error.data.errorMessage, 'danger')
+    })
+
+    $scope.resetValue = () => {
+        $scope.bill.oldNumber = 0
+        $scope.bill.newNumber = 0
+        $scope.bill.usedNumber = 0
+        $scope.bill.total = 0
+    }
+
+    apiService.getUnitPrice().then(function (res) {
+        $scope.unitPrice = res.data.unitPrice
+        $scope.unitPrice.electricity = parseNumberToMoney($scope.unitPrice.electricity)
+        $scope.unitPrice.water = parseNumberToMoney($scope.unitPrice.water)
     }).catch(function (error) {
         console.log(error)
         showNotification(error.data.errorMessage, 'danger')
@@ -36,7 +52,13 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         $scope.bill.oldNumber = parseMoneyToNumber($scope.bill.oldNumber)
         $scope.bill.newNumber = parseMoneyToNumber($scope.bill.newNumber)
         $scope.bill.total = parseMoneyToNumber($scope.bill.total)
-        $scope.bill.unitPrice = Number($scope.unitPrice)
+
+
+        if ($scope.bill.type === COMMON.billTypes.SERVICE) {
+            $scope.bill.unitPrice = 0
+        } else {
+            $scope.bill.unitPrice = parseMoneyToNumber($scope.uPrice)
+        }
 
         apiService.updateBill($scope.bill._id, $scope.bill).then(function (res) {
             showNotification(res.data.message, 'success')

@@ -64,5 +64,11 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         deleteBill: function (id) {
             return $http.delete(apiVersion + '/bill/' + id)
         },
+        getUnitPrice: function () {
+            return $http.get(apiVersion + '/unit-price/')
+        },
+        updateUnitPrice: function (data) {
+            return $http.put(apiVersion + '/unit-price/', data)
+        },
     }
 }])

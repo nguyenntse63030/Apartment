@@ -184,5 +184,14 @@ router.get('/bill/:code', function (req, res, next) {
   }
 });
 
+router.get('/setting', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/setting/unitPrice', { role: req.session.user.role, title: 'Unit Price Setting' });
+  } else {
+    res.redirect('/')
+  }
+});
+
 module.exports = router;
 
