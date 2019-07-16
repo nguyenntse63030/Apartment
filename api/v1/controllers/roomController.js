@@ -45,11 +45,11 @@ async function getRoomsByUserId(userId) {
     for (let room of listRoom) {
         let bills = await Bill.find({room: room._id})
         if (bills){
-            room.totalBill = bills.length
+            room.totalBill = bills.length.toString()
             let unpaidBill = bills.filter((bill) => {
                 return bill.status === constant.billStatus.UNPAID
             })
-            room.unpaidBill = unpaidBill.length
+            room.unpaidBill = unpaidBill.length.toString()
         }
     }
     return responseStatus.Code200({ listRoom: listRoom })
