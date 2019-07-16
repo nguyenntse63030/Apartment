@@ -41,6 +41,7 @@ async function getRoomsByUserId(userId) {
         return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let listRoom = await Room.find({ user: userId }).populate('user').populate('apartment')
+    listRoom = JSON.parse(JSON.stringify(listRoom))
     for (let room of listRoom) {
         let bills = await Bill.find({room: room._id})
         if (bills){
