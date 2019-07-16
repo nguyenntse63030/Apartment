@@ -4,6 +4,7 @@ const constant = require('../../../configs/constant')
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
 const Apartment = mongoose.model('Apartment')
+const Bill = mongoose.model('Bill')
 const common = require('../../common')
 
 async function getAllRooms() {
@@ -40,6 +41,16 @@ async function getRoomsByUserId(userId) {
         return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let listRoom = await Room.find({ user: userId }).populate('user').populate('apartment')
+    for (let room of listRoom) {
+        let bills = await Bill.find({room: room._id})
+        if (bills){
+            room.totalBill = bills.length
+            let unpaidBill = bills.filter((bill) => {
+                return bill.status === constant.billStatus.UNPAID
+            })
+            room.unpaidBill = unpaidBill.length
+        }
+    }
     return responseStatus.Code200({ listRoom: listRoom })
 }
 async function getRoomByCode(roomCode) {
