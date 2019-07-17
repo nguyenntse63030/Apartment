@@ -196,9 +196,20 @@ router.get('/setting', function (req, res, next) {
 router.get('/profile', function (req, res, next) {
   let role = req.session.user.role
   if (role === constant.userRole.MANAGER) {
-    res.render('manager/profile', { id: req.session._id, role: req.session.user.role, title: 'User Profile' });
+    res.render('manager/profile', { code: req.session.user.code, role: req.session.user.role, title: 'User Profile' });
   } else if (role === constant.userRole.SUPERVISOR) {
-    res.render('supervisor/profile', { id: req.session._id, role: req.session.user.role, title: 'User Profile' });
+    res.render('supervisor/profile', { code: req.session.user.code, role: req.session.user.role, title: 'User Profile' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/news', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/news/list', { role: req.session.user.role, title: 'News' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/news/list', { role: req.session.user.role, title: 'News' });
   } else {
     res.redirect('/')
   }

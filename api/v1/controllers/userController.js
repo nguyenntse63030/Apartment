@@ -61,7 +61,8 @@ async function changeAvatar(userCode, photoURL) {
     }
     user.photoURL = photoURL
     await user.save()
-    return responseStatus.Code200({ message: responseStatus.CHANGE_AVATAR_SUCCESSFULLY })
+    delete user.password
+    return responseStatus.Code200({ message: responseStatus.CHANGE_AVATAR_SUCCESSFULLY, user: user })
 }
 
 async function createUser(data) {
@@ -140,7 +141,7 @@ const depositAccount = async function (userId, data) {
     let money = common.parseNumberToMoney(Number(data))
     let totalMoney = common.parseNumberToMoney(customer.account)
     return responseStatus.Code200({
-        message: 'Bạn đã nạp ' + money + ' vào tài khoản thành công. Tài khoản hiện tại của bạn có ' + totalMoney + ' VND',
+        message: 'Bạn đã nạp ' + money + ' VND vào tài khoản thành công. Tài khoản hiện tại của bạn có ' + totalMoney + ' VND',
         newAccount: customer.account
     })
 }

@@ -6,7 +6,9 @@
         border-radius: 50%;
         object-fit: cover;
     }
-    .logo, .logo-normal{
+
+    .logo,
+    .logo-normal {
         padding: 0px !important;
     }
 </style>
@@ -59,6 +61,12 @@
                     <p>Bill</p>
                 </a>
             </li>
+            <li class="nav-item" id="news-page">
+                <a class="nav-link" href="/news">
+                    <i class="far fa-newspaper"></i>
+                    <p>News</p>
+                </a>
+            </li>
             <li class="nav-item" id="setting-page">
                 <a class="nav-link" href="/setting">
                     <i class="fas fa-cog"></i>
@@ -79,8 +87,7 @@
         let user = JSON.parse(COMMON.getCookie('user'))
         $('#side-bar-role').text(user.role)
         $('#side-bar-name').text(user.name)
-        $('#sb-photoURL').text(user.photoURL)
-
+        $('#sb-photoURL').attr('src', user.photoURL)
     });
     function clickSideBar(id) {
         COMMON.setCookie('current-tab', id)

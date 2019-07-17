@@ -20,7 +20,8 @@
           <form id="form-change-avatar text-center">
             <img id="image-to-change" src="{{ customer.photoURL || manager.photoURL ||'/images/logo.png'}}" />
             <input id="file" type="file" accept="image/*" style="display:none" onchange="onChangeImage(event)" />
-            <input type="text" name="userCode" id="user-code" value="{{customer.code}}" class="hide" disabled>
+            <input type="text" name="userCode" id="user-code" value="{{customer.code || user.code || manager.code}}"
+              class="hide" disabled>
           </form>
           <button class="btn btn-primary createInput" onclick="chooseFile()" id="choose-button">Choose file</button>
         </div>
@@ -73,6 +74,11 @@
           },
           success: function (response) {
             $('#loading').hide()
+            let authUser = JSON.parse(COMMON.getCookie('user'))
+            debugger
+            if (response.user._id === authUser._id) {
+              COMMON.setCookie('user', JSON.stringify(response.user))
+            }
             showNotification(response.message, 'success')
             setTimeout(function () { window.location.reload() }, 1500)
           },

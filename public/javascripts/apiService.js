@@ -70,5 +70,8 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         updateUnitPrice: function (data) {
             return $http.put(apiVersion + '/unit-price/', data)
         },
+        getNews: function () {
+            return $http.get(apiVersion + '/news/')
+        },
     }
 }])
