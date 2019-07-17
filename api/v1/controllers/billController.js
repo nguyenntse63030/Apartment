@@ -126,11 +126,14 @@ async function paymentBill(userId, billId) {
         throw responseStatus.Code400({ errorMessage: responseStatus.ACCOUNT_NOT_ENOUGHT_MONEY })
     }
 
+    let beforeTrans = customer.account
     customer.account -= bill.total
-    await customer.save()
-    changeBillStatus(bill._id, constant.billStatus.PAID)
+    let afterTrans = customer.account
 
-    return responseStatus.Code200({ message: responseStatus.PAYMENT_SUCCESS })
+    await customer.save()
+    await changeBillStatus(bill._id, constant.billStatus.PAID)
+
+    return responseStatus.Code200({ message: responseStatus.PAYMENT_SUCCESS, beforeTrans: beforeTrans, afterTrans: afterTrans })
 }
 
 async function changeBillStatus(billId, status) {
