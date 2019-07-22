@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const responseStatus = require('../../../configs/responseStatus')
 const constant = require('../../../configs/constant')
 const common = require('../../common')
+const pushNotificationsController = require('../push-notifications/pushNotificationsController')
 
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
@@ -56,6 +57,7 @@ async function createBill(roomId, data, creator) {
 
     bill = await bill.save()       //Lưu user xuống database
 
+    pushNotificationsController.sendNotification(user.androidToken, bill.title)
     return responseStatus.Code200({ message: responseStatus.CREATE_BILL_SUCCESS })
 }
 

@@ -146,6 +146,26 @@ const depositAccount = async function (userId, data) {
     })
 }
 
+const saveUserToken = async function (id, androidToken) {
+    let user = await User.findById(id)
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
+    }
+    user.androidToken = androidToken
+    await user.save()
+    return responseStatus.Code200({ message: 'Save Token Successfully' })
+}
+
+const deleteUserToken = async function (id) {
+    let user = await User.findById(id)
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
+    }
+    user.androidToken = ''
+    await user.save()
+    return responseStatus.Code200({ message: 'Delete Token Successfully' })
+}
+
 
 module.exports = {
     createUser,
@@ -156,4 +176,6 @@ module.exports = {
     changeAvatar,
     signUpForSocial,
     depositAccount,
+    saveUserToken,
+    deleteUserToken
 }

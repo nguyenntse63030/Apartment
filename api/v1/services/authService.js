@@ -47,6 +47,8 @@ async function checkSocialLogin(data) {
         user = dataReturn.user
         token = dataReturn.token
     }
+
+    userController.saveUserToken(user._id, data.androidToken)
     return responseStatus.Code200({
         user: user,
         token: token

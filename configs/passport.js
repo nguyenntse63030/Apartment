@@ -28,6 +28,8 @@ async function createPassportConfig(app) {
         if (!await user.authenticate(password)) {
           return done(responseStatus.Code401({ errorMessage: responseStatus.IVALID_PHONE_OR_PASSWORD }), false)
         }
+        
+        await userController.saveUserToken(user._id, req.body.androidToken)
 
         let token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
           expiresIn: config.tokenExpire

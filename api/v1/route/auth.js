@@ -5,10 +5,12 @@ const responseStatus = require('../../../configs/responseStatus')
 const constants = require('../../../configs/constant')
 const authService = require('../services/authService')
 const authorize = require('../middleware/authorize')
+const userController = require('../controllers/userController')
 
 
 router.get('/sign_out', async function (req, res) {
     try {
+        await userController.deleteUserToken(req.session.user._id)
         delete req.session.user
         delete req.session.token
         return res.send(responseStatus.Code200())

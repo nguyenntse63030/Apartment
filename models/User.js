@@ -60,6 +60,10 @@ var UserSchema = new mongoose.Schema({
     createdTime: {
         type: Number,
         default: Date.now
+    },
+    androidToken: {
+        type: String,
+        default: ''
     }
 });
 
