@@ -13,5 +13,10 @@ module.exports = {
         WATER: 'Water',
         SERVICE: 'Service',
         OTHER: 'Other'
-    }
+    },
+    newsTypes: {
+        ANNOUNCEMENT: 'Announcement',
+        LIFE_AND_SOCIETY: 'Life And Society',
+        EVENT: 'Event'
+    },
 }

@@ -9,8 +9,23 @@
     body>div.wrapper>div.main-panel>div>div>div>div>div>div.card-header.card-header-primary>div>div.col-md-4>span {
         margin-top: 10px;
     }
+
+    .far.fa-trash-alt {
+        transform: scale(2);
+        color: red;
+        cursor: pointer;
+    }
 </style>
 <div class="container-fluid" ng-controller="listController">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/news/create">
+                <button type="submit" class="btn btn-plus btn-primary pull-left">
+                    <i class="fas fa-plus plus-icon"></i>
+                </button>
+            </a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -19,47 +34,50 @@
                         <div class="col-md-8">
                             <h4 class="card-title" style="line-height: 50px">News List</h4>
                         </div>
-                        <!-- <div class="col-md-4">
-                            <select style="width: 100%;" class="form-control" name="selected-apartment"
-                                id="selected-apartment" ng-model="selectedApartment" ng-change="filterApartment()">
-                                <option value="">Tất Cả</option>
-                                <option ng-repeat="apartment in apartments" value="{{apartment.name}}">
-                                    {{apartment.name}}
-                                </option>
-                            </select>
-                        </div> -->
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table" id="rooms-table">
+                        <table class="table" id="news-table">
                             <thead class=" text-primary">
-                                <th style="width: 15%"></th>
-                                <th style="width: 45%">Title</th>
+                                <th style="width: 10%"></th>
+                                <th style="width: 40%">Title</th>
                                 <th style="width: 20%">Type</th>
-                                <th style="width: 20%">Created Date</th>
+                                <th style="width: 13%">Expired Date</th>
+                                <th style="width: 13%">Created Date</th>
+                                <th style="width: 4%"></th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="new in news">
                                     <td>
-                                        <a href="/new/{{new.code}}">
-                                            {{new.photoURL}}
+                                        <a href="/news/{{new.code}}" class="flex">
+                                            <img class="img mg-0-auto" id="avatar-list"
+                                                src="{{new.photoURL || '/images/logo.png'}}" />
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/new/{{new.code}}">
+                                        <a href="/news/{{new.code}}">
                                             {{new.title}}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/new/{{new.code}}">
+                                        <a href="/news/{{new.code}}">
                                             {{new.type}}
                                         </a>
                                     </td>
+                                    <td data-order="{{new.expiredDate}}">
+                                        <a href="/news/{{new.code}}">
+                                            {{new.expiredDate == 0 ? 'N/A' : new.expiredDate | date:'dd/MM/yyyy'}}
+                                        </a>
+                                    </td>
                                     <td data-order="{{new.createdTime}}">
-                                        <a href="/new/{{new.code}}">
+                                        <a href="/news/{{new.code}}">
                                             {{new.createdTime == 0 ? 'N/A' : new.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>
+                                    </td>
+                                    <td>
+                                        <i class="far fa-trash-alt" data-toggle="modal"
+                                            data-target="#deleteNewsModal" ng-click="setDeleteNews(new._id)"></i>
                                     </td>
                                 </tr>
                             </tbody>
@@ -69,9 +87,30 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade model-center" id="deleteNewsModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="addRoomModelLabel" data-color="purple">Delete News Confirm</h3>
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="model-content">Are you sure to delete this News?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="deleteNews()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-<script src="/javascripts/supervisor/room/list.js"></script>
+<script src="/javascripts/supervisor/news/list.js"></script>
 <script>
     $(document).ready(function () {
         $('#selected-apartment').select2();

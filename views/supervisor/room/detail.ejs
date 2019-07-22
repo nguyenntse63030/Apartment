@@ -1,5 +1,4 @@
 <% layout('../../layouts/layout.ejs') -%>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 <style>
     .modal-footer {
         display: initial
@@ -77,15 +76,14 @@
             </div>
             <div class="row" style="margin-top: -20px;">
                 <div class="col-md-12">
-                    <a style="width: 100%" href="/room/{{room.code}}/bill/create"
-                        class="btn btn-primary pull-left">Add Bill</a>
+                    <a style="width: 100%" href="/room/{{room.code}}/bill/create" class="btn btn-primary pull-left">Add
+                        Bill</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 <script src="/javascripts/supervisor/room/detail.js"></script>
 <script>
     clickSideBar('room-page')

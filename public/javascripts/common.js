@@ -43,6 +43,12 @@ const COMMON = {
         PAID: 'PAID'
     },
 
+    newsTypes: {
+        ANNOUNCEMENT: 'Announcement',
+        LIFE_AND_SOCIETY: 'Life And Society',
+        EVENT: 'Event'
+    },
+
     uploadKey: 'c940089d6e1e3588e2db9c277d519696'
 }
 

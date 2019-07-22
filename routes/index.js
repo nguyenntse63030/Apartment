@@ -215,5 +215,29 @@ router.get('/news', function (req, res, next) {
   }
 });
 
+router.get('/news/create', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/news/create', { role: req.session.user.role, title: 'Create News' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/news/create', { role: req.session.user.role, title: 'Create News' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+router.get('/news/:code', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/news/detail', { code: req.params.code, role: req.session.user.role, title: 'News Detail' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/news/detail', { code: req.params.code, role: req.session.user.role, title: 'News Detail' });
+  } else {
+    res.redirect('/')
+  }
+});
+
+
+
 module.exports = router;
 

@@ -5,19 +5,21 @@
         display: initial
     }
 </style>
-<p id="code" class="hide"> <%= code %></p>
-<div class="container-fluid" ng-controller="detailController">
+<div class="container-fluid" ng-controller="createController">
     <div class="row flex">
         <div class="col-md-8 mg-0-auto">
             <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4 class="card-title">News Detail</h4>
+                    <h4 class="card-title">Create News</h4>
                 </div>
                 <div class="card-body">
                     <form>
                         <div class="row">
                             <div class="col-md-12 flex">
-                               <img src="{{news.photoURL || '/images/logo.png'}}" alt="" class="mg-0-auto news-image-detail">
+                                <img src="/images/logo.png" alt="" class="mg-0-auto news-image" id="news-image"
+                                    style="cursor: pointer; object-fit: cover;" ng-click="chooseFile()">
+                                <input id="file" type="file" accept="image/*" style="display:none"
+                                    onchange="onChangeImage(event)" />
                             </div>
                         </div>
                         <div class="row">
@@ -25,7 +27,7 @@
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Title</label>
                                     <input type="text" class="form-control" ng-model="news.title" id="title"
-                                        value="{{news.title}} " ng-disabled="isNotEditing">
+                                        value="{{news.title}} ">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +37,7 @@
                                     <label class="bmd-label-floating">Type</label>
                                     <input type="text" class="form-control hide" value=" " disabled>
                                     <select style="width: 100%;" class="form-control select2-single"
-                                        ng-model="news.type" ng-disabled="isNotEditing">
+                                        ng-model="news.type">
                                         <option value="Announcement">Announcement</option>
                                         <option value="Life And Society">Life And Society</option>
                                         <option value="Event">Event</option>
@@ -44,9 +46,9 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="bmd-label-floating">expired Date</label>
+                                    <label class="bmd-label-floating">Expired Date</label>
                                     <input type="text" class="form-control" id="expired-date"
-                                        value="{{news.expiredDate | date:'dd/MM/yyyy'}} " ng-disabled="isNotEditing">
+                                        value=" ">
                                 </div>
                             </div>
                         </div>
@@ -55,10 +57,12 @@
                                 <div class="form-group">
                                     <label for="content">Content</label>
                                     <textarea type="text" rows="15" class="form-control" ng-model="news.content"
-                                        ng-disabled="isNotEditing" id="content"></textarea>
+                                        id="content"></textarea>
                                 </div>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary pull-right"
+                            ng-click="createNews()">Create</button>
                         <div class="clearfix"></div>
                     </form>
                 </div>
@@ -68,14 +72,19 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-<script src="/javascripts/supervisor/news/detail.js"></script>
+<script src="/javascripts/supervisor/news/create.js"></script>
 <script>
     clickSideBar('news-page')
     $(document).ready(function () {
-        $('.select2-single').select2()
+        $('.select2-single').select2().val('Annoucement').trigger('change')
         $('#expired-date').datepicker({
+            dateFormat: 'dd/mm/yy',
             changeYear: true,
-            changeMonth: true
-        })
+            changeMonth: true,
+            minDate: 'today',
+        }).datepicker('setDate', 'today')
+        setTimeout(() => {
+            $('#title').focus()
+        }, 500);
     });
 </script>

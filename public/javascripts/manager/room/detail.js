@@ -1,5 +1,5 @@
 
-var app = angular.module('SWD391')
+// var app = angular.module('SWD391')
 app.controller('detailController', ['$scope', 'apiService', function ($scope, apiService) {
     const code = $('#code').text().trim()
     $scope.isNotEditing = true

@@ -10694,7 +10694,8 @@ fieldset[disabled][disabled] .has-rose .form-control, .has-rose .form-control.di
 }
 
 .bmd-form-group label {
-  color: #AAAAAA;
+  /* color: #AAAAAA; */
+  color: #ab47bc;
 }
 
 .bmd-form-group .radio label, .bmd-form-group label.radio-inline, .bmd-form-group .checkbox label, .bmd-form-group label.checkbox-inline, .bmd-form-group .switch label {

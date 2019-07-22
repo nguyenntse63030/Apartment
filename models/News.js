@@ -9,17 +9,21 @@ var NewsSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    content: {
+    type: {
         type: String,
         default: ''
     },
-    description: {
+    content: {
         type: String,
         default: ''
     },
     photoURL: {
         type: String,
         default: ''
+    },
+    expiredDate: {
+        type: Number,
+        default: Date.now
     },
     createdTime: {
         type: Number,

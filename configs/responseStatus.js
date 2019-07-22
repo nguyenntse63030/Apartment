@@ -124,7 +124,8 @@ module.exports = {
   PAYMENT_SUCCESS: 'Payment successfully',
   INVALID_ACCOUNT_PAYMENT: "Your account don't have permission to pay this bill",
   CREATE_BILL_SUCCESS: "Create bill successfully",
-  DELETE_BILL_SUCCESS: "Delete bill successfully"
-
+  DELETE_BILL_SUCCESS: "Delete bill successfully",
+  NEWS_NOT_FOUND: "News is not found",
+  DELETE_NEWS_SUCCESS: "Delete news successfully",
 
 }
