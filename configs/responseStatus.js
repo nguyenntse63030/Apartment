@@ -127,5 +127,6 @@ module.exports = {
   DELETE_BILL_SUCCESS: "Delete bill successfully",
   NEWS_NOT_FOUND: "News is not found",
   DELETE_NEWS_SUCCESS: "Delete news successfully",
+  CREATE_TRANSACTION_SUCCESS: "Create transaction successfully"
 
 }

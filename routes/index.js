@@ -237,6 +237,17 @@ router.get('/news/:code', function (req, res, next) {
   }
 });
 
+router.get('/transactions', function (req, res, next) {
+  let role = req.session.user.role
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/transactions/list', { role: req.session.user.role, title: 'Transactions' });
+  } else if (role === constant.userRole.SUPERVISOR) {
+    res.render('supervisor/transactions/list', { role: req.session.user.role, title: 'Transactions' });
+  } else {
+    res.redirect('/')
+  }
+});
+
 
 
 module.exports = router;

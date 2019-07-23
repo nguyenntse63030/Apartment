@@ -3,11 +3,14 @@ const responseStatus = require('../../../configs/responseStatus')
 const constant = require('../../../configs/constant')
 const common = require('../../common')
 const pushNotificationsController = require('../push-notifications/pushNotificationsController')
+const transactionsController = require('../controllers/transactionsController')
 
 const User = mongoose.model('User')
 const Room = mongoose.model('Room')
 const Bill = mongoose.model('Bill')
 const Apartment = mongoose.model('Apartment')
+
+
 
 
 async function createBill(roomId, data, creator) {
@@ -131,9 +134,11 @@ async function paymentBill(userId, billId) {
     let beforeTrans = customer.account
     customer.account -= bill.total
     let afterTrans = customer.account
-
+    bill.paid = bill.total
+    await bill.save()
     await customer.save()
     await changeBillStatus(bill._id, constant.billStatus.PAID)
+    await transactionsController.createTransaction(bill._id, bill.total)
 
     return responseStatus.Code200({ message: responseStatus.PAYMENT_SUCCESS, beforeTrans: beforeTrans, afterTrans: afterTrans })
 }

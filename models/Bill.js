@@ -69,8 +69,11 @@ var BillSchema = new mongoose.Schema({
     usedNumber: {
         type: Number,
         default: 0
+    },
+    paid: {
+        type: Number, 
+        default: 0
     }
-
 });
 
 

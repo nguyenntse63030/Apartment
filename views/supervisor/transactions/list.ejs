@@ -1,0 +1,86 @@
+<% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    #user-list-table_previous,
+    #user-list-table_next {
+        color: #9c27b0 !important
+    }
+
+    body>div.wrapper>div.main-panel>div>div>div>div>div>div.card-header.card-header-primary>div>div.col-md-4>span {
+        margin-top: 10px;
+    }
+</style>
+<div class="container-fluid" ng-controller="listController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="card-title" style="line-height: 50px">Transactions</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="transactions-table">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th><p class="pull-right" style="margin: 0">Total: </p></th>
+                                    <th>{{total | currency:'':0}}</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 10%">created Date</th>
+                                    <th style="width: 30%">Apartment</th>
+                                    <th style="width: 10%">Room Number</th>
+                                    <th style="width: 15%">Customer</th>
+                                    <th style="width: 15%">Payment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="transaction in transactions">
+                                    <td data-order="{{transaction.createdTime}}">
+                                        <a href="/bill/{{transaction.code}}">
+                                            {{transaction.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{transaction.code}}">
+                                            {{transaction.apartment.name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{transaction.code}}">
+                                            {{transaction.room.roomNumber}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{transaction.code}}">
+                                            {{transaction.user.name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{transaction.code}}">
+                                            {{transaction.payments | currency:'':0}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/transactions/list.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+    clickSideBar('transactions-page')
+</script>
