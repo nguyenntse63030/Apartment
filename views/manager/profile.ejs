@@ -1,0 +1,138 @@
+<% layout('../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    .modal-footer {
+        display: initial
+    }
+</style>
+<p id="code" class="hide"> <%= code %></p>
+<div class="container-fluid" ng-controller="detailController">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">User Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Fullname</label>
+                                    <input type="text" class="form-control" ng-model="user.name" id="fullname"
+                                        value="{{user.name}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Phone</label>
+                                    <input type="text" class="form-control numberInput" ng-model="user.phone"
+                                        value="{{user.phone}} " ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Gender</label>
+                                    <input type="text" class="form-control" value=" " ng-hide="true">
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="user.gender" ng-disabled="isNotEditing">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Birthdate</label>
+                                    <input type="text" class="form-control" name="birthdate" id="birthdate"
+                                        value="{{user.dateOfBirth | date:'dd/MM/yyyy'}}" ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Email address</label>
+                                    <input type="text" class="form-control" ng-model="user.email"
+                                        value="{{user.email}} " ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Address</label>
+                                    <input type="text" class="form-control" ng-model="user.address"
+                                        value="{{user.address}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Note</label>
+                                    <textarea type="text" rows="3" class="form-control" ng-model="user.note"
+                                        ng-disabled="isNotEditing" id="note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button ng-show="isNotEditing" type="submit" class="btn btn-primary pull-right"
+                            ng-click="isNotEditing=false;focusName()">Update Profile</button>
+                        <div ng-show="!isNotEditing">
+                            <button type="submit" class="btn btn-success pull-right"
+                                ng-click="isNotEditing=true;editProfile()">Save</button>
+                            <button type="submit" class="btn btn-danger pull-left"
+                                ng-click="isNotEditing=true">Cancel</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-profile">
+                <div class="card-avatar" onclick="showModalChangeAvatar()">
+                    <a href="#pablo">
+                        <img class="img" src="{{user.photoURL || '/images/logo.png'}}" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray">user</h6>
+                    <h4 class="card-title">{{user.name}}</h4>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <% include ../modal/change-avatar %>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/profile.js"></script>
+<script>
+    clickSideBar('user-page')
+    $(document).ready(function () {
+        $('#birthdate').datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:' + new Date().getFullYear()
+        })
+        $('#selected-apartment').select2({
+            placeholder: 'Select a apartment'
+        });
+        $('#selected-room').select2({
+            placeholder: 'Select a room'
+        });
+        $('.select2-single').select2()
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
+    });
+</script>
