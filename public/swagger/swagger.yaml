@@ -58,10 +58,20 @@ paths:
       responses:
         default:
           description: successful operation
+  /user/apartment:
+    get:
+      tags:
+        - user
+      summary: get user for apartment
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
   /user/{userCode}:
     get:
       tags:
         - user
+      summary: Get user by code
       parameters:
         - in: path
           name: userCode
@@ -76,7 +86,7 @@ paths:
     delete:
       tags:
         - user
-      summary: Logs user into the system
+      summary: Delete User
       operationId: loginUser
       parameters:
         - in: path
@@ -88,35 +98,527 @@ paths:
       responses:
         '200':
           description: Delete user successfully
+  /user/deposit:
+    post:
+      tags:
+        - user
+      summary: Deposit for user
+      requestBody:
+        content:
+          application/json:
+            object:
+              money:
+                type: String
+      responses:
+        '200':
+          description: Deposit for user
+  /user/:id:
+    put:
+      tags:
+        - user
+      summary: Update user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Update user
 # Đóng tags user
 # Mở tag apartment
   /apartment/:
-    delete:
+    get:
       tags:
         - apartment
-      summary: Logs apatment into the system
-      operationId: loginUser
+      summary: get all apartment
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /apartment/{{code}}:
+    get:
+      tags:
+        - apartment
+      summary: get apartment by code
       parameters:
         - in: path
-          name: code
-          description: The user code
+          name: apartmentCode
+          description: The apartment code
           required: true
           schema:
             type: string
+      description: This can only be done by the logged in user.
       responses:
-        '200':
-          description: Delete user successfully
+        default:
+          description: successful operation
+  /apartment/{{id}}:
+    put:
+      tags:
+        - apartment
+      summary: update apartment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Apartment'
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /Apartment/:
+    post:
+      tags:
+        - apartment
+      summary: create apartment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Apartment'
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
 # Mở tag apartment
+# Mở tag auth
+  /auth/sign_out:
+    get:
+      tags:
+        - auth
+      summary: Log out
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /auth/verifyGoogle:
+    post:
+      tags:
+        - auth
+      summary: Login by google mobile
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /auth/sign_in:
+    post:
+      tags:
+        - auth
+      summary: sign in web suppervisor and manager
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /auth/sign_in_mobile:
+    post:
+      tags:
+        - auth
+      summary: sign in mobile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              username:
+                type: string
+              password:
+                type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+# Mở tag auth
+# Mở tag auth
+  /bill/:
+    get:
+      tags:
+        - bill
+      summary: get All bill
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/apartment:
+    get:
+      tags:
+        - bill
+      summary: Get bill for apartment
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/room/{{roomId}}:
+    get:
+      tags:
+        - bill
+      parameters:
+        - in: path
+          name: roomId   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The room id
+      summary: sign in web suppervisor and manager
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/user/unpaid/:userId:
+    get:
+      tags:
+        - bill
+      summary: Get unpay bill for user
+      parameters:
+        - in: path
+          name: roomId   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The room id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/user/paid/:userId:
+    get:
+      tags:
+        - bill
+      summary: Get paid bill for user
+      parameters:
+        - in: path
+          name: roomId   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: the user id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/{{code}}:
+    get:
+      tags:
+        - bill
+      summary: Get bill by code
+      parameters:
+        - in: path
+          name: code   
+          required: true
+          schema:
+            type: string
+          description: the bill code
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/room/{{id}}:
+    post:
+      tags:
+        - bill
+      summary: Get bill for room
+      parameters:
+        - in: path
+          name: room id   
+          required: true
+          schema:
+            type: string
+          description: the room id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/{{id}}:
+    put:
+      tags:
+        - bill
+      summary: update bill
+      parameters:
+        - in: path
+          name: room id   
+          required: true
+          schema:
+            type: string
+          description: the room id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/payment/{{billId}}:
+    put:
+      tags:
+        - bill
+      summary: payment bill
+      parameters:
+        - in: path
+          name: bill id
+          required: true
+          schema:
+            type: string
+          description: the room id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /bill/{{billId}}:
+    delete:
+      tags:
+        - bill
+      summary: delete bill
+      parameters:
+        - in: path
+          name: bill id
+          required: true
+          schema:
+            type: string
+          description: the room id
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /news/mobile:
+    get:
+      tags:
+        - news
+      summary: Get news for mobile
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /news/:
+    get:
+      tags:
+        - news
+      summary: Get all news
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /news/code/{{code}}:
+    get:
+      tags:
+        - news
+      summary: Get news by code
+      parameters:
+        - in: path
+          name: newscode
+          description: The news code
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /News/:
+    post:
+      tags:
+        - news
+      summary: create news
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /news/{{id}}:
+    delete:
+      tags:
+        - news
+      summary: Delete news
+      parameters:
+        - in: path
+          name: newsId
+          description: The news id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/:
+    get:
+      tags:
+        - room
+      summary: Get all rooms
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/code/{{roomCode}}:
+    get:
+      tags:
+        - room
+      summary: Get room by code
+      parameters:
+        - in: path
+          name: roomCode
+          description: The room code
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/apartment/{{apartmentId}}:
+    get:
+      tags:
+        - room
+      summary: get Room for apartment
+      parameters:
+        - in: path
+          name: apartmentId
+          description: The apartment id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/user/{{userId}}:
+    get:
+      tags:
+        - room
+      summary: get Room for user
+      parameters:
+        - in: path
+          name: userId
+          description: The user id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/apartment/user/{{userId}}:
+    get:
+      tags:
+        - room
+      summary: get Room for user in apartment
+      parameters:
+        - in: path
+          name: userId
+          description: The user id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/apartment/{{id}}/floor/{{floor}}:
+    get:
+      tags:
+        - room
+      summary: Get room count in one floor of apartment
+      parameters:
+        - in: path
+          name: userId
+          description: The user id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: floor
+          description: The floor number
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/{{roomId}}/user/{{userId}}:
+    put:
+      tags:
+        - room
+      summary: Add room for user
+      parameters:
+        - in: path
+          name: roomId
+          description: The room id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: userId
+          description: The user Id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /room/apartment/:id:
+    post:
+      tags:
+        - room
+      summary: Add room for apartment
+      parameters:
+        - in: path
+          name: apartmentId
+          description: The apartment id
+          required: true
+          schema:
+            type: string
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /transactions/:
+    get:
+      tags:
+        - transactions
+      summary: Get all transactions
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /transactions/apartment:
+    get:
+      tags:
+        - transactions
+      summary: Get transactions for apartment
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /unitPrice/:
+    get:
+      tags:
+        - unitPrice
+      summary: Get unit price
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+  /UnitPrice/:
+    put:
+      tags:
+        - unitPrice
+      summary: Update unit price
+      description: This can only be done by the logged in user.
+      responses:
+        default:
+          description: successful operation
+
+# Mở tag auth
 components:
   schemas:
 # User
     User:
       type: object
       properties:
+        code:
+          type: string
         name:
           type: string
-        # dateOfBirth:
-        #   type: string
         gender:
           type: string
           enum:
@@ -133,6 +635,20 @@ components:
           type: string
         address:
           type: string
+        note:
+          type: string
+        photoURL:
+          type: string
+        apartment:
+          type: string
+        isGoogleAcc: 
+          type: boolean
+        account:
+          type: number
+        createdTime: 
+          type: number
+        androidToken: 
+          type: string
       xml:
         name: User
 # close User
@@ -142,21 +658,142 @@ components:
       properties:
         code:
           type: string
-        gender:
-          type: string
-        role:
+        name:
           type: string
         phone:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
+          type: string 
+        floors:
+          type: number
         address:
-          type: string
+          type: number
+        createdDate:
+          type: number
       xml:
-        name: User
+        name: Apartment
 # close Apartment
+# Bill
+    Bill:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        unitPrice:
+          type: number
+        total:
+          type: number
+        type:
+          type: string
+        description:
+          type: string
+        editor:
+          type: ObjectId
+        creator:
+          type: ObjectId
+        user:
+          type: ObjectId
+        apartment:
+          type: ObjectId
+        room:
+          type: ObjectId
+        status: 
+          type: string
+        createdTime:
+          type: number
+        expiredTime:
+          type: number
+        oldNumber:
+          type: number
+        newNumber:
+          type: number
+        usedNumber:
+          type: number
+        paid:
+          type: number
+      xml:
+        name: Bill
+# close Bill
+# News
+    News:
+      type: object
+      properties:
+        code:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        phone:
+          type: string 
+        content:
+          type: string
+        photoURL:
+          type: string
+        expiredDate:
+          type: number
+        createdTime:
+          type: number
+      xml:
+        name: News
+# close News
+# Room
+    Room:
+      type: object
+      properties:
+        code:
+          type: string
+        roomNumber:
+          type: number
+        apartment:
+          type: ObjectId 
+        user:
+          type: ObjectId
+        signDate:
+          type: number
+        note: 
+          type: sring
+        expiredDate:
+          type: number
+        createdTime:
+          type: number
+      xml:
+        name: Room
+# close Room
+# Transactions
+    Transactions:
+      type: object
+      properties:
+        code:
+          type: string
+        apartment:
+          type: ObjectId
+        room:
+          type: ObjectId 
+        user:
+          type: ObjectId
+        bill: 
+          type: ObjectId
+        content:
+          type: ObjectId
+        payments: 
+          type: number
+        createdTime:
+          type: number
+      xml:
+        name: Transactions
+# close Transactions
+# UnitPrice
+    UnitPrice:
+      type: object
+      properties:
+        electricity:
+          type: number
+        water:
+          type: numbers
+      xml:
+        name: UnitPrice
+# close UnitPrice
   requestBodies:
     UserArray:
       content:

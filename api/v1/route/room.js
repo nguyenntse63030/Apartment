@@ -50,7 +50,6 @@ router.get('/apartment/user/:userId', authorize(), async (req, res, next) => {
     }
 })
 
-
 router.get('/apartment/:id/floor/:floor', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.getMaxRoomInFloor(req.params.id, req.params.floor)
