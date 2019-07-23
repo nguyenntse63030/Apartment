@@ -50,7 +50,7 @@ async function createBill(roomId, data, creator) {
     bill.code = billCode
     bill.oldNumber = data.oldNumber || 0
     bill.newNumber = data.newNumber || 0
-    bill.usedNumber = data.usedNumber || (Number(data.newNumber) - Number(data.oldNumber))
+    bill.usedNumber = data.usedNumber || 0
     bill.unitPrice = data.unitPrice || 0
     bill.total = data.total || 0
     bill.title = common.generateBillTitle(bill.type)
@@ -176,6 +176,26 @@ async function deleteBill(id) {
     return responseStatus.Code200({ message: responseStatus.DELETE_BILL_SUCCESS })
 }
 
+async function createMonthyBill() {
+    let rooms = await Room.find({ user: { $exists: true } }).populate('user', '_id').populate('apartment', '_id manager')
+
+
+    for (let room of rooms) {
+        let bill = {}
+        let currentDate = new Date()
+        let expiredTime = currentDate.setDate(currentDate.getDate() + 30)
+        bill.expiredTime = expiredTime || undefined
+        bill.type = constant.billTypes.SERVICE
+        bill.user = room.user._id
+        bill.apartment = room.apartment._id
+        bill.room = room._id
+        bill.status = constant.billStatus.UNPAID
+        bill.total = constant.SERVICE_BILL_TOTAL_PRICE
+
+        await createBill(room._id, bill, room.apartment.manager)
+    }
+}
+
 module.exports = {
     createBill,
     getBillByRoomId,
@@ -186,5 +206,6 @@ module.exports = {
     getAllBill,
     getBillByCode,
     updateBill,
-    deleteBill
+    deleteBill,
+    createMonthyBill
 }

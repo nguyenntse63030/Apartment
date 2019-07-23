@@ -25,6 +25,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getRoomByCode: function (roomCode) {
             return $http.get(apiVersion + '/room/code/' + roomCode)
         },
+        getRoomForUser: function (userId) {
+            return $http.get(apiVersion + '/room/userId/' + userId)
+        },
         getAllRooms: function () {
             return $http.get(apiVersion + '/room/')
         },

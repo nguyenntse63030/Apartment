@@ -117,7 +117,56 @@
             </div>
             <button ng-click="getApartments()" type="submit" class="btn btn-primary pull-left" data-toggle="modal"
                 data-target="#addRoomModel">Add Room</button>
-            
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="card-title" style="line-height: 50px">Room List</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="rooms-table">
+                            <thead class=" text-primary">
+                                <th style="width: 10%">Number</th>
+                                <th style="width: 30%">Apartment</th>
+                                <th style="width: 15%">Sign Date</th>
+                                <th style="width: 15%">Expired Date</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="room in rooms">
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.roomNumber}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.apartment.name}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{room.signDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{room.expiredDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
