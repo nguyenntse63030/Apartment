@@ -13,6 +13,16 @@ router.get('/', authorize(), async (req, res, next) => {
     }
 })
 
+router.get('/apartment', authorize(), async (req, res, next) => {
+    try {
+        let response = await billController.getBillForApartment(req.user.id)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.get('/room/:roomId', authorize(), async (req, res, next) => {
     try {
         let response = await billController.getBillByRoomId(req.params.roomId)

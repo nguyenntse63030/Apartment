@@ -26,8 +26,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Phone</label>
-                                    <input type="text" class="form-control" ng-model="customer.phone"
-                                        value="{{customer.phone}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control numberInput" ng-model="customer.phone"
+                                        value="{{customer.phone}} " ng-disabled="true">
                                 </div>
                             </div>
                         </div>
@@ -35,15 +35,20 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Gender</label>
-                                    <input type="text" class="form-control" ng-model="customer.gender"
-                                        value="{{customer.gender}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" value=" " ng-hide="true">
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="customer.gender" ng-disabled="isNotEditing">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Birthdate</label>
-                                    <input type="text" class="form-control" ng-model="customer.dateOfBirth"
-                                        value="{{customer.dateOfBirth}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" name="birthdate" id="birthdate"
+                                        value="{{customer.dateOfBirth | date:'dd/MM/yyyy'}}" ng-disabled="isNotEditing">
                                 </div>
                             </div>
                         </div>
@@ -58,8 +63,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">Role</label>
-                                    <input type="text" class="form-control" ng-model="customer.role"
-                                        value="{{customer.role}} " ng-disabled="isNotEditing">
+                                    <input type="text" class="form-control" value=" " ng-hide="true">
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="customer.role" id="role" ng-disabled="isNotEditing">
+                                        <option value="Customer">Customer</option>
+                                        <option value="Manager">Manager</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -75,19 +84,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="bmd-label-floating">Note</label>
+                                    <label for="note">Note</label>
                                     <textarea type="text" rows="3" class="form-control" ng-model="customer.note"
-                                        value="{{customer.note}} " ng-disabled="isNotEditing"></textarea>
+                                        ng-disabled="isNotEditing" id="note"></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <button ng-show="isNotEditing" type="submit" class="btn btn-primary pull-right"
-                            ng-click="isNotEditing=false;focusName()">Update Profile</button>
-                        <div ng-show="!isNotEditing">
-                            <button type="submit" class="btn btn-success pull-right"
-                                ng-click="isNotEditing=true;editProfile()">Save</button>
-                            <button type="submit" class="btn btn-danger pull-left"
-                                ng-click="isNotEditing=true">Cancel</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -98,22 +99,66 @@
             <div class="card card-profile">
                 <div class="card-avatar" onclick="showModalChangeAvatar()">
                     <a href="">
-                        <img class="img" src="{{customer.photoURL}}" />
+                        <img class="img" src="{{customer.photoURL || '/images/logo.png'}}" />
                     </a>
                 </div>
                 <div class="card-body">
-                    <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                    <h4 class="card-title">Alec Thompson</h4>
-                    <p class="card-description">
-                        Don't be scared of the truth because we need to restart the human foundation in truth And I love
-                        you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                    </p>
-                    <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+                    <h6 class="card-category text-gray">Customer</h6>
+                    <h4 class="card-title">{{customer.name}}</h4>
                 </div>
             </div>
-            <button ng-click="getApartments()" type="submit" class="btn btn-primary pull-left" data-toggle="modal"
-                data-target="#addRoomModel">Add
-                Room</button>
+            <button ng-click="getRoom()" type="submit" class="btn btn-primary pull-left" data-toggle="modal"
+                data-target="#addRoomModel">Add Room</button>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="card-title" style="line-height: 50px">Room List</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="rooms-table">
+                            <thead class=" text-primary">
+                                <th style="width: 10%">Number</th>
+                                <th style="width: 30%">Apartment</th>
+                                <th style="width: 15%">Sign Date</th>
+                                <th style="width: 15%">Expired Date</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="room in roomsForCustomer">
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.roomNumber}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/room/{{room.code}}">
+                                            {{room.apartment.name}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{room.signDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{room.expiredDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -129,23 +174,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <select style="width: 100%" class="form-control" name="selected-apartment"
-                                    id="selected-apartment" ng-model="selectedApartment" ng-change="getRoom()">
-                                    <option ng-repeat="apartment in apartments" value="{{apartment._id}}">
-                                        {{apartment.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row" style="display: flex">
                         <div class="col-md-6" style="margin: 0 auto;">
                             <div class="form-group">
                                 <select style="width: 100%" class="form-control" name="selected-room" id="selected-room"
                                     ng-model="selectedRoom">
-                                    <option ng-repeat="room in rooms" value="{{room._id}}">
+                                    <option ng-disabled="room.user" ng-repeat="room in rooms" value="{{room._id}}">
                                         {{room.user ? room.roomNumber  + ' - ' + room.user.name : room.roomNumber}}
                                     </option>
                                 </select>
@@ -164,15 +198,26 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
-<script src="/javascripts/manager/customer/detail.js"></script>
+<script src="/javascripts/manager/user/detail.js"></script>
 <script>
     clickSideBar('user-page')
     $(document).ready(function () {
+        $('#birthdate').datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:' + new Date().getFullYear()
+        })
         $('#selected-apartment').select2({
             placeholder: 'Select a apartment'
         });
         $('#selected-room').select2({
             placeholder: 'Select a room'
         });
+        $('.select2-single').select2()
+        setTimeout(() => {
+            numberFormat()
+        }, 200);
     });
 </script>

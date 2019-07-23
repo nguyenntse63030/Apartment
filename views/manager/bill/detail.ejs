@@ -1,0 +1,220 @@
+<% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    
+</style>
+<p id="code" ng-hide="true"><%= code %></p>
+<div class="container-fluid" ng-controller="createController">
+    <div class="row flex">
+        <div class="col-md-8 mg-0-auto">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Bill Detail</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Customer Name</label>
+                                    <input type="text" class="form-control" value="{{bill.user.name}} "
+                                        id="customer-name" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Apartment</label>
+                                    <input type="text" class="form-control" value="{{bill.apartment.name}} " disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Room</label>
+                                    <input type="text" class="form-control" value="{{bill.room.roomNumber}} " disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="billTypeRadios" id="tienDien"
+                                            value="Electricity"
+                                            ng-click="bill.type = 'Electricity'; bill.unitPrice = unitPrice.electricity; resetValue"
+                                            ng-checked="bill.type === 'Electricity'" ng-disabled="isNotEditing">
+                                        <p class="bill-value">Electricity</p>
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="billTypeRadios" id="tienNuoc"
+                                            value="Water"
+                                            ng-click="bill.type = 'Water'; bill.unitPrice = unitPrice.water; resetValue()"
+                                            ng-checked="bill.type === 'Water'" ng-disabled="isNotEditing">
+                                        <p class="bill-value">Water</p>
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="billTypeRadios"
+                                            id="tienPhong" value="Service" ng-click="bill.type = 'Service';resetValue()"
+                                            ng-checked="bill.type === 'Service'" ng-disabled="isNotEditing">
+                                        <p class="bill-value">Services</p>
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-hide="bill.type==='Service'">
+                            <div class="col-md-4">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Electricity'">Old Number
+                                        (kWh)</label>
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Water'">Old Number
+                                        (m<sup>3</sup>)</label>
+                                    <input type="text" class="form-control currencyInput" ng-model="bill.oldNumber"
+                                        value=" " ng-change="calTotal()" ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Electricity'">New Number
+                                        (kWh)</label>
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Water'">New Number
+                                        (m<sup>3</sup>)</label>
+                                    <input type="text" class="form-control currencyInput" ng-model="bill.newNumber"
+                                        value=" " ng-change="calTotal()" ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Electricity'">Used Number
+                                        (kWh)</label>
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Water'">Used Number
+                                        (m<sup>3</sup>)</label>
+                                    <input type="text" class="form-control" ng-model="bill.usedNumber" disabled
+                                        ng-value="bill.usedNumber | currency:'':0" value=" ">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" ng-hide="bill.type==='Service'">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Electricity'">Unit Price
+                                        (VND/Kwh)</label>
+                                    <label class="bmd-label-floating" ng-show="bill.type==='Water'">Unit Price
+                                        (VND/m<sup>3</sup>)</label>
+                                    <input type="text" class="form-control currencyInput" value=" "
+                                        ng-model="bill.unitPrice" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating">Total (VND)</label>
+                                    <input type="text" class="form-control currencyInput" ng-model="bill.total"
+                                        value=" " ng-disabled="bill.type!=='Service' || isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group select-in-form">
+                                    <label class="bmd-label-floating">Status</label>
+                                    <input type="text" class="form-control hide" value=" " disabled>
+                                    <select style="width: 100%;" class="form-control select2-single"
+                                        ng-model="bill.status" ng-disabled="isNotEditing">
+                                        <option value="UNPAY">Unpaid</option>
+                                        <option value="PAID">Paid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-hide="bill.status ==='PAID'">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Expired Date</label>
+                                    <input type="text" class="form-control datePicker" ng-model="bill.expiredTime"
+                                        value=" " id="expiredDate" ng-value="bill.expiredTime | date:'dd/MM/yyyy'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Note</label>
+                                    <textarea type="text" rows="3" class="form-control" ng-model="bill.description"
+                                        ng-disabled="isNotEditing"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="isNotEditing" ng-hide="bill.status === 'PAID'">
+                            <button type="submit" class="btn btn-danger pull-left" data-toggle="modal"
+                                data-target="#deleteBillModal">Delete</button>
+                            <button type="submit" class="btn btn-primary pull-right"
+                                ng-click="isNotEditing=false;">Edit</button>
+                        </div>
+
+                        <div ng-show="!isNotEditing">
+                            <button type="submit" class="btn btn-success pull-right"
+                                ng-click="isNotEditing=true;updateBill()">Save</button>
+                            <button type="submit" class="btn btn-danger pull-left"
+                                ng-click="isNotEditing=true">Cancel</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade model-center" id="deleteBillModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="addRoomModelLabel" data-color="purple">Delete Bill Confirm</h3>
+                    <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="model-content">Are you sure to delete this bill?</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="deleteBill()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/supervisor/bill/detail.js"></script>
+<script>
+    clickSideBar('bill-page')
+    $(document).ready(function () {
+        $('.select2-single').select2()
+        $('.datePicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            minDate: '+7D',
+            yearRange: new Date().getFullYear() + ':+100'
+        }).datepicker('setDate', 'today')
+        setTimeout(function () {
+            currencyFormat()
+        }, 200)
+    })
+</script>

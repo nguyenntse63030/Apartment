@@ -4,6 +4,7 @@ var passport = require('passport')
 var mongoose = require('mongoose')
 var User = mongoose.model('User')
 var jwt = require('jsonwebtoken')
+const constant = require('./constant')
 var responseStatus = require('./responseStatus')
 const config = require('../config')
 var LocalStrategy = require('passport-local').Strategy
@@ -21,19 +22,25 @@ async function createPassportConfig(app) {
       },
       async function (req, username, password, done) {
         const usernameTrim = trimUsername(username);
-        let user = await User.findOne({ phone: usernameTrim })
+        let user = await User.findOne({ phone: usernameTrim }).populate('apartment')
         if (!user) {
           return done(responseStatus.Code400({ errorMessage: responseStatus.INVALID_REQUEST }))
         }
         if (!await user.authenticate(password)) {
           return done(responseStatus.Code401({ errorMessage: responseStatus.IVALID_PHONE_OR_PASSWORD }), false)
         }
-        
-        await userController.saveUserToken(user._id, req.body.androidToken)
 
-        let token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
-          expiresIn: config.tokenExpire
-        })
+        await userController.saveUserToken(user._id, req.body.androidToken)
+        let token = ''
+        if (user.role === constant.userRole.SUPERVISOR) {
+          token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
+            expiresIn: config.tokenExpire
+          })
+        } else if (user.role === constant.userRole.MANAGER) {
+          token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, apartment: user.apartment, loggedInTimestamp: Date.now() }, config.secret, {
+            expiresIn: config.tokenExpire
+          })
+        }
         delete user.password
         return done(null, true, {
           user: user,

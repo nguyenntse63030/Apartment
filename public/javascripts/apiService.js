@@ -7,6 +7,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getUser: function (code) {
             return $http.get(apiVersion + '/user/' + code)
         },
+        getCustomerForApartment: function () {
+            return $http.get(apiVersion + '/user/apartment')
+        },
         createUser: function (data) {
             return $http.post(apiVersion + '/user/', data)
         },
@@ -27,6 +30,12 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         },
         getRoomForUser: function (userId) {
             return $http.get(apiVersion + '/room/userId/' + userId)
+        },
+        getRoomForApartment: function (apartmentId) {
+            return $http.get(apiVersion + '/room/apartment/' + apartmentId)
+        },
+        getRoomForUserInApartment: function (userId) {
+            return $http.get(apiVersion + '/room/apartment/user/' + userId)
         },
         getAllRooms: function () {
             return $http.get(apiVersion + '/room/')
@@ -54,6 +63,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         },
         getAllBill: function () {
             return $http.get(apiVersion + '/bill/')
+        },
+        getBillForApartment: function () {
+            return $http.get(apiVersion + '/bill/apartment')
         },
         createBill: function (roomId, data) {
             return $http.post(apiVersion + '/bill/room/' + roomId, data)
@@ -87,6 +99,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         },
         getAllTransactions: function () {
             return $http.get(apiVersion + '/transactions/')
+        },
+        getTransactionsForApartment: function () {
+            return $http.get(apiVersion + '/transactions/apartment')
         },
     }
 }])

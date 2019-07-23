@@ -4,6 +4,8 @@ const responseStatus = require('../../../configs/responseStatus')
 const common = require('../../common')
 const jwt = require('jsonwebtoken')
 const config = require('../../../config')
+const roomController = require('./roomController')
+const constant = require('../../../configs/constant')
 
 async function getUserByCode(code) {
     let user = await User.findOne({ code: code })   //Tìm User theo code trong database
@@ -166,6 +168,35 @@ const deleteUserToken = async function (id) {
     return responseStatus.Code200({ message: 'Delete Token Successfully' })
 }
 
+const getCustomerForApartment = async function (managerId) {
+    let manager = await User.findById(managerId)
+    if (!manager){
+        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
+    }
+    let roomsHaveUser = (await roomController.getRoomHaveUserForApartment(manager.apartment)).rooms
+    let customers = []
+
+    if (roomsHaveUser && roomsHaveUser.length) {
+        let arrDuplicate = {}
+        let roomsNoDuplicate = roomsHaveUser.filter(function (room) {
+            if (room.user in arrDuplicate) {
+                return false;
+            } else {
+                arrDuplicate[room.user] = true;
+                return true;
+            }
+        });
+        let arrUserId = []
+        for (let room of roomsNoDuplicate) {
+            arrUserId.push(room.user)
+        }
+
+        customers = await User.find({ _id: { $in: arrUserId }, role: constant.userRole.CUSTOMER })
+    }
+
+    return responseStatus.Code200({ customers: customers })
+}
+
 
 module.exports = {
     createUser,
@@ -177,5 +208,6 @@ module.exports = {
     signUpForSocial,
     depositAccount,
     saveUserToken,
-    deleteUserToken
+    deleteUserToken,
+    getCustomerForApartment
 }

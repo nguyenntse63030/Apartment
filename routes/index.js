@@ -51,10 +51,9 @@ router.get('/user', function (req, res, next) {
 
 router.get('/user/create', function (req, res, next) {
   let role = req.session.user.role
-  // if (role === constant.userRole.MANAGER) {
-  //   res.render('manager/user/create', { role: req.session.user.role, title: 'Create User' });
-  // } else 
-  if (role === constant.userRole.SUPERVISOR) {
+  if (role === constant.userRole.MANAGER) {
+    res.render('manager/user/create', { role: req.session.user.role, title: 'Create User' });
+  } else if (role === constant.userRole.SUPERVISOR) {
     res.render('supervisor/user/create', { role: req.session.user.role, title: 'Create User' });
   } else {
     res.redirect('/')

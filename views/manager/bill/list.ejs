@@ -1,0 +1,83 @@
+<% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+<style>
+    #user-list-table_previous,
+    #user-list-table_next {
+        color: #9c27b0 !important
+    }
+
+    body>div.wrapper>div.main-panel>div>div>div>div>div>div.card-header.card-header-primary>div>div.col-md-4>span {
+        margin-top: 10px;
+    }
+</style>
+<div class="container-fluid" ng-controller="listController">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="card-title" style="line-height: 50px">Bill List</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="bill-table">
+                            <thead class="text-primary">
+                                <th style="width: 20%">Apartment</th>
+                                <th style="width: 10%">Room</th>
+                                <th style="width: 15%">Type</th>
+                                <th style="width: 15%">Status</th>
+                                <th style="width: 20%">Created Date</th>
+                                <th style="width: 20%">Expired Date</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="bill in bills">
+                                    <td>
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.apartment.name}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.room.roomNumber}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.type}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.status}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{bill.createdTime}}">
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.createdTime == 0 ? 'N/A' : bill.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                    <td data-order="{{bill.expiredTime}}">
+                                        <a href="/bill/{{bill.code}}">
+                                            {{bill.expiredTime == 0 ? 'N/A' : bill.expiredTime | date:'dd/MM/yyyy HH:mm:ss'}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="/javascripts/manager/bill/list.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#selected-apartment').select2();
+    });
+    clickSideBar('bill-page')
+</script>

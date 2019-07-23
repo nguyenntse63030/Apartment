@@ -40,6 +40,17 @@ router.get('/userId/:userId', authorize(), async (req, res, next) => {
     }
 })
 
+router.get('/apartment/user/:userId', authorize(), async (req, res, next) => {
+    try {
+        let response = await roomController.getRoomForUserInApartment(req.params.userId, req.user.id)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+
 router.get('/apartment/:id/floor/:floor', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.getMaxRoomInFloor(req.params.id, req.params.floor)

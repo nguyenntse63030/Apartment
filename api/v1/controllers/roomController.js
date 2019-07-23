@@ -43,8 +43,8 @@ async function getRoomsByUserId(userId) {
     let listRoom = await Room.find({ user: userId }).populate('user').populate('apartment')
     listRoom = JSON.parse(JSON.stringify(listRoom))
     for (let room of listRoom) {
-        let bills = await Bill.find({room: room._id})
-        if (bills){
+        let bills = await Bill.find({ room: room._id })
+        if (bills) {
             room.totalBill = bills.length.toString()
             let unpaidBill = bills.filter((bill) => {
                 return bill.status === constant.billStatus.UNPAY
@@ -54,13 +54,29 @@ async function getRoomsByUserId(userId) {
     }
     return responseStatus.Code200({ listRoom: listRoom })
 }
+
+async function getRoomForUserInApartment(userId, managerId) {
+    let user = await User.findById(userId)
+    if (!user) {
+        return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+
+    let manager = await User.findById(managerId)
+    if (!manager) {
+        return responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+    let listRoom = await Room.find({ user: user._id, apartment: manager.apartment }).populate('user').populate('apartment')
+
+    return responseStatus.Code200({ listRoom: listRoom })
+}
+
 async function getRoomByCode(roomCode) {
     let room = await Room.findOne({ code: roomCode }).populate('user').populate('apartment')
     return responseStatus.Code200({ room: room })
 }
 
 async function getRoomForApartment(apartmentId) {
-    let rooms = await Room.find({ apartment: apartmentId }).populate('user', 'name').sort({ roomNumber: 1 })
+    let rooms = await Room.find({ apartment: apartmentId }).populate('user', 'name').populate('apartment').sort({ roomNumber: 1 })
     return responseStatus.Code200({ rooms: rooms })
 }
 
@@ -141,6 +157,11 @@ async function addRoomForApartment(apartmentId, roomNumber) {
     return responseStatus.Code200({ message: responseStatus.CREATE_ROOM_SUCCESS })
 }
 
+const getRoomHaveUserForApartment = async (apartmentId) => {
+    let rooms = await Room.find({ apartment: apartmentId, user: { $exists: true } })
+    return responseStatus.Code200({ rooms: rooms })
+}
+
 module.exports = {
     addRoomForUser,
     getRoomsByUserId,
@@ -149,5 +170,7 @@ module.exports = {
     getAllRooms,
     createRoomInApartment,
     getMaxRoomInFloor,
-    addRoomForApartment
+    addRoomForApartment,
+    getRoomHaveUserForApartment,
+    getRoomForUserInApartment
 }

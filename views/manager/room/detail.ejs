@@ -1,0 +1,92 @@
+<% layout('../../layouts/layout.ejs') -%>
+<style>
+    .modal-footer {
+        display: initial
+    }
+</style>
+<p id="code" class="hide"> <%= code %></p>
+<div class="container-fluid" ng-controller="detailController">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Room Detail</h4>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Room Number</label>
+                                    <input type="text" class="form-control" ng-model="room.roomNumber" id="roomNumber"
+                                        value="{{room.roomNumber}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Apartment</label>
+                                    <input type="text" class="form-control" ng-model="room.apartment.name"
+                                        value="{{room.apartment.name}} " ng-disabled="isNotEditing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="note">Note</label>
+                                    <textarea type="text" rows="3" class="form-control" ng-model="customer.note"
+                                        ng-disabled="isNotEditing" id="note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" ng-show="room.user">
+            <div class="card card-profile">
+                <div class="card-avatar">
+                    <a href="/customer/{{room.user.code}}">
+                        <img class="img" src="{{room.user.photoURL || '/images/logo.png'}}" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-category text-gray">Customer</h6>
+                    <h4 class="card-title">{{room.user.name}}</h4>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="signDate">Sign Date</label>
+                                <input type="text" class="form-control" ng-model="room.signDate | date: 'dd/MM/yyyy'"
+                                    id="signDate" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="expiredDate pull-right">Expired Date</label>
+                                <input type="text" class="form-control"
+                                    ng-value="room.expiredDate > 0 ? (room.expiredDate | date: 'dd/MM/yyyy') : 'N/A'"
+                                    id="expiredDate" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: -20px;">
+                <div class="col-md-12">
+                    <a style="width: 100%" href="/room/{{room.code}}/bill/create" class="btn btn-primary pull-left">Add
+                        Bill</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/javascripts/supervisor/room/detail.js"></script>
+<script>
+    clickSideBar('room-page')
+    $(document).ready(function () {
+    });
+</script>

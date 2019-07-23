@@ -1,8 +1,13 @@
 <% layout('../../layouts/layout.ejs') -%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 <style>
     #user-list-table_previous,
-    #user-list-table_next{
+    #user-list-table_next {
         color: #9c27b0 !important
+    }
+
+    body>div.wrapper>div.main-panel>div>div>div>div>div>div.card-header.card-header-primary>div>div.col-md-4>span {
+        margin-top: 10px;
     }
 </style>
 <div class="container-fluid" ng-controller="listController">
@@ -10,44 +15,47 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4 class="card-title ">Room List</h4>
-                    <p class="card-category"></p>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="card-title" style="line-height: 50px">Room List</h4>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table" id="rooms-table">
                             <thead class=" text-primary">
-                                <th style="width: 10%">Name</th>
-                                <th style="width: 10%">Phone</th>
-                                <th style="width: 10%">Email</th>
-                                <th style="width: 10%">Address</th>
-                                <th style="width: 10%">Created Time</th>
+                                <th style="width: 10%">Number</th>
+                                <th style="width: 20%">Owner</th>
+                                <th style="width: 30%">Apartment</th>
+                                <th style="width: 15%">Sign Date</th>
+                                <th style="width: 15%">Expired Date</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="customer in customers">
+                                <tr ng-repeat="room in rooms">
                                     <td>
-                                        <a href="/customer/{{customer.code}}">
-                                            {{customer.name}}
+                                        <a href="/room/{{room.code}}">
+                                            {{room.roomNumber}}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/customer/{{customer.code}}">
-                                            {{customer.phone}}
+                                        <a href="/room/{{room.code}}">
+                                            {{room.user.name}}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="/customer/{{customer.code}}">
-                                            {{customer.email}}
+                                        <a href="/room/{{room.code}}">
+                                            {{room.apartment.name}}
                                         </a>
                                     </td>
-                                    <td>
-                                        <a href="/customer/{{customer.code}}">
-                                            {{customer.email}}
+                                    <td data-order="{{room.signDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.signDate == 0 ? 'N/A' : room.signDate | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>
                                     </td>
-                                    <td data-order="customer.createdTime">
-                                        <a href="/customer/{{customer.code}}">
-                                            {{customer.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
+                                    <td data-order="{{room.expiredDate}}">
+                                        <a href="/room/{{room.code}}">
+                                            {{room.expiredDate == 0 ? 'N/A' : room.expiredDate | date:'dd/MM/yyyy HH:mm:ss'}}
                                         </a>
                                     </td>
                                 </tr>
@@ -59,7 +67,11 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 <script src="/javascripts/manager/room/list.js"></script>
 <script>
+    $(document).ready(function () {
+        $('#selected-apartment').select2();
+    });
     clickSideBar('room-page')
 </script>

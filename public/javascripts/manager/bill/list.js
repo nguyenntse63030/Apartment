@@ -1,17 +1,23 @@
-
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
-    apiService.getCustomers(COMMON.userRole.CUSTOMER).then(function (res) {
-        $scope.customers = res.data.listUser
+
+    apiService.getBillForApartment().then(function (res) {
+        $scope.bills = res.data.bills
         setTimeout(() => {
-            initCustomersDatatable()
+            initBillDatatable()
         }, 200);
     }).catch(function (error) {
         console.log(error)
     })
 
-    function initCustomersDatatable() {
-        customerTable = $('#user-list-table').DataTable({
+    apiService.getAllApartment().then(function (res) {
+        $scope.apartments = res.data.apartments
+    }).catch(function (error) {
+        console.log(error)
+    })
+
+    function initBillDatatable() {
+        billTable = $('#bill-table').DataTable({
             retrieve: true,
             aLengthMenu: [
                 [10, 20, 50, -1],
@@ -26,7 +32,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
             search: {
                 caseInsensitive: true
             },
-            // aaSorting: [4, 'desc'],
+            // aaSorting: [2, 'desc'],
             order: [4, 'desc'],
             columnDefs: [{
                 // targets: [0],
@@ -34,5 +40,12 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
             }],
             aaSorting: []
         })
+    }
+
+    $scope.filterApartment = () => {
+        let _table = $('#bill-table').DataTable()
+        _table.columns(0)
+            .search($scope.selectedApartment)
+            .draw()
     }
 }])

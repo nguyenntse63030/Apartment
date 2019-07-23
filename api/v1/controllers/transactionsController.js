@@ -35,12 +35,30 @@ async function createTransaction(billId, paid) {
 
 async function getAllTransactions() {
     let transactions = await Transactions.find().sort({ createdTime: -1 })
-    .populate('user', 'name')
-    .populate('apartment', 'name')
-    .populate('room', 'roomNumber')
+        .populate('user', 'name')
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
 
     let total = 0
-    for(let transaction of transactions){
+    for (let transaction of transactions) {
+        total += transaction.payments
+    }
+
+    return responseStatus.Code200({ transactions: transactions, total: total })
+}
+
+async function getTransactionsForApartment(managerId) {
+    let manager = await User.findById(managerId)
+    if (!manager) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+    let transactions = await Transactions.find({ apartment: manager.apartment }).sort({ createdTime: -1 })
+        .populate('user', 'name')
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
+
+    let total = 0
+    for (let transaction of transactions) {
         total += transaction.payments
     }
 
@@ -50,5 +68,6 @@ async function getAllTransactions() {
 
 module.exports = {
     createTransaction,
-    getAllTransactions
+    getAllTransactions,
+    getTransactionsForApartment
 }

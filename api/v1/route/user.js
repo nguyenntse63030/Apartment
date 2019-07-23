@@ -16,6 +16,16 @@ router.get('/role/:role', authorize(), async (req, res, next) => {    //:role đ
     }
 })
 
+router.get('/apartment', authorize(), async (req, res, next) => {    
+    try {
+        const response = await userController.getCustomerForApartment(req.user.id) 
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.get('/:code', authorize(), async (req, res, next) => {
     try {
         const response = await userController.getUserByCode(req.params.code) //lấy biến code trong req.params

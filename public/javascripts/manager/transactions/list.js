@@ -1,19 +1,18 @@
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
 
-    let user = JSON.parse(COMMON.getCookie('user'))
-    let apartmentId = user.apartment._id
-    apiService.getRoomForApartment(apartmentId).then(function (res) {
-        $scope.rooms = res.data.rooms
+    apiService.getTransactionsForApartment().then(function (res) {
+        $scope.transactions = res.data.transactions
+        $scope.total = res.data.total
         setTimeout(() => {
-            initRoomsDatatable()
+            initTransactionsDatatable()
         }, 200);
     }).catch(function (error) {
         console.log(error)
     })
 
-    function initRoomsDatatable() {
-        roomsTable = $('#rooms-table').DataTable({
+    function initTransactionsDatatable() {
+        transactionsTable = $('#transactions-table').DataTable({
             retrieve: true,
             aLengthMenu: [
                 [10, 20, 50, -1],
@@ -29,7 +28,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
                 caseInsensitive: true
             },
             // aaSorting: [2, 'desc'],
-            order: [2, 'desc'],
+            order: [0, 'desc'],
             columnDefs: [{
                 // targets: [0],
                 // sortable: false

@@ -10,9 +10,6 @@ const Room = mongoose.model('Room')
 const Bill = mongoose.model('Bill')
 const Apartment = mongoose.model('Apartment')
 
-
-
-
 async function createBill(roomId, data, creator) {
     let currentDate = new Date()
 
@@ -162,6 +159,18 @@ async function getAllBill() {
     return responseStatus.Code200({ bills: bills })
 }
 
+async function getBillForApartment(managerId) {
+    let manager = await User.findById(managerId)
+    if (!manager){
+        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
+    }
+    let bills = await Bill.find({apartment: manager.apartment}).sort({ createdtime: -1 })
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
+        .populate('user')
+    return responseStatus.Code200({ bills: bills })
+}
+
 async function getBillByCode(code) {
     let bill = await Bill.findOne({ code: code })
         .populate('user', 'name')
@@ -212,5 +221,6 @@ module.exports = {
     getBillByCode,
     updateBill,
     deleteBill,
-    createMonthyBill
+    createMonthyBill,
+    getBillForApartment
 }
