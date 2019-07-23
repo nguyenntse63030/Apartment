@@ -16,7 +16,10 @@ info:
 tags:
   - name: user
     description: Operations about user
+  - name: apartment
+    description: Operations about user
 paths:
+# Mở tags user
   /user/:
     post:
       tags:
@@ -85,8 +88,28 @@ paths:
       responses:
         '200':
           description: Delete user successfully
+# Đóng tags user
+# Mở tag apartment
+  /apartment/:
+    delete:
+      tags:
+        - apartment
+      summary: Logs apatment into the system
+      operationId: loginUser
+      parameters:
+        - in: path
+          name: code
+          description: The user code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete user successfully
+# Mở tag apartment
 components:
   schemas:
+# User
     User:
       type: object
       properties:
@@ -112,6 +135,28 @@ components:
           type: string
       xml:
         name: User
+# close User
+# Apartment
+    Apartment:
+      type: object
+      properties:
+        code:
+          type: string
+        gender:
+          type: string
+        role:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+      xml:
+        name: User
+# close Apartment
   requestBodies:
     UserArray:
       content:
