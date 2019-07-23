@@ -70,6 +70,17 @@ router.put('/:roomId/user/:userId', authorize(), async (req, res, next) => {
     }
 })
 
+router.put('/:roomId/remove-user', authorize(), async (req, res, next) => {
+    try {
+        let response = await roomController.removeUserFromRoom(req.params.roomId)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+
 router.post('/apartment/:id', authorize(), async (req, res, next) => {
     try {
         let response = await roomController.addRoomForApartment(req.params.id, Number(req.body.roomNumber))

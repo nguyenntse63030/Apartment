@@ -11,6 +11,19 @@ app.controller('detailController', ['$scope', 'apiService', function ($scope, ap
         showNotification(error.data.errorMessage, 'danger')
     })
 
+    $scope.removeUserFromRoom = () => {
+        debugger
+        apiService.removeUserFromRoom($scope.room._id).then(function (res){
+            showNotification(res.data.message, 'success')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1500);
+        }).catch(function (error){
+            console.log(error)
+            showNotification(error.data.errorMessage, 'danger')
+        })
+    }
+
     $scope.addRoomForUser = () => {
         if (!$scope.selectedApartment) {
             return showNotification('Please choose the apartment', 'danger')

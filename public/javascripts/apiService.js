@@ -43,6 +43,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         addRoomForUser: function (roomId, userId) {
             return $http.put(apiVersion + '/room/' + roomId + '/user/' + userId)
         },
+        removeUserFromRoom: function (roomId) {
+            return $http.put(apiVersion + '/room/' + roomId + '/remove-user')
+        },
         getAllApartment: function () {
             return $http.get(apiVersion + '/apartment/')
         },
