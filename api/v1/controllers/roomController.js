@@ -47,7 +47,7 @@ async function getRoomsByUserId(userId) {
         if (bills){
             room.totalBill = bills.length.toString()
             let unpaidBill = bills.filter((bill) => {
-                return bill.status === constant.billStatus.UNPAID
+                return bill.status === constant.billStatus.UNPAY
             })
             room.unpaidBill = unpaidBill.length.toString()
         }

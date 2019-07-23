@@ -6,7 +6,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         oldNumber: 0,
         newNumber: 0,
         usedNumber: 0,
-        status: 'UNPAID',
+        status: 'UNPAY',
         total: 0
     }
     let roomCode = $('#roomCode').text().trim()

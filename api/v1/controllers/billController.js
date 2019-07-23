@@ -49,7 +49,7 @@ async function createBill(roomId, data, creator) {
     bill.user = user._id || undefined
     bill.apartment = apartment._id || undefined
     bill.room = room._id || undefined
-    bill.status = data.status || constant.billStatus.UNPAID
+    bill.status = data.status || constant.billStatus.UNPAY
     bill.code = billCode
     bill.oldNumber = data.oldNumber || 0
     bill.newNumber = data.newNumber || 0
@@ -75,7 +75,7 @@ async function updateBill(id, data, editor) {
     bill.type = data.type || constant.billTypes.OTHER
     bill.description = data.description || ''
     bill.editor = editor || undefined
-    bill.status = data.status || constant.billStatus.UNPAID
+    bill.status = data.status || constant.billStatus.UNPAY
     bill.oldNumber = data.oldNumber || 0
     bill.newNumber = data.newNumber || 0
     bill.usedNumber = data.usedNumber || (Number(data.newNumber) - Number(data.oldNumber))
@@ -97,7 +97,7 @@ async function getUnpaidBillByUserId(userId) {
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
-    let statusCheck = 'UNPAID'
+    let statusCheck = 'UNPAY'
     let bills = await Bill.find({ user: userId }).find({ status: statusCheck }).sort({ createdTime: -1 }).populate('apartment').populate('creator').populate('room').populate('user')
     return responseStatus.Code200({ listBill: bills })
 }
@@ -194,7 +194,7 @@ async function createMonthyBill() {
         bill.user = room.user._id
         bill.apartment = room.apartment._id
         bill.room = room._id
-        bill.status = constant.billStatus.UNPAID
+        bill.status = constant.billStatus.UNPAY
         bill.total = constant.SERVICE_BILL_TOTAL_PRICE
 
         await createBill(room._id, bill, room.apartment.manager)

@@ -39,7 +39,7 @@ const COMMON = {
     },
 
     billStatus: {
-        UNPAID: 'UNPAID',
+        UNPAY: 'UNPAY',
         PAID: 'PAID'
     },
 

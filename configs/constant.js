@@ -5,7 +5,7 @@ module.exports = {
         SUPERVISOR: 'Supervisor'
     },
     billStatus: {
-        UNPAID: 'UNPAID',
+        UNPAY: 'UNPAY',
         PAID: 'PAID'
     },
     billTypes: {
