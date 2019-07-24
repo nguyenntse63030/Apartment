@@ -90,7 +90,6 @@ router.post('/sign_in_mobile', async function (req, res, next) {
 
             if (info.user.role === constants.userRole.CUSTOMER) {
                 objectReturnn.user = info.user
-                objectReturnn.token = info.token
                 req.session.token = info.token
                 req.session.user = info.user
                 req.logIn(user, function (err) {
