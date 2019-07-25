@@ -1,46 +1,77 @@
 var app = angular.module('SWD391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
 
-    apiService.getAllTransactions().then(function (res) {
-        $scope.transactions = res.data.transactions
-        $scope.total = res.data.total
-        setTimeout(() => {
-            initTransactionsDatatable()
-        }, 200);
-    }).catch(function (error) {
-        console.log(error)
-    })
-
     function initTransactionsDatatable() {
-        transactionsTable = $('#transactions-table').DataTable({
-            retrieve: true,
-            aLengthMenu: [
-                [10, 20, 50, -1],
-                [10, 20, 50, 'Tất cả']
+        transactionstable = $('#transactions-table').DataTable({
+            deferRender: true,
+            serverSide: false,
+            processing: true,
+            paging: true,
+            pageLength: 10,
+            ajax: {
+                url: '/api/v1/transactions/month',
+                type: 'GET',
+                dataSrc: function (response) {
+                    $scope.total = response.total
+                    let dataHandle = response.transactions.map(function (transaction) {
+                        return {
+                            createdDate: generateATag(transaction, 'createdTime'),
+                            apartment: generateATag(transaction, 'apartment'),
+                            roomNumber: generateATag(transaction, 'room'),
+                            customer: generateATag(transaction, 'user'),
+                            payment: generateATag(transaction, 'payments'),
+                        }
+                    })
+                    return dataHandle
+                },
+                data: function (data) {
+                    data.time = getTimestampFromDatePickerMonth('#datepicker')
+                    return data
+                }
+            },
+            columns: [
+                { data: 'createdDate' },
+                { data: 'apartment' },
+                { data: 'roomNumber' },
+                { data: 'customer' },
+                { data: 'payment' },
             ],
-            iDisplayLength: 20,
+            aLengthMenu: [
+                [20, 50, 100, Number.MAX_SAFE_INTEGER],
+                [20, 50, 100, 'Tất cả']
+            ],
             language: {
                 decimal: '.',
                 thousands: ',',
-                url: '//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json'
+                url: '//cdn.datatables.net/plug-ins/1.10.15/i18n/Vietnamese.json'
             },
             search: {
                 caseInsensitive: true
             },
-            // aaSorting: [2, 'desc'],
             order: [0, 'desc'],
-            columnDefs: [{
-                // targets: [0],
-                // sortable: false
-            }],
-            aaSorting: []
         })
     }
 
-    $scope.filterApartment = () => {
-        let _table = $('#rooms-table').DataTable()
-        _table.columns(2)
-            .search($scope.selectedApartment)
-            .draw()
+    setTimeout(() => {
+        initTransactionsDatatable()
+    }, 1000);
+
+    function generateATag(transaction, property) {
+        let data = transaction[property]
+        if (property === 'createdTime') {
+            data = formatDate(data)
+        } else if (property === 'payments') {
+            data = parseNumberToMoney(data)
+        } else if (property === 'apartment' || property === 'user') {
+            data = data.name
+        } else if (property === 'room') {
+            data = data.roomNumber
+        }
+        let result = '<a href="' + transaction.code + '">' + data + '</a>'
+        return result
+    }
+
+    $scope.reloadData = () => {
+        transactionstable.ajax.reload()
     }
 }])

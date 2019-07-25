@@ -13,6 +13,16 @@ router.get('/', authorize(), async (req, res, next) => {
     }
 })
 
+router.get('/month', authorize(), async (req, res, next) => {
+    try {
+        let response = await transactionsController.getTransactionsPerMonth(req.query.time)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.get('/apartment', authorize(), async (req, res, next) => {
     try {
         let response = await transactionsController.getTransactionsForApartment(req.user.id)

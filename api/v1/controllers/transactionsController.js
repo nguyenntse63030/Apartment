@@ -9,8 +9,6 @@ const Apartment = mongoose.model('Apartment')
 const Bill = mongoose.model('Bill')
 const Transactions = mongoose.model('Transactions')
 
-
-
 async function createTransaction(billId, paid) {
     let bill = await Bill.findById(billId)
     if (!bill) {
@@ -47,6 +45,22 @@ async function getAllTransactions() {
     return responseStatus.Code200({ transactions: transactions, total: total })
 }
 
+async function getTransactionsPerMonth(beginMonth) {
+    beginMonth = Number(beginMonth)
+    let endMonth = common.getTimestampEndOfMonth(beginMonth)
+    let transactions = await Transactions.find({ createdTime: { $gte: beginMonth, $lte: endMonth } }).sort({ createdTime: -1 })
+        .populate('user', 'name')
+        .populate('apartment', 'name')
+        .populate('room', 'roomNumber')
+
+    let total = 0
+    for (let transaction of transactions) {
+        total += transaction.payments
+    }
+
+    return responseStatus.Code200({ transactions: transactions, total: total })
+}
+
 async function getTransactionsForApartment(managerId) {
     let manager = await User.findById(managerId)
     if (!manager) {
@@ -69,5 +83,6 @@ async function getTransactionsForApartment(managerId) {
 module.exports = {
     createTransaction,
     getAllTransactions,
-    getTransactionsForApartment
+    getTransactionsForApartment,
+    getTransactionsPerMonth
 }

@@ -9,12 +9,31 @@
     body>div.wrapper>div.main-panel>div>div>div>div>div>div.card-header.card-header-primary>div>div.col-md-4>span {
         margin-top: 10px;
     }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    #datepicker {
+        z-index: 2;
+        width: 200px;
+        color: #ab47bc;
+        font-size: 32px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 </style>
 <div class="container-fluid" ng-controller="listController">
     <div class="row">
+        <div class="col-md-2">
+            <input type="text" class="form-control" id="datepicker" ng-change="reloadData()"
+                ng-model="time">
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header card-header-primary">
+                <div class="card-header card-header-primary" style="z-index: 1 !important">
                     <div class="row">
                         <div class="col-md-8">
                             <h4 class="card-title" style="line-height: 50px">Transactions</h4>
@@ -24,12 +43,14 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table" id="transactions-table">
-                            <thead class=" text-primary">
+                            <thead class="text-primary">
                                 <tr>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th><p class="pull-right" style="margin: 0">Total: </p></th>
+                                    <th>
+                                        <p class="pull-right" style="margin: 0">Total: </p>
+                                    </th>
                                     <th>{{total | currency:'':0}}</th>
                                 </tr>
                                 <tr>
@@ -41,7 +62,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="transaction in transactions">
+                                <!-- <tr ng-repeat="transaction in transactions">
                                     <td data-order="{{transaction.createdTime}}">
                                         <a href="/bill/{{transaction.code}}">
                                             {{transaction.createdTime | date:'dd/MM/yyyy HH:mm:ss'}}
@@ -67,7 +88,7 @@
                                             {{transaction.payments | currency:'':0}}
                                         </a>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
@@ -80,7 +101,17 @@
 <script src="/javascripts/supervisor/transactions/list.js"></script>
 <script>
     $(document).ready(function () {
-
+        $('#datepicker').datepicker({
+            dateFormat: 'mm/yy',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:' + new Date().getFullYear(),
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1, 0, 0, 0));
+                $('#datepicker').trigger('change')
+            }
+        }).datepicker('setDate', 'today')
     });
     clickSideBar('transactions-page')
 </script>

@@ -103,6 +103,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         getAllTransactions: function () {
             return $http.get(apiVersion + '/transactions/')
         },
+        getTransactionsPerMonth: function (time) {
+            return $http.get(apiVersion + '/transactions/month/' + time)
+        },
         getTransactionsForApartment: function () {
             return $http.get(apiVersion + '/transactions/apartment')
         },

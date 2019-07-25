@@ -80,6 +80,14 @@ function getTimestampFromDatePicker(selector) {
     return new Date(year, month, day).getTime()
 }
 
+function getTimestampFromDatePickerMonth(selector) {
+    var str = $(selector).datepicker({ dateFormat: 'mm/yy' }).val()
+    str = str.split('/')
+    var year = parseInt(str[1])
+    var month = parseInt(str[0]) - 1
+    return new Date(year, month, 1, 0, 0, 0).getTime()
+}
+
 function numberFormat() {
     (function ($, undefined) {
         'use strict'
@@ -169,4 +177,15 @@ function parseNumberToMoney(number) {
 function parseMoneyToNumber(money) {
     if (!money) return 0
     return parseInt(money.toString().replace(/,/g, ''))
+}
+
+function formatDate(date) {
+    now = new Date(date);
+    year = "" + now.getFullYear();
+    month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+    day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+    hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+    minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+    second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+    return day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
 }

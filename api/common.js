@@ -57,10 +57,27 @@ function generateBillTitle(type) {
     return result
 }
 
+function getTimestampBeginOfMonth(timestamp) {
+    var now = new Date(timestamp)
+    now.setHours(0, 0, 0, 0)
+    now.setDate(1)
+    return Math.round(now.getTime())
+}
+
+function getTimestampEndOfMonth(timestamp) {
+    var now = new Date(timestamp)
+    now.setHours(0, 0, 0, 0)
+    now.setDate(1)
+    now.setMonth(now.getMonth() + 1)
+    return Math.round(now.getTime() - 1)
+}
+
 module.exports = {
     changeAlias,
     parseNumberToMoney,
     formatDate,
     formatDateCode,
-    generateBillTitle
+    generateBillTitle,
+    getTimestampBeginOfMonth,
+    getTimestampEndOfMonth
 }

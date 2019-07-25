@@ -19,5 +19,6 @@ module.exports = {
         LIFE_AND_SOCIETY: 'Life And Society',
         EVENT: 'Event'
     },
-    SERVICE_BILL_TOTAL_PRICE: 1000000
+    SERVICE_BILL_TOTAL_PRICE: 1000000,
+    A_MONTH_TIME_STAMP: 267839900 * 1000
 }
