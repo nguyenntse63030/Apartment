@@ -2,20 +2,11 @@
 var app = angular.module('SWD391')
 app.controller('createController', ['$scope', 'apiService', function ($scope, apiService) {
 
-
-    // apiService.getNewsByCode(code).then(function (res) {
-    //     $scope.news = res.data.news
-    // }).catch(function (error) {
-    //     console.log(error)
-    //     showNotification(error.data.errorMessage, 'danger')
-    // })
-
     $scope.chooseFile = () => {
         $('#file').click()
     }
 
     $scope.createNews = () => {
-        console.log($scope.news)
         if (!$('#file').val()) {
             showNotification('Bạn chưa chọn ảnh nào', 'error')
             return

@@ -94,6 +94,9 @@ angular.module('SWD391').factory('apiService', ['$http', function ($http) {
         createNews: function (data) {
             return $http.post(apiVersion + '/news/', data)
         },
+        editNews: function (id, data) {
+            return $http.put(apiVersion + '/news/' + id, data)
+        },
         getNewsByCode: function (code) {
             return $http.get(apiVersion + '/news/code/' + code)
         },

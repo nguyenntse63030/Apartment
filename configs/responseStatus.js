@@ -114,6 +114,7 @@ module.exports = {
   CHANGE_AVATAR_SUCCESSFULLY: 'Change avatar successfully',
   NEWS_EXISTED: "News already existed",
   CREATE_NEWS_SUCCESS: 'Create news successfully',
+  UPDATE_NEWS_SUCCESS: 'Update news successfully',
   BILL_EXISTED: 'Bill already existed',
   BILL_NOT_FOUND: 'Bill is not found',
   UPDATE_BILL_SUCCESS: 'Update Bill successfully',

@@ -43,6 +43,16 @@ router.post('/', authorize(), async (req, res, next) => {
     }
 })
 
+router.put('/:id', authorize(), async (req, res, next) => {
+    try {
+        const response = await newsController.editNews(req.params.id, req.body)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
 router.delete('/:id', authorize(), async (req, res, next) => {
     try {
         const response = await newsController.deleteNewsById(req.params.id)

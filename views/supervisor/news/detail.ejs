@@ -17,7 +17,11 @@
                     <form>
                         <div class="row">
                             <div class="col-md-12 flex">
-                               <img src="{{news.photoURL || '/images/logo.png'}}" alt="" class="mg-0-auto news-image-detail">
+                                <img src="{{news.photoURL || '/images/logo.png'}}" alt=""
+                                    class="mg-0-auto news-image-detail" style="cursor: pointer; object-fit: cover;"
+                                    ng-click="chooseFile()" id="news-image">
+                                <input id="file" type="file" accept="image/*" style="display:none"
+                                    onchange="onChangeImage(event)" />
                             </div>
                         </div>
                         <div class="row">
@@ -44,7 +48,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="bmd-label-floating">expired Date</label>
+                                    <label class="bmd-label-floating">Expiry Date</label>
                                     <input type="text" class="form-control" id="expired-date"
                                         value="{{news.expiredDate | date:'dd/MM/yyyy'}} " ng-disabled="isNotEditing">
                                 </div>
@@ -59,12 +63,21 @@
                                 </div>
                             </div>
                         </div>
+                        <button ng-show="isNotEditing" type="submit" class="btn btn-primary pull-right"
+                            ng-click="isNotEditing=false;focusName()">Edit</button>
+                        <div ng-show="!isNotEditing">
+                            <button type="submit" class="btn btn-success pull-right"
+                                ng-click="isNotEditing=true;editNews()">Save</button>
+                            <button type="submit" class="btn btn-danger pull-left"
+                                ng-click="isNotEditing=true">Cancel</button>
+                        </div>
                         <div class="clearfix"></div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
@@ -74,8 +87,10 @@
     $(document).ready(function () {
         $('.select2-single').select2()
         $('#expired-date').datepicker({
+            dateFormat: 'dd/mm/yy',
             changeYear: true,
-            changeMonth: true
+            changeMonth: true,
+            minDate: 'today',
         })
     });
 </script>
