@@ -13,6 +13,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
                 type: 'GET',
                 dataSrc: function (response) {
                     $scope.total = response.total
+                    $scope.$apply()
                     let dataHandle = response.transactions.map(function (transaction) {
                         return {
                             createdDate: generateATag(transaction, 'createdTime'),

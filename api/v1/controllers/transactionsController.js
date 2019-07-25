@@ -45,14 +45,21 @@ async function getAllTransactions() {
     return responseStatus.Code200({ transactions: transactions, total: total })
 }
 
-async function getTransactionsPerMonth(beginMonth) {
+async function getTransactionsPerMonth(beginMonth, auth) {
     beginMonth = Number(beginMonth)
     let endMonth = common.getTimestampEndOfMonth(beginMonth)
-    let transactions = await Transactions.find({ createdTime: { $gte: beginMonth, $lte: endMonth } }).sort({ createdTime: -1 })
-        .populate('user', 'name')
-        .populate('apartment', 'name')
-        .populate('room', 'roomNumber')
-
+    let transactions = []
+    if (auth.role === constant.userRole.SUPERVISOR) {
+        transactions = await Transactions.find({ createdTime: { $gte: beginMonth, $lte: endMonth } }).sort({ createdTime: -1 })
+            .populate('user', 'name')
+            .populate('apartment', 'name')
+            .populate('room', 'roomNumber')
+    } else if (auth.role === constant.userRole.MANAGER) {
+        transactions = await Transactions.find({ createdTime: { $gte: beginMonth, $lte: endMonth }, apartment: auth.apartment._id  }).sort({ createdTime: -1 })
+            .populate('user', 'name')
+            .populate('apartment', 'name')
+            .populate('room', 'roomNumber')
+    }
     let total = 0
     for (let transaction of transactions) {
         total += transaction.payments

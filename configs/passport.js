@@ -41,7 +41,7 @@ async function createPassportConfig(app) {
             expiresIn: config.tokenExpire
           })
         } else {
-          token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, apartment: user.apartment, loggedInTimestamp: Date.now() }, config.secret, {
+          token = jwt.sign({ id: user._id, phone: user.phone, name: user.name, role: user.role, loggedInTimestamp: Date.now() }, config.secret, {
             expiresIn: config.tokenExpire
           })
         }

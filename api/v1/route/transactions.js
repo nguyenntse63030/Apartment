@@ -15,7 +15,7 @@ router.get('/', authorize(), async (req, res, next) => {
 
 router.get('/month', authorize(), async (req, res, next) => {
     try {
-        let response = await transactionsController.getTransactionsPerMonth(req.query.time)
+        let response = await transactionsController.getTransactionsPerMonth(req.query.time, req.user)
         return res.send(response)
     } catch (error) {
         console.log(error)
