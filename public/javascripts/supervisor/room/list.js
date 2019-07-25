@@ -33,7 +33,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
                 caseInsensitive: true
             },
             // aaSorting: [2, 'desc'],
-            order: [2, 'desc'],
+            order: [1, 'desc'],
             columnDefs: [{
                 // targets: [0],
                 // sortable: false

@@ -25,7 +25,8 @@ async function updateApartment(id, data) {
     apartment.name = data.name || apartment.name
     apartment.phone = data.phone || apartment.phone
     apartment.address = data.address || apartment.address
-    if (data.manager) {
+    apartment.ggMap = data.ggMap || apartment.ggMap
+    if (data.manager != apartment.manager.toString()) {
         apartment.manager = data.manager
         let manager = await User.findById(data.manager)
         manager.apartment = apartment._id
@@ -71,9 +72,33 @@ async function createApartment(data) {
     return responseStatus.Code200({ message: responseStatus.UPDATE_SUCCESS })
 }
 
+async function getApartmentForCustomer(customerId) {
+    let rooms = (await roomController.getRoomsByUserId(customerId)).listRoom
+    let apartments = []
+    if (rooms && rooms.length) {
+        let arrDuplicate = {}
+        let roomsNoDuplicate = rooms.filter(function (room) {
+            if (room.apartment._id in arrDuplicate) {
+                return false;
+            } else {
+                arrDuplicate[room.apartment._id] = true;
+                return true;
+            }
+        });
+        let arrApartmentId = []
+        for (let room of roomsNoDuplicate) {
+            arrApartmentId.push(room.apartment._id)
+        }
+
+        apartments = await Apartment.find({ _id: { $in: arrApartmentId }})
+    }
+    return responseStatus.Code200({ apartments: apartments })
+}
+
 module.exports = {
     getApartments,
     getApartmentByCode,
     updateApartment,
-    createApartment
+    createApartment,
+    getApartmentForCustomer
 }

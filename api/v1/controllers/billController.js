@@ -193,7 +193,6 @@ async function deleteBill(id) {
 async function createMonthyBill() {
     let rooms = await Room.find({ user: { $exists: true } }).populate('user', '_id').populate('apartment', '_id manager')
 
-
     for (let room of rooms) {
         let bill = {}
         let currentDate = new Date()

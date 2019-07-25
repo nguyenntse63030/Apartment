@@ -25,6 +25,10 @@ var ApartmentSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    ggMap: {
+        type: String,
+        default: ''
+    },
     createdDate: {
         type: Number,
         default: Date.now

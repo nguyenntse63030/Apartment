@@ -12,7 +12,6 @@ app.controller('detailController', ['$scope', 'apiService', function ($scope, ap
     })
 
     $scope.removeUserFromRoom = () => {
-        debugger
         apiService.removeUserFromRoom($scope.room._id).then(function (res){
             showNotification(res.data.message, 'success')
             setTimeout(() => {
