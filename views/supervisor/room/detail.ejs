@@ -48,7 +48,7 @@
             <div class="card card-profile">
                 <div class="card-avatar">
                     <a href="/customer/{{room.user.code}}">
-                        <img class="img" src="{{room.user.photoURL}}" />
+                        <img class="img" src="{{room.user.photoURL || '/images/logo.png'}}" />
                     </a>
                 </div>
                 <div class="card-body">

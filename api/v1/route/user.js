@@ -6,7 +6,7 @@ const responseStatus = require('../../../configs/responseStatus')
 const userController = require('../controllers/userController')
 const authorize = require('../middleware/authorize')
 
-router.get('/role/:role', authorize(), async (req, res, next) => {    //:role được nhận như một params ở trong request (Admin, Manager, Customer)
+router.get('/role/:role', authorize(), async(req, res, next) => { //:role được nhận như một params ở trong request (Admin, Manager, Customer)
     try {
         const response = await userController.getUserByRole(req.params.role) //lấy biến role trong req.params
         return res.send(response)
@@ -16,9 +16,9 @@ router.get('/role/:role', authorize(), async (req, res, next) => {    //:role đ
     }
 })
 
-router.get('/apartment', authorize(), async (req, res, next) => {    
+router.get('/apartment', authorize(), async(req, res, next) => {
     try {
-        const response = await userController.getCustomerForApartment(req.user.id) 
+        const response = await userController.getCustomerForApartment(req.user.id)
         return res.send(response)
     } catch (error) {
         console.log(error)
@@ -26,7 +26,20 @@ router.get('/apartment', authorize(), async (req, res, next) => {
     }
 })
 
-router.get('/:code', authorize(), async (req, res, next) => {
+router.get('/change-avatar', authorize(), async(req, res, next) => {
+    try {
+        let userCode = req.query.userCode
+        let fileName = req.query.fileName;
+        let fileType = req.query.type;
+        const response = await userController.changeAvatarV2(userCode, fileName, fileType)
+        return res.send(response)
+    } catch (error) {
+        console.log(error)
+        return res.status(error.status || 500).send(error)
+    }
+})
+
+router.get('/:code', authorize(), async(req, res, next) => {
     try {
         const response = await userController.getUserByCode(req.params.code) //lấy biến code trong req.params
         return res.send(response)
@@ -36,7 +49,7 @@ router.get('/:code', authorize(), async (req, res, next) => {
     }
 })
 
-router.post('/', authorize(), async (req, res, next) => {
+router.post('/', authorize(), async(req, res, next) => {
     try {
         const response = await userController.createUser(req.body)
         return res.send(response)
@@ -46,7 +59,7 @@ router.post('/', authorize(), async (req, res, next) => {
     }
 })
 
-router.put('/changeAvatar/:userCode', authorize(), multipartMiddleware, async (req, res, next) => {
+router.put('/changeAvatar/:userCode', authorize(), multipartMiddleware, async(req, res, next) => {
     try {
         const response = await userController.changeAvatar(req.params.userCode, req.body.photoURL)
         return res.send(response)
@@ -56,7 +69,7 @@ router.put('/changeAvatar/:userCode', authorize(), multipartMiddleware, async (r
     }
 })
 
-router.put('/deposit', authorize(), async (req, res, next) => {
+router.put('/deposit', authorize(), async(req, res, next) => {
     try {
         const response = await userController.depositAccount(req.user.id, req.body.money)
         return res.send(response)
@@ -66,7 +79,7 @@ router.put('/deposit', authorize(), async (req, res, next) => {
     }
 })
 
-router.delete('/:code', authorize(), async (req, res, next) => {
+router.delete('/:code', authorize(), async(req, res, next) => {
     try {
         const response = await userController.deleteUserByCode(req.params.code) //lấy biến code trong req.params
         return res.send(response)
@@ -76,7 +89,7 @@ router.delete('/:code', authorize(), async (req, res, next) => {
     }
 })
 
-router.put('/:id', authorize(), async (req, res, next) => {
+router.put('/:id', authorize(), async(req, res, next) => {
     try {
         const response = await userController.updateUser(req.params.id, req.body) //lấy biến code trong req.params
         return res.send(response)
@@ -85,5 +98,7 @@ router.put('/:id', authorize(), async (req, res, next) => {
         return res.status(error.status || 500).send(error)
     }
 })
+
+
 
 module.exports = router

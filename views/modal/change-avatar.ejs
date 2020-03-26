@@ -18,7 +18,8 @@
       <div class="modal-body">
         <div class="form-container" style="text-align: center">
           <form id="form-change-avatar text-center">
-            <img id="image-to-change" src="{{ user.photoURL || customer.photoURL || manager.photoURL ||'/images/logo.png'}}" />
+            <img id="image-to-change"
+              src="{{ user.photoURL || customer.photoURL || manager.photoURL ||'/images/logo.png'}}" />
             <input id="file" type="file" accept="image/*" style="display:none" onchange="onChangeImage(event)" />
             <input type="text" name="userCode" id="user-code" value="{{customer.code || user.code || manager.code}}"
               class="hide" disabled>
@@ -56,46 +57,78 @@
       showNotification('Time out', 'error')
     }, 30000)
 
-    var formData = new FormData()
-    formData.append('image', newAvatar)
-    let userCode = $('#user-code').val()
+    // var formData = new FormData()
+    // formData.append('image', newAvatar)
+    // let userCode = $('#user-code').val()
 
     // Use jQuery.ajax method
-    $.ajax('https://api.imgbb.com/1/upload?key=' + COMMON.uploadKey, {
-      method: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        $.ajax('/api/v1/user/changeAvatar/' + userCode, {
-          method: 'PUT',
-          data: {
-            photoURL: response.data.display_url
-          },
-          success: function (response) {
-            $('#loading').hide()
-            let authUser = JSON.parse(COMMON.getCookie('user'))
-            debugger
-            if (response.user._id === authUser._id) {
-              COMMON.setCookie('user', JSON.stringify(response.user))
-            }
-            showNotification(response.message, 'success')
-            setTimeout(function () { window.location.reload() }, 1500)
-          },
-          error: function (err) {
-            showNotification(err.responseJSON.errorMessage, 'danger')
-            err && console.log(err)
-            $('#loading').hide()
-          }
-        })
-      },
-      error: function (err) {
+    // $.ajax('https://api.imgbb.com/1/upload?key=' + COMMON.uploadKey, {
+    //   method: 'POST',
+    //   data: formData,
+    //   processData: false,
+    //   contentType: false,
+    //   success: function (response) {
+    //     $.ajax('/api/v1/user/changeAvatar/' + userCode, {
+    //       method: 'PUT',
+    //       data: {
+    //         photoURL: response.data.display_url
+    //       },
+    //       success: function (response) {
+    //         $('#loading').hide()
+    //         let authUser = JSON.parse(COMMON.getCookie('user'))
+    //         debugger
+    //         if (response.user._id === authUser._id) {
+    //           COMMON.setCookie('user', JSON.stringify(response.user))
+    //         }
+    //         showNotification(response.message, 'success')
+    //         setTimeout(function () { window.location.reload() }, 1500)
+    //       },
+    //       error: function (err) {
+    //         showNotification(err.responseJSON.errorMessage, 'danger')
+    //         err && console.log(err)
+    //         $('#loading').hide()
+    //       }
+    //     })
+    //   },
+    //   error: function (err) {
+    //     showNotification(err.responseJSON.errorMessage, 'danger')
+    //     err && console.log(err)
+    //     $('#loading').hide()
+    //     $('#modal-change-avatar').modal('hide')
+    //   }
+    // })
+
+    let userCode = $('#user-code').val()
+    var files = $('#file').prop('files')[0];
+    var filename = Date.now()
+    // var fd = new FormData();
+    // fd.append('file', files);
+    var contentType = files.type;
+    $.get('/api/v1/user/change-avatar?fileName=' + filename + '&type=' + contentType + '&userCode=' + userCode, function (res) {
+      var message = res.message
+      var user = res.user
+      $.ajax({
+        url: res.photoURL,
+        type: 'PUT',
+        dataType: 'html',
+        processData: false,
+        headers: { 'Content-Type': contentType },
+        crossDomain: true,
+        data: files
+      }).done(function (data, textStatus, error) {
+        $('#loading').hide()
+        let authUser = JSON.parse(COMMON.getCookie('user'))
+        if (user._id === authUser._id) {
+          COMMON.setCookie('user', JSON.stringify(response.user))
+        }
+        showNotification(message, 'success')
+        setTimeout(function () { window.location.reload() }, 1500)
+      }).fail(function (jqXHR, textStatus, errorThrown) {
         showNotification(err.responseJSON.errorMessage, 'danger')
-        err && console.log(err)
         $('#loading').hide()
         $('#modal-change-avatar').modal('hide')
-      }
-    })
+      });
+    });
   }
 
   function chooseFile() {

@@ -129,6 +129,10 @@ module.exports = {
   NEWS_NOT_FOUND: "News is not found",
   DELETE_NEWS_SUCCESS: "Delete news successfully",
   CREATE_TRANSACTION_SUCCESS: "Create transaction successfully",
-  UPDATE_ROOM_SUCCESS: "Update room successfully"
+  UPDATE_ROOM_SUCCESS: "Update room successfully",
+  UPLOAD_IMAGE_SUCCESS: "Upload image successfully",
+  UPLOAD_IMAGE_FAILD: "Upload image faild"
+
+
 
 }

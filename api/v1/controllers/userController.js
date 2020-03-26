@@ -3,12 +3,18 @@ const User = mongoose.model('User')
 const responseStatus = require('../../../configs/responseStatus')
 const common = require('../../common')
 const jwt = require('jsonwebtoken')
+const AWS = require('aws-sdk');
 const config = require('../../../config')
 const roomController = require('./roomController')
 const constant = require('../../../configs/constant')
 
+const s3 = new AWS.S3({
+    accessKeyId: config.AWS.ACCESS_KEY_ID,
+    secretAccessKey: config.AWS.SECRETT_KEY
+});
+
 async function getUserByCode(code) {
-    let user = await User.findOne({ code: code })   //Tìm User theo code trong database
+    let user = await User.findOne({ code: code }) //Tìm User theo code trong database
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
@@ -17,7 +23,7 @@ async function getUserByCode(code) {
 }
 
 async function updateUser(id, data) {
-    let user = await User.findById(id)   //Tìm hết User theo code trong database
+    let user = await User.findById(id) //Tìm hết User theo code trong database
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     } else {
@@ -31,28 +37,28 @@ async function updateUser(id, data) {
     user.dateOfBirth = data.dateOfBirth || user.dateOfBirth
     user.gender = data.gender || user.gender
     user.role = data.role || user.role
-    // user.phone = data.phone || user.phone
-    // user.email = data.email || user.email
+        // user.phone = data.phone || user.phone
+        // user.email = data.email || user.email
     user.address = data.address || user.address
     user.note = data.note || user.note
 
-    await user.save()       //Lưu user xuống database
+    await user.save() //Lưu user xuống database
 
     return responseStatus.Code200({ message: responseStatus.UPDATE_USER_SUCCESS })
 }
 
 async function deleteUserByCode(code) {
-    let user = await User.findOne({ code: code })   //Tìm hết User theo code trong database
+    let user = await User.findOne({ code: code }) //Tìm hết User theo code trong database
     if (!user) {
         throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
 
-    await User.remove({ code: user.code })    //Delete user theo code truyền vào
+    await User.remove({ code: user.code }) //Delete user theo code truyền vào
     return responseStatus.Code200({ message: responseStatus.DELETE_USER_SUCCESS })
 }
 
 async function getUserByRole(role) {
-    let listUser = await User.find({ role: role }).populate('apartment')   //Tìm hết User theo role trong database
+    let listUser = await User.find({ role: role }).populate('apartment') //Tìm hết User theo role trong database
     return responseStatus.Code200({ listUser: listUser })
 }
 
@@ -67,8 +73,29 @@ async function changeAvatar(userCode, photoURL) {
     return responseStatus.Code200({ message: responseStatus.CHANGE_AVATAR_SUCCESSFULLY, user: user })
 }
 
+async function changeAvatarV2(userCode, fileName, fileType) {
+    let user = await User.findOne({ code: userCode })
+    if (!user) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
+    }
+
+    var url = s3.getSignedUrl('putObject', {
+        Bucket: 'prc391-bucket',
+        Key: 'User/' + user.email + '-' + user.code + '/' + fileName,
+        ACL: "public-read",
+        ContentType: fileType
+    });
+
+    let photoURL = url.slice(0, url.indexOf('?'))
+
+    user.photoURL = photoURL
+    await user.save()
+    delete user.password
+    return responseStatus.Code200({ message: responseStatus.CHANGE_AVATAR_SUCCESSFULLY, user: user, photoURL: url })
+}
+
 async function createUser(data) {
-    let user = await User.findOne({ phone: data.phone })   //Tìm trong database theo sdt
+    let user = await User.findOne({ phone: data.phone }) //Tìm trong database theo sdt
 
     if (user) {
         //Nếu người dùng đã tồn tại
@@ -94,8 +121,8 @@ async function createUser(data) {
     user.address = data.address || ''
 
     let userCode = ''
-    // User Code 
-    user.name.split(' ').forEach(function (element) {
+        // User Code 
+    user.name.split(' ').forEach(function(element) {
         if (element.match(/[a-z]/i)) {
             let str = common.changeAlias(element).toUpperCase()
             userCode += str[0]
@@ -104,16 +131,16 @@ async function createUser(data) {
     userCode += '-' + Date.now().toString().slice(9)
     user.code = userCode
 
-    user = await user.save()       //Lưu user xuống database
+    user = await user.save() //Lưu user xuống database
 
     return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
 }
 
-const signUpForSocial = async function (newUser) {
+const signUpForSocial = async function(newUser) {
     try {
         // User Code 
         userCode = ''
-        newUser.name.split(' ').forEach(function (element) {
+        newUser.name.split(' ').forEach(function(element) {
             if (element.match(/[a-z]/i)) {
                 let str = common.changeAlias(element).toUpperCase()
                 userCode += str[0]
@@ -132,7 +159,7 @@ const signUpForSocial = async function (newUser) {
     }
 }
 
-const depositAccount = async function (userId, data) {
+const depositAccount = async function(userId, data) {
     let customer = await User.findById(userId)
     if (!customer) {
         throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
@@ -148,7 +175,7 @@ const depositAccount = async function (userId, data) {
     })
 }
 
-const saveUserToken = async function (id, androidToken) {
+const saveUserToken = async function(id, androidToken) {
     let user = await User.findById(id)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
@@ -158,7 +185,7 @@ const saveUserToken = async function (id, androidToken) {
     return responseStatus.Code200({ message: 'Save Token Successfully' })
 }
 
-const deleteUserToken = async function (id) {
+const deleteUserToken = async function(id) {
     let user = await User.findById(id)
     if (!user) {
         throw responseStatus.Code400({ errorMessage: USER_NOT_FOUND })
@@ -168,17 +195,17 @@ const deleteUserToken = async function (id) {
     return responseStatus.Code200({ message: 'Delete Token Successfully' })
 }
 
-const getCustomerForApartment = async function (managerId) {
+const getCustomerForApartment = async function(managerId) {
     let manager = await User.findById(managerId)
-    if (!manager){
-        throw responseStatus.Code400({errorMessage: responseStatus.USER_NOT_FOUND})
+    if (!manager) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.USER_NOT_FOUND })
     }
     let roomsHaveUser = (await roomController.getRoomHaveUserForApartment(manager.apartment)).rooms
     let customers = []
 
     if (roomsHaveUser && roomsHaveUser.length) {
         let arrDuplicate = {}
-        let roomsNoDuplicate = roomsHaveUser.filter(function (room) {
+        let roomsNoDuplicate = roomsHaveUser.filter(function(room) {
             if (room.user in arrDuplicate) {
                 return false;
             } else {
@@ -209,5 +236,6 @@ module.exports = {
     depositAccount,
     saveUserToken,
     deleteUserToken,
-    getCustomerForApartment
+    getCustomerForApartment,
+    changeAvatarV2
 }

@@ -2,8 +2,14 @@ const mongoose = require('mongoose')
 const responseStatus = require('../../../configs/responseStatus')
 const common = require('../../common')
 const News = mongoose.model('News')
+const AWS = require('aws-sdk');
 const constant = require('../../../configs/constant')
+const config = require('../../../config')
 
+const s3 = new AWS.S3({
+    accessKeyId: config.AWS.ACCESS_KEY_ID,
+    secretAccessKey: config.AWS.SECRETT_KEY
+});
 
 async function createNews(data) {
 
@@ -17,7 +23,7 @@ async function createNews(data) {
     news.expiredDate = data.expiredDate || new Date().getTime()
 
     let newsCode = ''
-    news.title.split(' ').forEach(function (element) {
+    news.title.split(' ').forEach(function(element) {
         if (element.match(/[a-z]/i)) {
             let str = common.changeAlias(element).toUpperCase()
             newsCode += str[0]
@@ -26,9 +32,28 @@ async function createNews(data) {
     newsCode += '-' + Date.now().toString().slice(9)
     news.code = newsCode
 
-    news = await news.save()       //Lưu news xuống database
+    news = await news.save() //Lưu news xuống database
 
     return responseStatus.Code200({ message: responseStatus.CREATE_NEWS_SUCCESS, news: news })
+}
+
+async function uploadNewsImage(newsID, fileName, fileType) {
+    let news = await News.findById(newsID)
+    if (!news) {
+        throw responseStatus.Code400({ errorMessage: responseStatus.UPLOAD_IMAGE_FAILD })
+    }
+
+    var url = s3.getSignedUrl('putObject', {
+        Bucket: 'prc391-bucket',
+        Key: 'News/' + fileName,
+        ACL: "public-read",
+        ContentType: fileType
+    });
+
+    news.photoURL = url.slice(0, url.indexOf('?'))
+    await news.save()
+
+    return responseStatus.Code200({ message: responseStatus.UPLOAD_IMAGE_SUCCESS, url: url })
 }
 
 async function editNews(id, data) {
@@ -79,5 +104,6 @@ module.exports = {
     getNewsByCode,
     getNews,
     deleteNewsById,
-    editNews
+    editNews,
+    uploadNewsImage
 }
