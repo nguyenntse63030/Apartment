@@ -1,5 +1,5 @@
 const apiVersion = '/api/v1'
-angular.module('SWD391').factory('apiService', ['$http', function ($http) {
+angular.module('PRC391').factory('apiService', ['$http', function ($http) {
     return {
         getUserByRole: function (role) {
             return $http.get(apiVersion + '/user/role/' + role)

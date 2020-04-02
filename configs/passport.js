@@ -57,7 +57,7 @@ async function createPassportConfig(app) {
       {
         clientID: '469629757306-eb87hjdvp4167srimhk4bam7uanurdv1.apps.googleusercontent.com',
         clientSecret: '4fsDLQPlmiNi438dbIxYx7m0',
-        callbackURL: 'https://apartmentswd391.herokuapp.com/api/v1/auth/google/callback'
+        callbackURL: 'https://apartmentprc391.herokuapp.com/api/v1/auth/google/callback'
         // callbackURL: 'http://localhost:1998/api/v1/auth/google/callback'
       },
       function (req, accessToken, refreshToken, profile, done) {

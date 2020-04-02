@@ -6,7 +6,7 @@ function sendNotification(token, str) {
   let message = {
     android: {
       notification: {
-        title: 'Aparment-SWD391',
+        title: 'Aparment-PRC391',
         body: str,
         color: '#f45342'
       }

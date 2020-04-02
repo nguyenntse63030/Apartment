@@ -1,5 +1,5 @@
 
-var app = angular.module('SWD391')
+var app = angular.module('PRC391')
 app.controller('detailController', ['$scope', 'apiService', function ($scope, apiService) {
     $scope.customer = {
         note: ' '

@@ -1,4 +1,4 @@
-var app = angular.module('SWD391')
+var app = angular.module('PRC391')
 app.controller('createController', ['$scope', 'apiService', function ($scope, apiService) {
     $scope.numberOfFloor = 1
     $scope.floors = []

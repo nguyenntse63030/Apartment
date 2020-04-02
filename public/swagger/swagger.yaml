@@ -2,7 +2,7 @@ openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: https://apartmentswd391.herokuapp.com/api/v1
+    url: https://apartmentprc391.herokuapp.com/api/v1
 info:
   description: Test APIs document Swagger
   version: "1.0.0"

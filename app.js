@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  name: 'SWD-391',
+  name: 'PRC-391',
   secure: true,
   httpOnly: true,
   secret: config.secret,

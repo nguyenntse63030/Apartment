@@ -1,4 +1,4 @@
-var app = angular.module('SWD391')
+var app = angular.module('PRC391')
 app.controller('listController', ['$scope', 'apiService', function ($scope, apiService) {
 
     apiService.getAllRooms().then(function (res) {
