@@ -68,7 +68,7 @@ app.controller('listController', ['$scope', 'apiService', function ($scope, apiS
         } else if (property === 'room') {
             data = data.roomNumber
         }
-        let result = '<a href="' + transaction.code + '">' + data + '</a>'
+        let result = '<a href="/bill/' + transaction.code + '">' + data + '</a>'
         return result
     }
 
