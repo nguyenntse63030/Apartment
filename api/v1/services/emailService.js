@@ -80,7 +80,7 @@ async function nodeMailerSendMail(ccEmail, toEmail, subject, htmlData) {
 
 
 async function sendMailWelcomeUser(user) {
-    let filePath = process.cwd() + '\\template\\email.html'
+    let filePath = process.cwd() + '/template/email.html'
         // let data = fs.readFile(filePath, {encoding: 'utf-8'}, function(err, data) {
         //     console.log('aaa')
         // })
