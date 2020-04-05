@@ -29,6 +29,17 @@ function formatDate(date) {
     return day + "/" + month + "/" + year + " " + hour + ":" + minute + ":" + second;
 }
 
+function formatDateV2(date) {
+    now = new Date(date);
+    year = "" + now.getFullYear();
+    month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+    day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+    hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+    minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+    second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+    return day + "/" + month + "/" + year;
+}
+
 function formatDateCode(date) {
     now = new Date(date);
     year = "" + now.getFullYear();
@@ -76,6 +87,7 @@ module.exports = {
     changeAlias,
     parseNumberToMoney,
     formatDate,
+    formatDateV2,
     formatDateCode,
     generateBillTitle,
     getTimestampBeginOfMonth,

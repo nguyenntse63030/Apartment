@@ -7,6 +7,7 @@ const AWS = require('aws-sdk');
 const config = require('../../../config')
 const roomController = require('./roomController')
 const constant = require('../../../configs/constant')
+const emailService = require('../services/emailService')
 
 const s3 = new AWS.S3({
     accessKeyId: config.AWS.ACCESS_KEY_ID,
@@ -113,7 +114,7 @@ async function createUser(data) {
     //Đổ data vào User
     user = new User()
     user.phone = data.phone || ''
-    user.email = data.email || ''
+    user.email = data.email.toLowerCase() || ''
     user.dateOfBirth = data.dateOfBirth || ''
     user.gender = data.gender || ''
     user.role = data.role || ''
@@ -121,7 +122,6 @@ async function createUser(data) {
     user.address = data.address || ''
 
     let userCode = ''
-        // User Code 
     user.name.split(' ').forEach(function(element) {
         if (element.match(/[a-z]/i)) {
             let str = common.changeAlias(element).toUpperCase()
@@ -131,8 +131,10 @@ async function createUser(data) {
     userCode += '-' + Date.now().toString().slice(9)
     user.code = userCode
 
+    user.password = user.hashPassword('1111')
     user = await user.save() //Lưu user xuống database
-
+    user.password = undefined
+    emailService.sendMailWelcomeUser(user)
     return responseStatus.Code200({ message: responseStatus.CREATE_USER_SUCCESS, user: user })
 }
 

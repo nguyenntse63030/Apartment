@@ -31,7 +31,7 @@ var UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        default: ''
+        default: '1111'
     },
     address: {
         type: String,
