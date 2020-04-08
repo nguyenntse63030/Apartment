@@ -96,8 +96,8 @@ async function sendMailWelcomeUser(user) {
         data = data.replace('GENDER', user.gender)
 
         let toEmail = [user.email]
-        // sesSendMail([], toEmail, 'Welcome To Apartment', data)
-        nodeMailerSendMail([], toEmail, 'Welcome To Apartment', data)
+        sesSendMail([], toEmail, 'Welcome To Apartment', data)
+        // nodeMailerSendMail([], toEmail, 'Welcome To Apartment', data)
     }
 }
 
